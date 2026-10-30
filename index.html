@@ -122,6 +122,62 @@ document.querySelectorAll('.panel').forEach(p=>p.style.display='none');
 document.getElementById(id).style.display='block';
 document.getElementById('message').textContent='';
 }
+let demoBalance = 10000;
+let transactions = [];
+let chamaGroups = [];
+
+function demo(){
+  const panel = document.querySelector('.panel[style*="block"]');
+  if(!panel) return;
+
+  const inputs = panel.querySelectorAll('input');
+  const values = Array.from(inputs).map(input => input.value.trim());
+  const amount = Number(values.find((v,i) =>
+    inputs[i].type === 'number'
+  ));
+
+  if(!amount || amount <= 0){
+    document.getElementById('message').textContent =
+      'Please enter a valid amount.';
+    return;
+  }
+
+  if(amount > demoBalance){
+    document.getElementById('message').textContent =
+      'Insufficient demonstration balance.';
+    return;
+  }
+
+  demoBalance -= amount;
+
+  transactions.unshift({
+    service: panel.querySelector('h2').textContent,
+    amount: amount,
+    date: new Date().toLocaleString()
+  });
+
+  document.querySelector('.balance h2').textContent =
+    'KSh ' + demoBalance.toLocaleString('en-KE', {
+      minimumFractionDigits: 2
+    });
+
+  document.getElementById('message').textContent =
+    'DEMO SUCCESS! KSh ' + amount +
+    ' recorded. No real money was moved.';
+
+  inputs.forEach(input => input.value = '');
+}
+
+function createChama(){
+  const name = prompt('Enter chama name:');
+  if(!name) return;
+  chamaGroups.push({
+    name: name,
+    savings: 0,
+    members: []
+  });
+  alert('Demo chama created: ' + name);
+}
 </script>
 </body>
 </html>
