@@ -126,6 +126,42 @@ let demoBalance = 10000;
 let transactions = [];
 let chamaGroups = [];
 
+let customers = [];
+
+function registerCustomer(){
+  const name = document.getElementById('customerName').value.trim();
+  const phone = document.getElementById('customerPhone').value.trim();
+
+  if(!name || !phone){
+    document.getElementById('registrationMessage').textContent =
+      'Please enter your name and phone number.';
+    return;
+  }
+
+  if(!/^(0[17]\d{8}|\+254[17]\d{8})$/.test(phone)){
+    document.getElementById('registrationMessage').textContent =
+      'Please enter a valid Kenyan mobile number.';
+    return;
+  }
+
+  if(customers.some(c => c.phone === phone)){
+    document.getElementById('registrationMessage').textContent =
+      'This number is already registered in this demo.';
+    return;
+  }
+
+  customers.push({
+    name: name,
+    phone: phone
+  });
+
+  document.getElementById('registrationMessage').textContent =
+    'Demo account created successfully for ' + name + '!';
+
+  document.getElementById('customerName').value = '';
+  document.getElementById('customerPhone').value = '';
+}
+
 function demo(){
   const panel = document.querySelector('.panel[style*="block"]');
   if(!panel) return;
