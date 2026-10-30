@@ -109,28 +109,27 @@ footer{text-align:center;padding:25px;color:#9db3c7;font-size:12px}
 <button class="action" onclick="demo()">Continue</button>
 </section>
 
-<section id="history" class="panel">
-<h2>Transaction History</h2>
-<p>No demonstration transactions yet.</p>
-</section>
-
 <section id="register" class="panel">
-<h2>Create Wakaûndū Pay Account</h2>
-<label>Full Name</label>
-<input id="customerName" type="text" placeholder="Enter your full name">
-<label>Phone Number</label>
-<input id="customerPhone" type="tel" placeholder="Enter phone number">
-<button class="action" onclick="registerCustomer()">Register Account</button>
-<p id="registrationMessage"></p>
-<small>Demo registration only.</small>
+  <h2>Create Wakaûndū Pay Account</h2>
+
+  <label>Full Name</label>
+  <input id="customerName" type="text"
+    placeholder="Enter your full name">
+
+  <label>Phone Number</label>
+  <input id="customerPhone" type="tel"
+    placeholder="Enter phone number">
+
+  <button class="action" onclick="registerCustomer()">
+    Register Account
+  </button>
+
+  <p id="registrationMessage"></p>
+  <small>Demonstration registration only. Do not enter real financial credentials.</small>
 </section>
-<p id="message"></p>
-</main>
-<footer>
 Wakaûndū Pay Network Africa<br>
 Development demonstration — not connected to financial institutions.
 </footer>
-
 <script>
 function show(id){
 document.querySelectorAll('.panel').forEach(p=>p.style.display='none');
@@ -229,24 +228,6 @@ function createChama(){
   });
   alert('Demo chama created: ' + name);
 }
-  <section id="register" class="panel">
-  <h2>Create Wakaûndū Pay Account</h2>
-
-  <label>Full Name</label>
-  <input id="customerName" type="text"
-    placeholder="Enter your full name">
-
-  <label>Phone Number</label>
-  <input id="customerPhone" type="tel"
-    placeholder="Enter phone number">
-
-  <button class="action" onclick="registerCustomer()">
-    Register Account
-  </button>
-
-  <p id="registrationMessage"></p>
-  <small>Demonstration registration only. Do not enter real financial credentials.</small>
-</section>
-</script>
+  </script>
 </body>
 </html>
