@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071b2e">
+<title>Wakaûndū Pay Network Africa</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#071b2e;color:white}
+header{padding:22px;background:#0c2943;text-align:center}
+header h1{margin:0;color:#39d6a0;font-size:25px}
+header p{color:#c4d5e4;margin-bottom:0}
+main{max-width:650px;margin:auto;padding:16px}
+.balance{background:linear-gradient(135deg,#087e69,#123f69);padding:22px;border-radius:16px;margin-bottom:20px}
+.balance small{color:#d8fff1}
+.balance h2{font-size:30px;margin:10px 0}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+button{border:0;border-radius:12px;padding:17px 10px;background:#123653;color:white;font-size:15px;cursor:pointer}
+button span{display:block;font-size:25px;margin-bottom:8px}
+button:active{background:#087e69}
+.panel{display:none;background:#102d48;padding:20px;border-radius:15px;margin-top:20px}
+.panel h2{color:#39d6a0}
+input,select{width:100%;padding:14px;margin:8px 0 15px;border-radius:9px;border:1px solid #52718b;background:#071b2e;color:white;font-size:16px}
+.action{background:#08a77e;width:100%;font-weight:bold}
+#message{margin-top:15px;color:#39d6a0}
+footer{text-align:center;padding:25px;color:#9db3c7;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>WAKAÛNDŪ PAY</h1>
+<p>NETWORK AFRICA</p>
+<p>Payments • Savings • Financial Services</p>
+</header>
+<main>
+<div class="balance">
+<small>DEMO ACCOUNT BALANCE</small>
+<h2>KSh 0.00</h2>
+<small>Demonstration only — no real money is held.</small>
+</div>
+
+<h3>Choose a service</h3>
+<div class="grid">
+<button onclick="show('send')"><span>💸</span>Send Money</button>
+<button onclick="show('airtime')"><span>📱</span>Buy Airtime</button>
+<button onclick="show('bills')"><span>🧾</span>Pay Bills</button>
+<button onclick="show('goods')"><span>🛍️</span>Buy Goods</button>
+<button onclick="show('withdraw')"><span>🏧</span>Withdraw</button>
+<button onclick="show('chama')"><span>👥</span>Chama Savings</button>
+<button onclick="show('personal')"><span>🏦</span>Personal Savings</button>
+<button onclick="show('history')"><span>📋</span>Transactions</button>
+</div>
+
+<section id="send" class="panel">
+<h2>Send Money</h2>
+<input placeholder="Recipient phone number">
+<input type="number" placeholder="Amount in KSh">
+<button class="action" onclick="demo()">Continue</button>
+</section>
+
+<section id="airtime" class="panel">
+<h2>Buy Airtime</h2>
+<select><option>Safaricom</option><option>Airtel</option><option>Telkom</option></select>
+<input placeholder="Phone number">
+<input type="number" placeholder="Amount">
+<button class="action" onclick="demo()">Continue</button>
+</section>
+
+<section id="bills" class="panel">
+<h2>Pay Bills</h2>
+<select><option>Electricity</option><option>Water</option><option>Internet</option><option>TV subscription</option></select>
+<input placeholder="Account or bill reference">
+<input type="number" placeholder="Amount">
+<button class="action" onclick="demo()">Continue</button>
+</section>
+
+<section id="goods" class="panel">
+<h2>Merchant Payments</h2>
+<input placeholder="Merchant Till or Paybill number">
+<input type="number" placeholder="Amount">
+<button class="action" onclick="demo()">Continue</button>
+</section>
+
+<section id="withdraw" class="panel">
+<h2>Withdraw Money</h2>
+<input placeholder="Agent or mobile money number">
+<input type="number" placeholder="Amount">
+<button class="action" onclick="demo()">Continue</button>
+</section>
+
+<section id="chama" class="panel">
+<h2>Chama Savings</h2>
+<input placeholder="Chama name">
+<input placeholder="Member name">
+<input type="number" placeholder="Contribution amount">
+<button class="action" onclick="demo()">Continue</button>
+</section>
+
+<section id="personal" class="panel">
+<h2>Personal Savings</h2>
+<input type="number" placeholder="Savings amount">
+<button class="action" onclick="demo()">Continue</button>
+</section>
+
+<section id="history" class="panel">
+<h2>Transaction History</h2>
+<p>No demonstration transactions yet.</p>
+</section>
+
+<p id="message"></p>
+</main>
+<footer>
+Wakaûndū Pay Network Africa<br>
+Development demonstration — not connected to financial institutions.
+</footer>
+
+<script>
+function show(id){
+document.querySelectorAll('.panel').forEach(p=>p.style.display='none');
+document.getElementById(id).style.display='block';
+document.getElementById('message').textContent='';
+}
+function demo(){
+document.getElementById('message').textContent=
+'Demo only: real transactions are not yet enabled. No money has been moved.';
+}
+</script>
+</body>
+</html>
