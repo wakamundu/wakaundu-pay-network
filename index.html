@@ -282,6 +282,25 @@ function callCustomerCare() {
 
   window.location.href = "tel:" + supportNumber;
 }
+  
+function requestCallback() {
+  const phone = document.getElementById("callbackPhone").value.trim();
+  const reason = document.getElementById("callbackReason").value.trim();
+  const message = document.getElementById("callbackMessage");
+
+  if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
+    message.textContent = "Enter a valid international number, including country code.";
+    return;
+  }
+
+  if (!reason) {
+    message.textContent = "Please tell us how we can help.";
+    return;
+  }
+
+  message.textContent =
+    "Your callback request has been received on this device. Admin connection is not yet activated.";
+}
 </script>
 </body>
 </html>
