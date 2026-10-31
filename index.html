@@ -119,7 +119,11 @@ footer{text-align:center;padding:25px;color:#9db3c7;font-size:12px}
   <label>Phone Number</label>
   <input id="customerPhone" type="tel"
     placeholder="Enter phone number">
-
+<label>Create 4-digit PIN</label>
+<input id="customerPIN" type="password"
+  maxlength="4"
+  inputmode="numeric"
+  placeholder="Create your PIN">
   <button class="action" onclick="registerCustomer()">
     Register Account
   </button>
