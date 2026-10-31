@@ -141,8 +141,14 @@ let demoBalance = 10000;
 let transactions = [];
 let chamaGroups = [];
 
-let customers = [];
+<p id="registrationMessage"></p>
+<small>Demonstration registration only. Do not enter real financial credentials.</small>
+</section>
 
+<p id="message"></p>
+let customers = JSON.parse(
+  localStorage.getItem('wakaunduCustomers') || '[]'
+);
 function registerCustomer(){
   const name = document.getElementById('customerName').value.trim();
   const phone = document.getElementById('customerPhone').value.trim();
