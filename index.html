@@ -252,5 +252,15 @@ Call Customer Care
 
 <p id="supportMessage"></p>
 </section>
+ <script>
+function callCustomerCare() {
+  const supportNumber = "0800XXXXXX";
+
+  document.getElementById("supportMessage").textContent =
+    "Connecting to Wakaûndū International Customer Care...";
+
+  window.location.href = "tel:" + supportNumber;
+}
+</script>
 </body>
 </html>
