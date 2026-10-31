@@ -207,6 +207,32 @@ let transactions = JSON.parse(
   localStorage.getItem('wakaunduTransactions') || '[]'
 );
 
+let customers = JSON.parse(
+  localStorage.getItem('wakaunduCustomers') || '[]'
+);
+
+let transactions = JSON.parse(
+  localStorage.getItem('wakaunduTransactions') || '[]'
+);
+
+function show(id) {
+  document.querySelectorAll('.panel').forEach(panel => {
+    panel.style.display = 'none';
+  });
+
+  const selected = document.getElementById(id);
+
+  if (selected) {
+    selected.style.display = 'block';
+    selected.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function demo() {
+  document.getElementById('message').textContent =
+    'This service is currently in demonstration mode. Live banking integration is coming soon.';
+}
+
 function show(id) {
   document.querySelectorAll('.panel').forEach(panel => {
     panel.style.display = 'none';
