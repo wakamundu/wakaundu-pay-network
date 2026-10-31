@@ -156,13 +156,11 @@ function registerCustomer(){
       'Please enter your name and phone number.';
     return;
   }
-
-  if(!/^(0[17]\d{8}|\+254[17]\d{8})$/.test(phone)){
-    document.getElementById('registrationMessage').textContent =
-      'Please enter a valid Kenyan mobile number.';
-    return;
-  }
-
+if(!/^\+[1-9]\d{7,14}$/.test(phone)){
+  document.getElementById('registrationMessage').textContent =
+    'Please enter a valid international phone number with country code.';
+  return;
+}
   if(customers.some(c => c.phone === phone)){
     document.getElementById('registrationMessage').textContent =
       'This number is already registered in this demo.';
