@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wakaûndū Pay | Admin Dashboard</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#071426;color:white;padding:18px}
+header{background:#102b42;padding:20px;border-radius:14px;text-align:center}
+h1{color:#35d6b0}
+h2{color:#35d6b0}
+.card{background:#102b42;padding:16px;margin:12px 0;border-radius:12px}
+.number{font-size:28px;font-weight:bold;color:#35d6b0}
+button{background:#13a98b;color:white;border:0;padding:12px 18px;border-radius:8px;margin:5px;cursor:pointer}
+button:hover{background:#087c68}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}
+th,td{padding:9px;border-bottom:1px solid #345;text-align:left;word-break:break-word}
+small{color:#b9cbd8}
+.notice{background:#493817;padding:12px;border-radius:8px;color:#ffe5a3}
+</style>
+</head>
+<body>
+
+<header>
+<h1>WAKAÛNDŪ PAY</h1>
+<h2>ADMIN DASHBOARD</h2>
+<p>NETWORK AFRICA • WAKAÛNDŪ INTERNATIONAL</p>
+</header>
+
+<div class="notice">
+DEMO ADMIN DASHBOARD — This page reads records stored in this browser only.
+It is not a secure remote banking administration system.
+</div>
+
+<div class="card">
+<h2>System Overview</h2>
+<p>Registered Customers</p>
+<div class="number" id="customersCount">0</div>
+<p>Transactions</p>
+<div class="number" id="transactionsCount">0</div>
+<p>Chama Groups</p>
+<div class="number" id="chamaCount">0</div>
+<p>Callback Requests</p>
+<div class="number" id="callbacksCount">0</div>
+<button onclick="loadDashboard()">Refresh Dashboard</button>
+</div>
+
+<div class="card">
+<h2>Registered Customers</h2>
+<div id="customersTable">No customer records found.</div>
+</div>
+
+<div class="card">
+<h2>Transactions</h2>
+<div id="transactionsTable">No transactions found.</div>
+</div>
+
+<div class="card">
+<h2>Chama Savings Groups</h2>
+<div id="chamaTable">No Chama groups found.</div>
+</div>
+
+<div class="card">
+<h2>Customer Care Callbacks</h2>
+<div id="callbacksTable">No callback requests found.</div>
+</div>
+
+<div class="card">
+<h2>Export Reports</h2>
+<button onclick="exportData('customers')">Export Customers CSV</button>
+<button onclick="exportData('transactions')">Export Transactions CSV</button>
+<button onclick="exportData('chama')">Export Chama CSV</button>
+<button onclick="exportData('callbacks')">Export Callbacks CSV</button>
+</div>
+
+<script>
+function getData(key, fallback){
+ try{
+  const data=JSON.parse(localStorage.getItem(key));
+  return Array.isArray(data)?data:(fallback||[]);
+ }catch(e){return fallback||[];}
+}
+
+function safe(value){
+ return String(value??"").replace(/[&<>"']/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+ });
+}
+
+function makeTable(data){
+ if(!data.length)return "<p>No records found.</p>";
+ const keys=[...new Set(data.flatMap(x=>Object.keys(x)))];
+ return "<div style='overflow-x:auto'><table><tr>"+
+ keys.map(k=>"<th>"+safe(k)+"</th>").join("")+
+ "</tr>"+
+ data.map(item=>"<tr>"+keys.map(k=>"<td>"+safe(item[k])+"</td>").join("")+"</tr>").join("")+
+ "</table></div>";
+}
+
+function loadDashboard(){
+ const customers=getData("wakaunduCustomers");
+ const transactions=getData("wakaunduTransactions");
+ const chama=getData("wakaunduChamaGroups",getData("chamaGroups"));
+ const callbacks=getData("wakaunduCallbacks");
+
+ document.getElementById("customersCount").textContent=customers.length;
+ document.getElementById("transactionsCount").textContent=transactions.length;
+ document.getElementById("chamaCount").textContent=chama.length;
+ document.getElementById("callbacksCount").textContent=callbacks.length;
+
+ document.getElementById("customersTable").innerHTML=makeTable(customers);
+ document.getElementById("transactionsTable").innerHTML=makeTable(transactions);
+ document.getElementById("chamaTable").innerHTML=makeTable(chama);
+ document.getElementById("callbacksTable").innerHTML=makeTable(callbacks);
+}
+
+function exportData(type){
+ const keys={
+ customers:"wakaunduCustomers",
+ transactions:"wakaunduTransactions",
+ chama:"wakaunduChamaGroups",
+ callbacks:"wakaunduCallbacks"
+ };
+ let data=getData(keys[type]||"");
+ if(type==="chama"&&!data.length)data=getData("chamaGroups");
+ if(!data.length){alert("No records to export.");return;}
+
+ const columns=[...new Set(data.flatMap(x=>Object.keys(x)))];
+ const csv=[
+  columns.join(","),
+  ...data.map(row=>columns.map(k=>'"'+String(row[k]??"").replace(/"/g,'""')+'"').join(","))
+ ].join("\n");
+
+ const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="wakaundu-"+type+".csv";
+ a.click();
+ URL.revokeObjectURL(url);
+}
+
+loadDashboard();
+</script>
+</body>
+</html>
