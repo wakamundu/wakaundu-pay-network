@@ -11,7 +11,7 @@
 body{margin:0;font-family:Arial,sans-serif;background:#071b2e;color:white}
 header{padding:22px;background:#0c2943;text-align:center}
 header h1{margin:0;color:#39d6a0;font-size:25px}
-header p{color:#c4d5e4;margin-bottom:0}
+header p{color:#c can4d5e4;margin-bottom:0}
 main{max-width:650px;margin:auto;padding:16px}
 .balance{background:linear-gradient(135deg,#087e69,#123f69);padding:22px;border-radius:16px;margin-bottom:20px}
 .balance small{color:#d8fff1}
@@ -271,6 +271,63 @@ function registerCustomer() {
 
   if (customers.some(c => c.phone === internationalPhone)) {
     message.textContent = 'This number is already registered.';
+
+ <section id="history" class="panel">
+  <h2>Transaction History</h2>
+  <div id="transactionList">
+    No transactions yet.
+  </div>
+</section>
+   
+<script>
+let customers = JSON.parse(
+  localStorage.getItem('wakaunduCustomers') || '[]'
+);
+
+let transactions = JSON.parse(
+  localStorage.getItem('wakaunduTransactions') || '[]'
+);
+
+function show(id) {
+  document.querySelectorAll('.panel').forEach(panel => {
+    panel.style.display = 'none';
+  });
+
+  const selected = document.getElementById(id);
+
+  if (selected) {
+    selected.style.display = 'block';
+    selected.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    document.getElementById('message').textContent =
+      'This section is not available yet.';
+  }
+}
+
+function demo() {
+  document.getElementById('message').textContent =
+    'This service is currently in demonstration mode. Live banking integration is coming soon.';
+}
+
+function registerCustomer() {
+  const name = document.getElementById('customerName').value.trim();
+  const phone = document.getElementById('customerPhone').value.trim();
+  const message = document.getElementById('registrationMessage');
+
+  if (!name || !phone) {
+    message.textContent = 'Please enter your name and phone number.';
+    return;
+  }
+
+  const internationalPhone = phone.replace(/[\s()-]/g, '');
+
+  if (!/^(0[17]\d{8}|\+[1-9]\d{7,14})$/.test(internationalPhone)) {
+    message.textContent = 'Please enter a valid phone number.';
+    return;
+  }
+
+  if (customers.some(c => c.phone === internationalPhone)) {
+    message.textContent = 'This number is already registered.';
     return;
   }
 
@@ -292,14 +349,8 @@ function registerCustomer() {
   document.getElementById('customerPhone').value = '';
   document.getElementById('customerPIN').value = '';
 }
+</script>
 
-  </script>
- <section id="history" class="panel">
-  <h2>Transaction History</h2>
-  <div id="transactionList">
-    No transactions yet.
-  </div>
-</section>
  <section id="customer-care">
 <h2>Wakaûndū International Customer Care</h2>
 <p>Global support for all our customers.</p>
