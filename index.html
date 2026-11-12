@@ -1,1 +1,562 @@
-https://wakamundu.github.io/wakaundu-pay-network/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071b2e">
+<meta name="description" content="Wakaûndū Pay Network Africa - Digital payments, savings and international financial services.">
+<title>Wakaûndū Pay Network Africa</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#071b2e;
+ color:white;
+}
+header{
+ background:#0c2943;
+ padding:25px 15px;
+ text-align:center;
+ border-bottom:2px solid #39d6a0;
+}
+header h1{color:#39d6a0;margin:0;font-size:27px}
+header p{color:#c4d5e4;margin:8px 0}
+main{max-width:700px;margin:auto;padding:16px}
+.balance{
+ background:linear-gradient(135deg,#087e69,#123f69);
+ padding:22px;border-radius:16px;margin-bottom:20px;
+}
+.balance h2{font-size:30px;margin:10px 0}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:12px;
+}
+button{
+ border:0;border-radius:12px;
+ padding:16px 10px;
+ background:#123653;color:white;
+ font-size:15px;cursor:pointer;
+}
+button span{display:block;font-size:24px;margin-bottom:7px}
+button:active{background:#087e69}
+.register-btn{width:100%;background:#087e69;margin-bottom:15px}
+.panel{
+ display:none;
+ background:#102d48;
+ padding:20px;
+ border-radius:15px;
+ margin-top:20px;
+}
+.panel h2{color:#39d6a0}
+input,select,textarea{
+ width:100%;
+ padding:14px;
+ margin:8px 0 15px;
+ border-radius:9px;
+ border:1px solid #52718b;
+ background:#071b2e;
+ color:white;
+ font-size:16px;
+}
+textarea{min-height:90px}
+.action{
+ background:#08a77e;
+ width:100%;
+ font-weight:bold;
+ margin:8px 0;
+}
+.back{
+ background:#526a80;
+ width:100%;
+ margin-top:10px;
+}
+#message,.result{color:#39d6a0;margin-top:12px}
+.service-heading{margin-top:25px}
+.record{
+ background:#183c58;
+ padding:12px;
+ border-radius:9px;
+ margin:9px 0;
+ overflow-wrap:anywhere;
+}
+footer{
+ text-align:center;
+ padding:25px;
+ color:#9db3c7;
+ font-size:12px;
+}
+small{color:#c4d5e4}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>WAKAÛNDŪ PAY</h1>
+<p>NETWORK AFRICA</p>
+<p>Payments • Savings • Financial Services</p>
+<small>Wakaûndū International</small>
+</header>
+
+<main>
+
+<div class="balance">
+<small>DEMO ACCOUNT BALANCE</small>
+<h2 id="accountBalance">KSh 0.00</h2>
+<small>Demonstration only — no real money is held.</small>
+<hr>
+<p>Your gateway to digital payments.</p>
+</div>
+
+<h3>Welcome to Wakaûndū Pay</h3>
+<p>Choose a service below.</p>
+
+<button class="register-btn" data-open="register">
+<span>👤</span>Register New Account
+</button>
+
+<div class="grid">
+<button data-open="global-transfer"><span>🌐</span>Global Transfers</button>
+<button data-open="send"><span>💸</span>Send Money</button>
+<button data-open="airtime"><span>📱</span>Buy Airtime</button>
+<button data-open="bills"><span>🧾</span>Pay Bills</button>
+<button data-open="goods"><span>🛍️</span>Buy Goods</button>
+<button data-open="withdraw"><span>🏧</span>Withdraw</button>
+<button data-open="chama"><span>👥</span>Chama Savings</button>
+<button data-open="personal"><span>🏦</span>Personal Savings</button>
+<button data-open="international-banking"><span>🌍</span>International Banking</button>
+<button data-open="history"><span>📋</span>Transactions</button>
+<button data-open="customer-care"><span>☎️</span>Customer Care</button>
+</div>
+
+<p id="message" aria-live="polite"></p>
+
+<!-- REGISTRATION -->
+<section id="register" class="panel">
+<h2>Create Your Account</h2>
+<form id="registrationForm">
+<label>Full Name</label>
+<input id="customerName" required placeholder="Enter full name">
+
+<label>Phone Number</label>
+<input id="customerPhone" type="tel" required placeholder="+254712345678">
+
+<button class="action" type="submit">Register Account</button>
+</form>
+<p class="result" id="registrationMessage"></p>
+<small>Demo registration only. Do not enter financial PINs or passwords.</small>
+<button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- SEND MONEY -->
+<section id="send" class="panel">
+<h2>💸 Send Money</h2>
+<form data-demo-form data-service="Send Money">
+<label>Recipient phone number</label>
+<input required type="tel" placeholder="+254712345678">
+<label>Amount (KSh)</label>
+<input required type="number" min="1" placeholder="Enter amount">
+<button class="action" type="submit">Continue</button>
+</form>
+<p class="result"></p>
+<button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- AIRTIME -->
+<section id="airtime" class="panel">
+<h2>📱 Buy Airtime</h2>
+<form data-demo-form data-service="Buy Airtime">
+<label>Network</label>
+<select required>
+<option value="">Choose network</option>
+<option>Safaricom</option>
+<option>Airtel</option>
+<option>Telkom</option>
+</select>
+<label>Phone number</label>
+<input required type="tel" placeholder="Phone number">
+<label>Amount (KSh)</label>
+<input required type="number" min="1" placeholder="Amount">
+<button class="action" type="submit">Continue</button>
+</form>
+<p class="result"></p>
+<button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- BILLS -->
+<section id="bills" class="panel">
+<h2>🧾 Pay Bills</h2>
+<form data-demo-form data-service="Bill Payment">
+<label>Bill type</label>
+<select required>
+<option value="">Select bill</option>
+<option>Electricity</option>
+<option>Water</option>
+<option>Internet</option>
+<option>TV Subscription</option>
+</select>
+<label>Account or reference number</label>
+<input required placeholder="Enter reference">
+<label>Amount (KSh)</label>
+<input required type="number" min="1" placeholder="Amount">
+<button class="action" type="submit">Continue</button>
+</form>
+<p class="result"></p>
+<button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- GOODS -->
+<section id="goods" class="panel">
+<h2>🛍️ Merchant Payments</h2>
+<form data-demo-form data-service="Merchant Payment">
+<label>Merchant Till or Paybill number</label>
+<input required placeholder="Merchant number">
+<label>Amount (KSh)</label>
+<input required type="number" min="1" placeholder="Amount">
+<button class="action" type="submit">Continue</button>
+</form>
+<p class="result"></p>
+<button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- WITHDRAW -->
+<section id="withdraw" class="panel">
+<h2>🏧 Withdraw Money</h2>
+<form data-demo-form data-service="Withdrawal">
+<label>Agent or mobile money number</label>
+<input required placeholder="Enter number">
+<label>Amount (KSh)</label>
+<input required type="number" min="1" placeholder="Amount">
+<button class="action" type="submit">Continue</button>
+</form>
+<p class="result"></p>
+<button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- CHAMA -->
+<section id="chama" class="panel">
+<h2>👥 Chama Savings</h2>
+<form data-demo-form data-service="Chama Contribution">
+<label>Chama name</label>
+<input required placeholder="Group name">
+<label>Member name</label>
+<input required placeholder="Member name">
+<label>Contribution (KSh)</label>
+<input required type="number" min="1" placeholder="Amount">
+<button class="action" type="submit">Record Contribution</button>
+</form>
+<p class="result"></p>
+<button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- PERSONAL SAVINGS -->
+<section id="personal" class="panel">
+<h2>🏦 Personal Savings</h2>
+<form data-demo-form data-service="Personal Savings">
+<label>Savings amount (KSh)</label>
+<input required type="number" min="1" placeholder="Enter amount">
+<button class="action" type="submit">Continue</button>
+</form>
+<p class="result"></p>
+<button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- GLOBAL TRANSFER -->
+<section id="global-transfer" class="panel">
+<h2>🌍 Wakaûndū Global Transfers</h2>
+<form data-demo-form data-service="Global Transfer">
+<label>Recipient name</label>
+<input required placeholder="Recipient name">
+<label>Recipient phone number</label>
+<input required type="tel" placeholder="International number">
+<label>Destination country</label>
+<select required>
+<option value="">Select country</option>
+<option>Kenya</option>
+<option>Uganda</option>
+<option>Tanzania</option>
+<option>Rwanda</option>
+<option>South Africa</option>
+<option>United States</option>
+<option>United Kingdom</option>
+<option>Other</option>
+</select>
+<label>Amount (KSh)</label>
+<input required type="number" min="1" placeholder="Amount">
+<button class="action" type="submit">Continue</button>
+</form>
+<p class="result"></p>
+<small>Live international transfers require licensed partners.</small>
+<button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- INTERNATIONAL BANKING -->
+<section id="international-banking" class="panel">
+<h2>🌍 Wakaûndū International Banking</h2>
+<p>Global Banking • Payments • Savings</p>
+
+<button class="action" data-open="register">Open Demo Account</button>
+<button class="action" data-open="global-transfer">International Transfers</button>
+<button class="action" data-open="personal">Personal Savings</button>
+
+<p>Banking services are coming soon, subject to licensing and banking partnerships.</p>
+<button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- TRANSACTION HISTORY -->
+<section id="history" class="panel">
+<h2>📋 Transaction History</h2>
+<div id="transactionList">No demo transactions yet.</div>
+<button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- CUSTOMER CARE -->
+<section id="customer-care" class="panel">
+<h2>☎️ Wakaûndū International Customer Care</h2>
+<p>Global support for our customers.</p>
+
+<button class="action" id="callSupport">Call Customer Care</button>
+<p class="result" id="supportMessage"></p>
+
+<hr>
+
+<h3>Request a Callback</h3>
+<form id="callbackForm">
+<label>International phone number</label>
+<input id="callbackPhone" type="tel" required placeholder="+254712345678">
+<label>How can we help you?</label>
+<textarea id="callbackReason" required placeholder="Describe your request"></textarea>
+<button class="action" type="submit">Request Free Callback</button>
+</form>
+<p class="result" id="callbackMessage"></p>
+<small>Callback requests are saved on this device only until an admin service is connected.</small>
+<button class="back" data-home>Back to Home</button>
+</section>
+
+<footer>
+<strong>Wakaûndū Pay Network Africa</strong><br>
+Wakaûndū International<br>
+Development demonstration — not connected to financial institutions.
+</footer>
+
+</main>
+
+<script>
+(function(){
+
+const SUPPORT_PHONE = "";
+
+function getSaved(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  } catch(error) {
+    return fallback;
+  }
+}
+
+function save(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch(error) {
+    return false;
+  }
+}
+
+let customers = getSaved("wakaunduCustomers", []);
+let transactions = getSaved("wakaunduTransactions", []);
+
+function openPanel(id) {
+  document.querySelectorAll(".panel").forEach(panel => {
+    panel.style.display = "none";
+  });
+
+  const panel = document.getElementById(id);
+
+  if(panel) {
+    panel.style.display = "block";
+    panel.scrollIntoView({behavior:"smooth", block:"start"});
+    document.getElementById("message").textContent = "";
+  }
+}
+
+document.querySelectorAll("[data-open]").forEach(button => {
+  button.addEventListener("click", function() {
+    openPanel(this.dataset.open);
+  });
+});
+
+document.querySelectorAll("[data-home]").forEach(button => {
+  button.addEventListener("click", function() {
+    document.querySelectorAll(".panel").forEach(panel => {
+      panel.style.display = "none";
+    });
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+});
+
+function renderHistory() {
+  const list = document.getElementById("transactionList");
+
+  if(!transactions.length) {
+    list.textContent = "No demo transactions yet.";
+    return;
+  }
+
+  list.innerHTML = "";
+
+  transactions.slice().reverse().forEach(item => {
+    const record = document.createElement("div");
+    record.className = "record";
+
+    const heading = document.createElement("strong");
+    heading.textContent = item.service;
+
+    const detail = document.createElement("p");
+    detail.textContent = item.amount ?
+      "Amount: KSh " + item.amount :
+      "Demo account registration";
+
+    const date = document.createElement("small");
+    date.textContent = item.date + " • DEMO ONLY";
+
+    record.append(heading, detail, date);
+    list.appendChild(record);
+  });
+}
+
+function addTransaction(service, amount) {
+  transactions.push({
+    service:service,
+    amount:amount || "",
+    date:new Date().toLocaleString()
+  });
+
+  save("wakaunduTransactions", transactions);
+  renderHistory();
+}
+
+document.getElementById("registrationForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("customerName").value.trim();
+  const phone = document.getElementById("customerPhone").value.trim().replace(/[\s()-]/g,"");
+  const result = document.getElementById("registrationMessage");
+
+  if(!/^(0[17]\d{8}|\+[1-9]\d{7,14})$/.test(phone)) {
+    result.textContent = "Please enter a valid phone number with country code where needed.";
+    return;
+  }
+
+  if(customers.some(customer => customer.phone === phone)) {
+    result.textContent = "This phone number is already registered.";
+    return;
+  }
+
+  customers.push({
+    name:name,
+    phone:phone,
+    created:new Date().toISOString()
+  });
+
+  if(!save("wakaunduCustomers", customers)) {
+    customers.pop();
+    result.textContent = "Could not save account on this device. Check browser storage.";
+    return;
+  }
+
+  addTransaction("Demo Registration", "");
+  result.textContent = "Demo account created successfully for " + name + ".";
+  this.reset();
+});
+
+document.querySelectorAll("[data-demo-form]").forEach(form => {
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    if(!this.reportValidity()) return;
+
+    const service = this.dataset.service;
+    const amountInput = this.querySelector('input[type="number"]');
+    const amount = amountInput ? amountInput.value : "";
+
+    addTransaction(service, amount);
+
+    const result = this.parentElement.querySelector(".result");
+    result.textContent =
+      service + " request recorded in demonstration mode. No money was sent or deducted.";
+
+    this.reset();
+  });
+});
+
+document.getElementById("callbackForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const phone = document.getElementById("callbackPhone").value.trim();
+  const reason = document.getElementById("callbackReason").value.trim();
+  const result = document.getElementById("callbackMessage");
+
+  if(!/^\+[1-9]\d{7,14}$/.test(phone)) {
+    result.textContent = "Enter a valid international number, including country code.";
+    return;
+  }
+
+  if(!reason) {
+    result.textContent = "Please tell us how we can help.";
+    return;
+  }
+
+  const requests = getSaved("wakaunduCallbacks", []);
+  requests.push({
+    phone:phone,
+    reason:reason,
+    date:new Date().toISOString()
+  });
+
+  if(!save("wakaunduCallbacks", requests)) {
+    result.textContent = "Unable to save this request on this device.";
+    return;
+  }
+
+  result.textContent =
+    "Your callback request has been saved on this device. Admin connection is not yet activated.";
+
+  this.reset();
+});
+
+document.getElementById("callSupport").addEventListener("click", function() {
+  const message = document.getElementById("supportMessage");
+
+  if(!SUPPORT_PHONE) {
+    message.textContent =
+      "Customer Care phone number has not yet been configured. Please contact the administrator.";
+    return;
+  }
+
+  message.textContent = "Connecting to Customer Care...";
+  window.location.href = "tel:" + SUPPORT_PHONE;
+});
+
+renderHistory();
+
+})();
+</script>
+<div style="text-align:center;padding:20px">
+  <a href="admin.html" style="
+    background:#087c68;
+    color:white;
+    padding:14px 22px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:bold;">
+    ADMIN DASHBOARD
+  </a>
+</div>
+</body>
+</html>
