@@ -1,0 +1,22 @@
+
+{
+  "id": "./",
+  "name": "WakaunduPay Global",
+  "short_name": "WakaunduPay",
+  "description": "Digital payments, savings and financial services.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#071b2e",
+  "theme_color": "#071b2e",
+  "categories": ["finance", "business"],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
