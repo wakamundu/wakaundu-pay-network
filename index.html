@@ -564,5 +564,14 @@ renderHistory();
     ADMIN DASHBOARD
   </a>
 </div>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .then(() => console.log("WakaunduPay offline support ready"))
+      .catch(error => console.error(error));
+  });
+}
+</script> 
 </body>
 </html>
