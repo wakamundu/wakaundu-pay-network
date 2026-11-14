@@ -525,14 +525,18 @@ document.querySelectorAll("[data-demo-form]").forEach(form => {
     const service = this.dataset.service;
     const amountInput = this.querySelector('input[type="number"]');
     const amount = amountInput ? amountInput.value : "";
+const result = this.parentElement.querySelector(".result");
 
-    addTransaction(service, amount);
+if (!addTransaction(service, amount)) {
+  result.textContent =
+    "Transaction not recorded. Check the amount, wallet balance or browser storage.";
+  return;
+}
 
-    const result = this.parentElement.querySelector(".result");
-    result.textContent =
-      service + " request recorded in demonstration mode. No money was sent or deducted.";
+result.textContent =
+  service + " recorded successfully. Demo wallet balance updated. No real money was moved.";
 
-    this.reset();
+this.reset();
   });
 });
 
