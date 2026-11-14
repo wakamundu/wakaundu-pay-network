@@ -147,10 +147,27 @@ small{color:#c4d5e4}
 <form id="registrationForm">
 <label>Full Name</label>
 <input id="customerName" required placeholder="Enter full name">
+<label>Create 4-digit PIN</label>
+<input
+  id="customerPIN"
+  type="password"
+  inputmode="numeric"
+  maxlength="4"
+  pattern="[0-9]{4}"
+  required
+  placeholder="Create your PIN"
+>
 
-<label>Phone Number</label>
-<input id="customerPhone" type="tel" required placeholder="+254712345678">
-
+<label>Confirm 4-digit PIN</label>
+<input
+  id="confirmPIN"
+  type="password"
+  inputmode="numeric"
+  maxlength="4"
+  pattern="[0-9]{4}"
+  required
+  placeholder="Confirm your PIN"
+>
 <button class="action" type="submit">Register Account</button>
 </form>
 <p class="result" id="registrationMessage"></p>
