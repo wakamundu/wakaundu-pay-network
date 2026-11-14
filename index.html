@@ -443,16 +443,43 @@ function renderHistory() {
     list.appendChild(record);
   });
 }
-
 function addTransaction(service, amount) {
+  const value = amount === "" ? 0 : Number(amount);
+
+  if (amount !== "" && (!Number.isFinite(value) || value <= 0)) {
+    return false;
+  }
+
+  if (value > demoBalance) {
+    return false;
+  }
+
+  const oldBalance = demoBalance;
+
+  demoBalance -= value;
+
   transactions.push({
-    service:service,
-    amount:amount || "",
-    date:new Date().toLocaleString()
+    service: service,
+    amount: value || "",
+    date: new Date().toLocaleString()
   });
 
-  save("wakaunduTransactions", transactions);
+  if (!save("wakaunduDemoBalance", demoBalance) ||
+      !save("wakaunduTransactions", transactions)) {
+    demoBalance = oldBalance;
+    transactions.pop();
+
+    save("wakaunduDemoBalance", demoBalance);
+    save("wakaunduTransactions", transactions);
+
+    renderBalance();
+    return false;
+  }
+
+  renderBalance();
   renderHistory();
+
+  return true;
 }
 
 document.getElementById("registrationForm").addEventListener("submit", function(event) {
