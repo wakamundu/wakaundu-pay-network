@@ -376,7 +376,15 @@ function save(key, value) {
 
 let customers = getSaved("wakaunduCustomers", []);
 let transactions = getSaved("wakaunduTransactions", []);
+let demoBalance = getSaved("wakaunduDemoBalance", 10000);
 
+function renderBalance() {
+  document.getElementById("accountBalance").textContent =
+    "KSh " + Number(demoBalance).toLocaleString("en-KE", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+}
 function openPanel(id) {
   document.querySelectorAll(".panel").forEach(panel => {
     panel.style.display = "none";
