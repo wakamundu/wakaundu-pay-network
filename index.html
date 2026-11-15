@@ -875,7 +875,33 @@ document.getElementById("chamaContributionForm")
 
   this.reset();
 });
+// VERIFY WAKauNduPAY CHAMA CERTIFICATE
+document.getElementById("verifyCertificateButton")
+.addEventListener("click", function() {
+  const enteredCode = document.getElementById("certificateCodeInput")
+    .value.trim().toUpperCase();
 
+  const result = document.getElementById("certificateVerificationResult");
+
+  if (!enteredCode) {
+    result.textContent = "Please enter a verification code.";
+    return;
+  }
+
+  const certificate = chamaCertificates.find(item =>
+    item.verificationCode.toUpperCase() === enteredCode
+  );
+
+  if (!certificate || certificate.status !== "ACTIVE") {
+    result.textContent = "Certificate not found or not active.";
+    return;
+  }
+
+  result.textContent =
+    "VERIFIED: " + certificate.chamaName +
+    " | Chairperson: " + certificate.chairpersonName +
+    " | Certificate: " + certificate.certificateNumber;
+});
 document.getElementById("registrationForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
