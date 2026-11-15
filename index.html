@@ -739,50 +739,6 @@ document.getElementById("chamaRegistrationForm")
   this.reset();
 });
 
-// DISPLAY GENERATED CHAMA CERTIFICATE
-document.getElementById("certChamaName").textContent =
-  certificate.chamaName;
-
-document.getElementById("certChairperson").textContent =
-  certificate.chairpersonName;
-
-document.getElementById("certNumber").textContent =
-  certificate.certificateNumber;
-
-document.getElementById("certCode").textContent =
-  certificate.verificationCode;
-
-document.getElementById("certDate").textContent =
-  new Date(certificate.issueDate).toLocaleDateString("en-KE", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric"
-  });
-
-document.getElementById("chamaCertificate").style.display = "block";
-  result.textContent =
-    "Chama registered successfully. Chairperson added as the first member.";
-
-  this.reset();
-});
-<!-- CHAMA CERTIFICATE VERIFICATION -->
-<div class="card" id="certificateVerification">
-  <h3>🔎 Verify Chama Certificate</h3>
-  <p>Enter the verification code printed on a WakaunduPay certificate.</p>
-
-  <input
-    type="text"
-    id="certificateCodeInput"
-    placeholder="Enter certificate verification code"
-    required
-  >
-
-  <button type="button" id="verifyCertificateButton">
-    Verify Certificate
-  </button>
-
-  <p id="certificateVerificationResult"></p>
-</div>
 // 2. REGISTER CHAMA MEMBER
 document.getElementById("chamaMemberForm")
 .addEventListener("submit", function(event) {
