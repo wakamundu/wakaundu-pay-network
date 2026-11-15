@@ -278,19 +278,94 @@ small{color:#c4d5e4}
 <button class="back" data-home>Back to Home</button>
 </section>
 
-<!-- CHAMA -->
+<!-- WAKauNdu CHAMA GROUPS -->
 <section id="chama" class="panel">
-<h2>👥 Chama Savings</h2>
-<form data-demo-form data-service="Chama Contribution">
-<label>Chama name</label>
+<h2>👥 Wakaundu Chama Groups</h2>
+<p>Group Registration • Membership • Contributions</p>
+
+<h3>1. Register Chama Group</h3>
+<form id="chamaRegistrationForm">
+<label>Chama / Group Name</label>
+<input id="chamaName" required placeholder="Enter group name">
+
+<label>Group Purpose</label>
+<input id="chamaPurpose" required placeholder="Enter group purpose">
+
+<label>Chairperson Full Name</label>
+<input id="chairpersonName" required placeholder="Full name">
+
+<label>Chairperson Phone Number</label>
+<input id="chairpersonPhone" type="tel" required placeholder="Phone number">
+
+<label>Identity Document Type</label>
+<select id="chairpersonIdType" required>
+<option value="">Select document</option>
+<option value="National ID">National ID</option>
+<option value="Passport">Passport</option>
+</select>
+
+<label>National ID / Passport Number</label>
+<input id="chairpersonIdNumber" required placeholder="Document number">
+
+<button class="action" type="submit">Register Chama Group</button>
+</form>
+<p class="result" id="chamaRegistrationMessage"></p>
+
+<hr>
+
+<h3>2. Register Chama Member</h3>
+<form id="chamaMemberForm">
+<label>Chama Group Name</label>
+<input id="memberChamaName" required placeholder="Registered group name">
+
+<label>Member Full Name</label>
+<input id="chamaMemberName" required placeholder="Full name">
+
+<label>Member Phone Number</label>
+<input id="chamaMemberPhone" type="tel" required placeholder="Phone number">
+
+<label>Identity Document Type</label>
+<select id="chamaMemberIdType" required>
+<option value="">Select document</option>
+<option value="National ID">National ID</option>
+<option value="Passport">Passport</option>
+</select>
+
+<label>National ID / Passport Number</label>
+<input id="chamaMemberIdNumber" required placeholder="Document number">
+
+<label>Member Role</label>
+<select id="chamaMemberRole" required>
+<option value="">Select role</option>
+<option>Chairperson</option>
+<option>Treasurer</option>
+<option>Secretary</option>
+<option>Member</option>
+</select>
+
+<button class="action" type="submit">Register Member</button>
+</form>
+<p class="result" id="chamaMemberMessage"></p>
+
+<hr>
+
+<h3>3. Record Group Contribution</h3>
+<form id="chamaContributionForm">
+<label>Chama Group Name</label>
 <input required placeholder="Group name">
-<label>Member name</label>
+
+<label>Member Name</label>
 <input required placeholder="Member name">
-<label>Contribution (KSh)</label>
-<input required type="number" min="1" placeholder="Amount">
+
+<label>Contribution Amount (KSh)</label>
+<input type="number" min="1" required placeholder="Amount">
+
 <button class="action" type="submit">Record Contribution</button>
 </form>
-<p class="result"></p>
+<p class="result" id="chamaContributionMessage"></p>
+
+<p><small>Demonstration only. Identity records and financial contributions require secure backend processing before live use.</small></p>
+
 <button class="back" data-home>Back to Home</button>
 </section>
 
