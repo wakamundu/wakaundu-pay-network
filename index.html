@@ -15,88 +15,18 @@
 <title>Wakaûndū Pay Network Africa</title>
 
 <style>
-*{box-sizing:border-box}
-body{
- margin:0;
- font-family:Arial,sans-serif;
- background:#071b2e;
- color:white;
-}
-header{
- background:#0c2943;
- padding:25px 15px;
- text-align:center;
- border-bottom:2px solid #39d6a0;
-}
-header h1{color:#39d6a0;margin:0;font-size:27px}
-header p{color:#c4d5e4;margin:8px 0}
-main{max-width:700px;margin:auto;padding:16px}
-.balance{
- background:linear-gradient(135deg,#087e69,#123f69);
- padding:22px;border-radius:16px;margin-bottom:20px;
-}
-.balance h2{font-size:30px;margin:10px 0}
-.grid{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:12px;
-}
-button{
- border:0;border-radius:12px;
- padding:16px 10px;
- background:#123653;color:white;
- font-size:15px;cursor:pointer;
-}
-button span{display:block;font-size:24px;margin-bottom:7px}
-button:active{background:#087e69}
-.register-btn{width:100%;background:#087e69;margin-bottom:15px}
-.panel{
- display:none;
- background:#102d48;
- padding:20px;
- border-radius:15px;
- margin-top:20px;
-}
-.panel h2{color:#39d6a0}
-input,select,textarea{
- width:100%;
- padding:14px;
- margin:8px 0 15px;
- border-radius:9px;
- border:1px solid #52718b;
- background:#071b2e;
- color:white;
- font-size:16px;
-}
-textarea{min-height:90px}
-.action{
- background:#08a77e;
- width:100%;
- font-weight:bold;
- margin:8px 0;
-}
-.back{
- background:#526a80;
- width:100%;
- margin-top:10px;
-}
-#message,.result{color:#39d6a0;margin-top:12px}
-.service-heading{margin-top:25px}
-.record{
- background:#183c58;
- padding:12px;
- border-radius:9px;
- margin:9px 0;
- overflow-wrap:anywhere;
-}
-footer{
- text-align:center;
- padding:25px;
- color:#9db3c7;
- font-size:12px;
-}
-small{color:#c4d5e4}
- @media print {
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+  }
+
   body * {
     visibility: hidden !important;
   }
@@ -105,9 +35,11 @@ small{color:#c4d5e4}
     display: block !important;
     visibility: visible !important;
     position: absolute !important;
-    left: 0;
-    top: 0;
-    width: 100%;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   #certificatePrint,
@@ -116,12 +48,15 @@ small{color:#c4d5e4}
   }
 
   #certificatePrint {
-    position: absolute !important;
-    left: 0;
-    top: 0;
-    width: 100%;
+    position: relative !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 15px !important;
     background: white !important;
     color: black !important;
+    box-sizing: border-box !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
   }
 
   button {
