@@ -696,7 +696,27 @@ document.getElementById("chamaRegistrationForm")
     result.textContent = "Could not save the Chama. Please try again.";
     return;
   }
+// DISPLAY GENERATED CHAMA CERTIFICATE
+document.getElementById("certChamaName").textContent =
+  certificate.chamaName;
 
+document.getElementById("certChairperson").textContent =
+  certificate.chairpersonName;
+
+document.getElementById("certNumber").textContent =
+  certificate.certificateNumber;
+
+document.getElementById("certCode").textContent =
+  certificate.verificationCode;
+
+document.getElementById("certDate").textContent =
+  new Date(certificate.issueDate).toLocaleDateString("en-KE", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  });
+
+document.getElementById("chamaCertificate").style.display = "block";
   result.textContent =
     "Chama registered successfully. Chairperson added as the first member.";
 
