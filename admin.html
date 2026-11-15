@@ -101,7 +101,7 @@ function makeTable(data){
 function loadDashboard(){
  const customers=getData("wakaunduCustomers");
  const transactions=getData("wakaunduTransactions");
- const chama=getData("wakaunduChamaGroups",getData("chamaGroups"));
+ const chama=getData("wakaunduChamas");
  const callbacks=getData("wakaunduCallbacks");
 
  document.getElementById("customersCount").textContent=customers.length;
