@@ -151,6 +151,20 @@ small{color:#c4d5e4}
   required
   placeholder="Enter phone number, e.g. 0710320770"
 >
+ <label>Identity Document Type</label>
+<select id="customerIdType" required>
+  <option value="">Select document type</option>
+  <option value="National ID">National ID</option>
+  <option value="Passport">Passport</option>
+</select>
+
+<label>National ID / Passport Number</label>
+<input
+  id="customerIdNumber"
+  type="text"
+  required
+  placeholder="Enter ID or passport number"
+>
 <label>Create 4-digit PIN</label>
 <input
   id="customerPIN"
