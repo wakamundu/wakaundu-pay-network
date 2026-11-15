@@ -109,7 +109,12 @@ function loadDashboard(){
  document.getElementById("chamaCount").textContent=chama.length;
  document.getElementById("callbacksCount").textContent=callbacks.length;
 
- document.getElementById("customersTable").innerHTML=makeTable(customers);
+ document.getElementById("customersTable").innerHTML =
+makeTable(customers.map(c => ({
+  "Customer Name": c.name || c.customerName || "",
+  "Phone Number": c.phone || c.customerPhone || "",
+  "Registration Date": c.registrationDate || c.createdAt || c.date || "Not recorded"
+})));
  document.getElementById("transactionsTable").innerHTML=makeTable(transactions);
  document.getElementById("chamaTable").innerHTML=makeTable(chama);
  document.getElementById("callbacksTable").innerHTML=makeTable(callbacks);
