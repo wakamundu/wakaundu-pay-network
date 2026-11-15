@@ -625,6 +625,189 @@ function addTransaction(service, amount) {
   return true;
 }
 
+// CHAMA GROUP DEMO RECORDS
+let chamaGroups = getSaved("wakaunduChamas", []);
+let chamaMembers = getSaved("wakaunduChamaMembers", []);
+let chamaContributions = getSaved("wakaunduChamaContributions", []);
+
+function sameText(a, b) {
+  return String(a).trim().toLowerCase() ===
+         String(b).trim().toLowerCase();
+}
+
+// 1. REGISTER CHAMA GROUP
+document.getElementById("chamaRegistrationForm")
+.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  if (!this.reportValidity()) return;
+
+  const name = document.getElementById("chamaName").value.trim();
+  const purpose = document.getElementById("chamaPurpose").value.trim();
+  const chairperson = document.getElementById("chairpersonName").value.trim();
+
+  const result = document.getElementById("chamaRegistrationMessage");
+
+  if (chamaGroups.some(group => sameText(group.name, name))) {
+    result.textContent = "This Chama group is already registered.";
+    return;
+  }
+
+  const group = {
+    id: "CH" + Date.now(),
+    name: name,
+    purpose: purpose,
+    chairperson: chairperson,
+    created: new Date().toISOString()
+  };
+
+  const member = {
+    id: "MB" + Date.now(),
+    groupId: group.id,
+    groupName: group.name,
+    name: chairperson,
+    role: "Chairperson"
+  };
+
+  chamaGroups.push(group);
+  chamaMembers.push(member);
+
+  if (
+    !save("wakaunduChamas", chamaGroups) ||
+    !save("wakaunduChamaMembers", chamaMembers)
+  ) {
+    chamaGroups.pop();
+    chamaMembers.pop();
+    save("wakaunduChamas", chamaGroups);
+    save("wakaunduChamaMembers", chamaMembers);
+    result.textContent = "Could not save the Chama. Please try again.";
+    return;
+  }
+
+  result.textContent =
+    "Chama registered successfully. Chairperson added as the first member.";
+
+  this.reset();
+});
+
+// 2. REGISTER CHAMA MEMBER
+document.getElementById("chamaMemberForm")
+.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  if (!this.reportValidity()) return;
+
+  const groupName = document.getElementById("memberChamaName").value.trim();
+  const name = document.getElementById("chamaMemberName").value.trim();
+  const role = document.getElementById("chamaMemberRole").value;
+  const result = document.getElementById("chamaMemberMessage");
+
+  const group = chamaGroups.find(item =>
+    sameText(item.name, groupName)
+  );
+
+  if (!group) {
+    result.textContent =
+      "Chama not found. Register the Chama group first.";
+    return;
+  }
+
+  const alreadyRegistered = chamaMembers.some(member =>
+    member.groupId === group.id && sameText(member.name, name)
+  );
+
+  if (alreadyRegistered) {
+    result.textContent = "This member is already registered in this Chama.";
+    return;
+  }
+
+  const member = {
+    id: "MB" + Date.now(),
+    groupId: group.id,
+    groupName: group.name,
+    name: name,
+    role: role,
+    created: new Date().toISOString()
+  };
+
+  chamaMembers.push(member);
+
+  if (!save("wakaunduChamaMembers", chamaMembers)) {
+    chamaMembers.pop();
+    result.textContent = "Could not save member registration.";
+    return;
+  }
+
+  result.textContent =
+    name + " successfully registered in " + group.name + ".";
+
+  this.reset();
+});
+
+// 3. RECORD CHAMA CONTRIBUTION
+document.getElementById("chamaContributionForm")
+.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  if (!this.reportValidity()) return;
+
+  const fields = this.querySelectorAll("input");
+  const groupName = fields[0].value.trim();
+  const memberName = fields[1].value.trim();
+  const amount = Number(fields[2].value);
+
+  const result = document.getElementById("chamaContributionMessage");
+
+  const group = chamaGroups.find(item =>
+    sameText(item.name, groupName)
+  );
+
+  if (!group) {
+    result.textContent = "Register the Chama group first.";
+    return;
+  }
+
+  const member = chamaMembers.find(item =>
+    item.groupId === group.id &&
+    sameText(item.name, memberName)
+  );
+
+  if (!member) {
+    result.textContent =
+      "Member not found in this Chama. Register the member first.";
+    return;
+  }
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    result.textContent = "Enter a valid contribution amount.";
+    return;
+  }
+
+  const contribution = {
+    groupId: group.id,
+    groupName: group.name,
+    memberId: member.id,
+    memberName: member.name,
+    amount: amount,
+    date: new Date().toISOString()
+  };
+
+  chamaContributions.push(contribution);
+
+  if (!save("wakaunduChamaContributions", chamaContributions)) {
+    chamaContributions.pop();
+    result.textContent = "Could not save contribution.";
+    return;
+  }
+
+  result.textContent =
+    "Demo contribution of KSh " +
+    amount.toLocaleString("en-KE") +
+    " recorded for " + member.name + " in " + group.name + ".";
+
+  this.reset();
+});
+
 document.getElementById("registrationForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
