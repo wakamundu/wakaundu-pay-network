@@ -722,7 +722,24 @@ document.getElementById("chamaCertificate").style.display = "block";
 
   this.reset();
 });
+<!-- CHAMA CERTIFICATE VERIFICATION -->
+<div class="card" id="certificateVerification">
+  <h3>🔎 Verify Chama Certificate</h3>
+  <p>Enter the verification code printed on a WakaunduPay certificate.</p>
 
+  <input
+    type="text"
+    id="certificateCodeInput"
+    placeholder="Enter certificate verification code"
+    required
+  >
+
+  <button type="button" id="verifyCertificateButton">
+    Verify Certificate
+  </button>
+
+  <p id="certificateVerificationResult"></p>
+</div>
 // 2. REGISTER CHAMA MEMBER
 document.getElementById("chamaMemberForm")
 .addEventListener("submit", function(event) {
