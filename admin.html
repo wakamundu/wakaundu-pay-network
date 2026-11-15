@@ -123,7 +123,6 @@ function exportData(type){
  callbacks:"wakaunduCallbacks"
  };
  let data=getData(keys[type]||"");
- if(type==="chama"&&!data.length)data=getData("chamaGroups");
  if(!data.length){alert("No records to export.");return;}
 
  const columns=[...new Set(data.flatMap(x=>Object.keys(x)))];
