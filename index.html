@@ -648,6 +648,7 @@ function sameText(a, b) {
          String(b).trim().toLowerCase();
 }
 
+
 // 1. REGISTER CHAMA GROUP
 document.getElementById("chamaRegistrationForm")
 .addEventListener("submit", function(event) {
@@ -658,6 +659,9 @@ document.getElementById("chamaRegistrationForm")
   const name = document.getElementById("chamaName").value.trim();
   const purpose = document.getElementById("chamaPurpose").value.trim();
   const chairperson = document.getElementById("chairpersonName").value.trim();
+  const phone = document.getElementById("chairpersonPhone").value.trim();
+  const idType = document.getElementById("chairpersonIdType").value;
+  const idNumber = document.getElementById("chairpersonIdNumber").value.trim();
 
   const result = document.getElementById("chamaRegistrationMessage");
 
@@ -679,23 +683,62 @@ document.getElementById("chamaRegistrationForm")
     groupId: group.id,
     groupName: group.name,
     name: chairperson,
+    phone: phone,
+    idType: idType,
+    idNumber: idNumber,
     role: "Chairperson"
+  };
+
+  const certificate = {
+    certificateNumber: "WPG-CH-" + Date.now(),
+    verificationCode: "WP-" +
+      Math.random().toString(36).substring(2, 10).toUpperCase(),
+    chamaName: group.name,
+    chairpersonName: chairperson,
+    issueDate: new Date().toISOString(),
+    status: "ACTIVE"
   };
 
   chamaGroups.push(group);
   chamaMembers.push(member);
+  chamaCertificates.push(certificate);
 
   if (
     !save("wakaunduChamas", chamaGroups) ||
-    !save("wakaunduChamaMembers", chamaMembers)
+    !save("wakaunduChamaMembers", chamaMembers) ||
+    !save("wakaunduChamaCertificates", chamaCertificates)
   ) {
     chamaGroups.pop();
     chamaMembers.pop();
+    chamaCertificates.pop();
+
     save("wakaunduChamas", chamaGroups);
     save("wakaunduChamaMembers", chamaMembers);
-    result.textContent = "Could not save the Chama. Please try again.";
+    save("wakaunduChamaCertificates", chamaCertificates);
+
+    result.textContent = "Registration could not be saved. Please try again.";
     return;
   }
+
+  document.getElementById("certChamaName").textContent =
+    certificate.chamaName;
+  document.getElementById("certChairperson").textContent =
+    certificate.chairpersonName;
+  document.getElementById("certNumber").textContent =
+    certificate.certificateNumber;
+  document.getElementById("certCode").textContent =
+    certificate.verificationCode;
+  document.getElementById("certDate").textContent =
+    new Date(certificate.issueDate).toLocaleDateString();
+
+  document.getElementById("chamaCertificate").style.display = "block";
+
+  result.textContent =
+    "Chama registered successfully. Chairperson added as the first member.";
+
+  this.reset();
+});
+
 // DISPLAY GENERATED CHAMA CERTIFICATE
 document.getElementById("certChamaName").textContent =
   certificate.chamaName;
