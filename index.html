@@ -987,27 +987,38 @@ document.getElementById("chamaContributionForm")
 
   this.reset();
 });
-// VERIFY WAKauNduPAY CHAMA CERTIFICATE
-document.getElementById("verifyCertificateButton")
-.addEventListener("click", function() {
-  const enteredCode = document.getElementById("certificateCodeInput")
-    .value.trim().toUpperCase();
+// VERIFY CHAMA CERTIFICATE — SAFE CONNECTION
+const verifyButton = document.getElementById("verifyCertificateButton");
 
-  const result = document.getElementById("certificateVerificationResult");
+if (verifyButton) {
+  verifyButton.addEventListener("click", function() {
+    const codeInput = document.getElementById("certificateCodeInput");
+    const result = document.getElementById("certificateVerificationResult");
 
-  if (!enteredCode) {
-    result.textContent = "Please enter a verification code.";
-    return;
-  }
+    if (!codeInput || !result) return;
 
-  const certificate = chamaCertificates.find(item =>
-    item.verificationCode.toUpperCase() === enteredCode
-  );
+    const enteredCode = codeInput.value.trim().toUpperCase();
 
-  if (!certificate || certificate.status !== "ACTIVE") {
-    result.textContent = "Certificate not found or not active.";
-    return;
-  }
+    if (!enteredCode) {
+      result.textContent = "Please enter a verification code.";
+      return;
+    }
+
+    const certificate = chamaCertificates.find(item =>
+      item.verificationCode.toUpperCase() === enteredCode
+    );
+
+    if (!certificate || certificate.status !== "ACTIVE") {
+      result.textContent = "Certificate not found or not active.";
+      return;
+    }
+
+    result.textContent =
+      "VERIFIED: " + certificate.chamaName +
+      " | Chairperson: " + certificate.chairpersonName +
+      " | Certificate: " + certificate.certificateNumber;
+  });
+}
 
   result.textContent =
     "VERIFIED: " + certificate.chamaName +
