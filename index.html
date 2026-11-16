@@ -344,6 +344,65 @@
 
 <p id="message" aria-live="polite"></p>
 
+<!-- ADMIN LOGIN -->
+<section id="admin-login" class="panel">
+  <h2>🛡️ WakaunduPay Admin Login</h2>
+
+  <form id="adminLoginForm">
+    <label>Administrator Username</label>
+    <input id="adminUsername" required
+      autocomplete="username"
+      placeholder="Enter admin username">
+
+    <label>Administrator Password</label>
+    <input id="adminPassword" type="password"
+      required autocomplete="current-password"
+      placeholder="Enter admin password">
+
+    <button class="action" type="submit">
+      Admin Login
+    </button>
+  </form>
+
+  <p id="adminLoginMessage" class="result"></p>
+  <button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- MEMBER LOGIN -->
+<section id="member-login" class="panel">
+  <h2>👤 WakaunduPay Member Login</h2>
+
+  <form id="memberLoginForm">
+    <label>Registered Phone Number</label>
+    <input id="loginPhone" type="tel"
+      required autocomplete="username"
+      placeholder="Enter registered phone number">
+
+    <label>Member PIN</label>
+    <input id="loginPIN" type="password"
+      inputmode="numeric" maxlength="4"
+      pattern="[0-9]{4}" required
+      autocomplete="current-password"
+      placeholder="Enter 4-digit PIN">
+
+    <button class="action" type="submit">
+      Member Login
+    </button>
+  </form>
+
+  <p id="memberLoginMessage" class="result"></p>
+
+  <p>
+    New to WakaunduPay?
+    <button type="button" class="action"
+      data-open="register">
+      Register Here
+    </button>
+  </p>
+
+  <button class="back" data-home>Back to Home</button>
+</section>
+
 <!-- REGISTRATION -->
 <section id="register" class="panel">
 <h2>Create Your Account</h2>
