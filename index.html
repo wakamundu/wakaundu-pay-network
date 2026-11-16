@@ -1019,46 +1019,6 @@ if (verifyButton) {
       " | Certificate: " + certificate.certificateNumber;
   });
 }
-
-  result.textContent =
-    "VERIFIED: " + certificate.chamaName +
-    " | Chairperson: " + certificate.chairpersonName +
-    " | Certificate: " + certificate.certificateNumber;
-});
-document.getElementById("registrationForm").addEventListener("submit", function(event) {
-  event.preventDefault();
-
-  const name = document.getElementById("customerName").value.trim();
-  const phone = document.getElementById("customerPhone").value.trim().replace(/[\s()-]/g,"");
-  const result = document.getElementById("registrationMessage");
-
-  if(!/^(0[17]\d{8}|\+[1-9]\d{7,14})$/.test(phone)) {
-    result.textContent = "Please enter a valid phone number with country code where needed.";
-    return;
-  }
-
-  if(customers.some(customer => customer.phone === phone)) {
-    result.textContent = "This phone number is already registered.";
-    return;
-  }
-
-  customers.push({
-    name:name,
-    phone:phone,
-    created:new Date().toISOString()
-  });
-
-  if(!save("wakaunduCustomers", customers)) {
-    customers.pop();
-    result.textContent = "Could not save account on this device. Check browser storage.";
-    return;
-  }
-
-  addTransaction("Demo Registration", "");
-  result.textContent = "Demo account created successfully for " + name + ".";
-  this.reset();
-});
-
 document.querySelectorAll("[data-demo-form]").forEach(form => {
   form.addEventListener("submit", function(event) {
     event.preventDefault();
