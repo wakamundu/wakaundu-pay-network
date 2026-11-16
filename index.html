@@ -1138,25 +1138,7 @@ document.getElementById("chamaMemberForm")
     result.textContent = "Could not save member registration.";
     return;
   }
-// GENERATE WAKauNduPAY CHAMA CERTIFICATE
-const certificate = {
-  certificateNumber: "WPG-CH-" + Date.now(),
-  verificationCode: "WP-" +
-    Math.random().toString(36).substring(2, 10).toUpperCase(),
-  chamaName: group.name,
-  chairpersonName: chairperson,
-  issueDate: new Date().toISOString(),
-  status: "ACTIVE"
-};
 
-chamaCertificates.push(certificate);
-
-if (!save("wakaunduChamaCertificates", chamaCertificates)) {
-  chamaCertificates.pop();
-  result.textContent =
-    "Chama registered, but certificate creation failed. Please try again.";
-  return;
-}
   result.textContent =
     name + " successfully registered in " + group.name + ".";
 
