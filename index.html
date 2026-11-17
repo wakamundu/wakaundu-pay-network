@@ -288,7 +288,6 @@
 
 <!-- MEMBER DASHBOARD ARTWORK -->
 <section id="memberDashboard" style="display:none;">
-
   <div id="dashboardArtwork">
 
     <img
@@ -298,44 +297,49 @@
     >
 
     <div class="artwork-actions">
-
-      <button type="button" class="art-hit art-banking"
-        data-open="international-banking"
-        aria-label="Banking and Financial Growth"></button>
-
-      <button type="button" class="art-hit art-chama"
-        data-open="chama"
-        aria-label="Chama Groups"></button>
-
-      <button type="button" class="art-hit art-send"
-        data-open="send"
-        aria-label="Send Money"></button>
-
-      <button type="button" class="art-hit art-airtime"
-        data-open="airtime"
-        aria-label="Buy Airtime"></button>
-
-      <button type="button" class="art-hit art-bills"
-        data-open="bills"
-        aria-label="Pay Bills"></button>
-
-      <button type="button" class="art-hit art-goods"
-        data-open="goods"
-        aria-label="Buy Goods"></button>
-
-      <button type="button" class="art-hit art-history"
-        data-open="history"
-        aria-label="Transactions"></button>
-
-      <button type="button" class="art-hit art-customer"
-        data-open="customer-care"
-        aria-label="Customer Care"></button>
-
+      <button type="button" class="art-hit art-banking" data-open="international-banking" aria-label="Banking and Financial Growth"></button>
+      <button type="button" class="art-hit art-chama" data-open="chama" aria-label="Chama Groups"></button>
+      <button type="button" class="art-hit art-send" data-open="send" aria-label="Send Money"></button>
+      <button type="button" class="art-hit art-airtime" data-open="airtime" aria-label="Buy Airtime"></button>
+      <button type="button" class="art-hit art-bills" data-open="bills" aria-label="Pay Bills"></button>
+      <button type="button" class="art-hit art-goods" data-open="goods" aria-label="Buy Goods"></button>
+      <button type="button" class="art-hit art-history" data-open="history" aria-label="Transactions"></button>
+      <button type="button" class="art-hit art-customer" data-open="customer-care" aria-label="Customer Care"></button>
     </div>
   </div>
 </section>
 
+<!-- MEMBER DASHBOARD CONTENT -->
+<section id="memberDashboardContent" style="display:none;">
+
+  <div class="balance">
+    <small>DEMO ACCOUNT BALANCE</small>
+    <h2 id="accountBalance">KSh 0.00</h2>
+    <small>Demonstration only — no real money is held.</small>
+    <hr>
+    <p>Your gateway to digital payments.</p>
+  </div>
+
+  <h3>Welcome to Wakaûndū Pay</h3>
+  <p>Choose a service below.</p>
+
+  <div class="grid">
+    <button data-open="international-banking">🏦 Banking & Financial Growth</button>
+    <button data-open="chama">👥 Chama Groups</button>
+    <button data-open="send">💸 Send Money</button>
+    <button data-open="airtime">📱 Buy Airtime</button>
+    <button data-open="bills">🧾 Pay Bills</button>
+    <button data-open="goods">🛍️ Buy Goods</button>
+    <button data-open="history">📋 Transactions</button>
+    <button data-open="customer-care">☎️ Customer Care</button>
+  </div>
+
+  <p id="message" aria-live="polite"></p>
+
+</section>
+
 </main>
+
 
 <section id="memberDashboardContent" style="display:none;">
 
