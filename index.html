@@ -1071,6 +1071,88 @@ document.getElementById("memberLoginForm")
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
+// 3. CHAMA MEMBER LOGIN
+document.getElementById("chamaMemberLoginForm")
+.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  if (!this.reportValidity()) return;
+
+  const rawPhone = document.getElementById("chamaLoginPhone").value.trim();
+  const phone = rawPhone.replace(/[\s()-]/g, "");
+  const pin = document.getElementById("chamaLoginPIN").value;
+
+  const result = document.getElementById("chamaLoginMessage");
+  const dashboard = document.getElementById("chamaMemberDashboard");
+  const details = document.getElementById("chamaMemberDetails");
+  const history = document.getElementById("chamaMemberContributionHistory");
+
+  // Verify existing WakaunduPay customer credentials
+  const customer = customers.find(item =>
+    item.phone === phone &&
+    item.pin === pin &&
+    item.status === "ACTIVE"
+  );
+
+  if (!customer) {
+    result.textContent = "Incorrect phone number or PIN.";
+    return;
+  }
+
+  // Find all Chama memberships linked to this customer
+  const memberships = chamaMembers.filter(member =>
+    member.phone === phone &&
+    member.customerId === customer.id
+  );
+
+  if (memberships.length === 0) {
+    result.textContent =
+      "No Chama membership found for this customer.";
+    dashboard.style.display = "none";
+    return;
+  }
+
+  currentRole = "member";
+  currentCustomer = customer;
+
+  // Display membership information
+  details.textContent = memberships.map(member =>
+    "Chama: " + member.groupName +
+    " | Membership Code: " + member.membershipCode +
+    " | Role: " + member.role
+  ).join("\n\n");
+
+  // Display contribution history
+  const records = [];
+
+  memberships.forEach(member => {
+    const contributions = chamaContributions.filter(item =>
+      item.memberId === member.id &&
+      item.groupId === member.groupId
+    );
+
+    contributions.forEach(item => {
+      records.push(
+        member.groupName +
+        " | KSh " + Number(item.amount).toFixed(2) +
+        " | " + new Date(item.date).toLocaleDateString()
+      );
+    });
+  });
+
+  history.textContent = records.length
+    ? records.join("\n")
+    : "No contributions recorded yet.";
+
+  dashboard.style.display = "block";
+  result.textContent =
+    "Welcome " + customer.name + "! Your Chama membership is verified.";
+
+  this.reset();
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
 document.querySelectorAll(".panel").forEach(panel => {
   panel.style.display = "none";
 });
