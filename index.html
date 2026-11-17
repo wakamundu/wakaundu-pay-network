@@ -918,6 +918,68 @@ let customers = getSaved("wakaunduCustomers", []);
 let transactions = getSaved("wakaunduTransactions", []);
 let demoBalance = getSaved("wakaunduDemoBalance", 10000);
 
+// CUSTOMER REGISTRATION — DEMO
+document.getElementById("registrationForm")
+.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  if (!this.reportValidity()) return;
+
+  const name = document.getElementById("customerName").value.trim();
+  const rawPhone = document.getElementById("customerPhone").value.trim();
+  const phone = rawPhone.replace(/[\s()-]/g, "");
+  const idType = document.getElementById("customerIdType").value;
+  const idNumber = document.getElementById("customerIdNumber").value.trim();
+  const pin = document.getElementById("customerPIN").value;
+  const confirmPIN = document.getElementById("confirmPIN").value;
+  const result = document.getElementById("registrationMessage");
+
+  if (!/^(0[17]\d{8}|\+[1-9]\d{7,14})$/.test(phone)) {
+    result.textContent = "Enter a valid phone number.";
+    return;
+  }
+
+  if (customers.some(customer => customer.phone === phone)) {
+    result.textContent = "This phone number is already registered.";
+    return;
+  }
+
+  if (!/^\d{4}$/.test(pin)) {
+    result.textContent = "PIN must contain exactly 4 digits.";
+    return;
+  }
+
+  if (pin !== confirmPIN) {
+    result.textContent = "Your PINs do not match.";
+    return;
+  }
+
+  const customer = {
+    id: "WP" + Date.now(),
+    name: name,
+    phone: phone,
+    idType: idType,
+    idNumber: idNumber,
+    pin: pin,
+    status: "ACTIVE",
+    created: new Date().toISOString()
+  };
+
+  customers.push(customer);
+
+  if (!save("wakaunduCustomers", customers)) {
+    customers.pop();
+    result.textContent = "Registration failed. Please try again.";
+    return;
+  }
+
+  result.textContent =
+    "Congratulations " + name +
+    "! Your WakaunduPay demo account has been registered successfully.";
+
+  this.reset();
+});
+
 function renderBalance() {
   document.getElementById("accountBalance").textContent =
     "KSh " + Number(demoBalance).toLocaleString("en-KE", {
