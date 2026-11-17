@@ -1293,9 +1293,14 @@ document.getElementById("chamaMemberForm")
 
   const groupName = document.getElementById("memberChamaName").value.trim();
   const name = document.getElementById("chamaMemberName").value.trim();
+  const rawPhone = document.getElementById("chamaMemberPhone").value.trim();
+  const phone = rawPhone.replace(/[\s()-]/g, "");
+  const idType = document.getElementById("chamaMemberIdType").value;
+  const idNumber = document.getElementById("chamaMemberIdNumber").value.trim();
   const role = document.getElementById("chamaMemberRole").value;
   const result = document.getElementById("chamaMemberMessage");
 
+  // Find existing Chama
   const group = chamaGroups.find(item =>
     sameText(item.name, groupName)
   );
@@ -1306,20 +1311,57 @@ document.getElementById("chamaMemberForm")
     return;
   }
 
-  const alreadyRegistered = chamaMembers.some(member =>
-    member.groupId === group.id && sameText(member.name, name)
-  );
-
-  if (alreadyRegistered) {
-    result.textContent = "This member is already registered in this Chama.";
+  // Validate phone number
+  if (!/^(0[17]\d{8}|\+[1-9]\d{7,14})$/.test(phone)) {
+    result.textContent = "Enter a valid phone number.";
     return;
   }
 
+  // Find existing WakaunduPay customer
+  const customer = customers.find(item =>
+    item.phone === phone && item.status === "ACTIVE"
+  );
+
+  if (!customer) {
+    result.textContent =
+      "Customer account not found. Register with WakaunduPay first.";
+    return;
+  }
+
+  // Confirm customer name
+  if (!sameText(customer.name, name)) {
+    result.textContent =
+      "Member name must match the existing WakaunduPay customer account.";
+    return;
+  }
+
+  // Prevent duplicate membership in this Chama
+  const alreadyRegistered = chamaMembers.some(member =>
+    member.groupId === group.id &&
+    (member.phone === phone || sameText(member.name, name))
+  );
+
+  if (alreadyRegistered) {
+    result.textContent =
+      "This customer is already registered in this Chama.";
+    return;
+  }
+
+  // Generate unique membership code
+  const membershipCode =
+    "WPG-MB-" + Date.now() + "-" +
+    Math.floor(Math.random() * 1000);
+
   const member = {
     id: "MB" + Date.now(),
+    membershipCode: membershipCode,
+    customerId: customer.id,
     groupId: group.id,
     groupName: group.name,
-    name: name,
+    name: customer.name,
+    phone: customer.phone,
+    idType: idType,
+    idNumber: idNumber,
     role: role,
     created: new Date().toISOString()
   };
@@ -1333,7 +1375,10 @@ document.getElementById("chamaMemberForm")
   }
 
   result.textContent =
-    name + " successfully registered in " + group.name + ".";
+    "Chama membership successful! " +
+    name + " has joined " + group.name +
+    ". Membership Code: " + membershipCode +
+    ". Use your normal WakaunduPay phone number and PIN to log in.";
 
   this.reset();
 });
