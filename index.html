@@ -1119,50 +1119,6 @@ document.querySelectorAll("[data-home]").forEach(button => {
   });
 });
 
-<!-- CHAMA MEMBER LOGIN -->
-<section id="chama-member-login" class="panel">
-  <h2>Chama Member Login</h2>
-  <p>Access your registered Chama membership.</p>
-
-  <form id="chamaMemberLoginForm">
-    <label>WakaunduPay Phone Number</label>
-    <input
-      type="tel"
-      id="chamaLoginPhone"
-      required
-      placeholder="Enter registered phone number"
-    >
-
-    <label>WakaunduPay 4-Digit PIN</label>
-    <input
-      type="password"
-      id="chamaLoginPIN"
-      inputmode="numeric"
-      maxlength="4"
-      pattern="[0-9]{4}"
-      required
-      placeholder="Enter your PIN"
-    >
-
-    <button class="action" type="submit">
-      Login to Chama
-    </button>
-  </form>
-
-  <p class="result" id="chamaLoginMessage"></p>
-
-  <div id="chamaMemberDashboard" style="display:none;">
-    <h3>My Chama Membership</h3>
-    <p id="chamaMemberDetails"></p>
-    <h3>My Contributions</h3>
-    <div id="chamaMemberContributionHistory"></div>
-  </div>
-
-  <button class="back" type="button" data-open="chama">
-    Back to Chama Menu
-  </button>
-</section>
-
 function renderHistory() {
   const list = document.getElementById("transactionList");
 
