@@ -1058,14 +1058,16 @@ function openPanel(id) {
     panel.style.display = "none";
   });
 
+  if (currentRole === "member") {
+    document.getElementById("memberDashboard").style.display = "none";
+    document.getElementById("memberDashboardContent").style.display = "none";
+  }
+
   const panel = document.getElementById(id);
 
   if (panel) {
     panel.style.display = "block";
     panel.scrollIntoView({ behavior: "smooth", block: "start" });
-
-    const message = document.getElementById("message");
-    if (message) message.textContent = "";
   }
 }
 
@@ -1080,6 +1082,12 @@ document.querySelectorAll("[data-home]").forEach(button => {
     document.querySelectorAll(".panel").forEach(panel => {
       panel.style.display = "none";
     });
+
+    if (currentRole === "member") {
+      document.getElementById("memberDashboard").style.display = "block";
+      document.getElementById("memberDashboardContent").style.display = "block";
+    }
+
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
