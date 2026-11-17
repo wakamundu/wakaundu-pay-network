@@ -874,17 +874,37 @@ function renderBalance() {
       maximumFractionDigits: 2
     });
 }
+
+let currentRole = null;
+
+const publicPanels = [
+  "admin-login",
+  "member-login",
+  "register"
+];
+
+document.querySelectorAll(".panel").forEach(panel => {
+  panel.style.display = "none";
+});
+
 function openPanel(id) {
+  if (!currentRole && !publicPanels.includes(id)) {
+    alert("Please log in to access WakaunduPay services.");
+    return;
+  }
+
   document.querySelectorAll(".panel").forEach(panel => {
     panel.style.display = "none";
   });
 
   const panel = document.getElementById(id);
 
-  if(panel) {
+  if (panel) {
     panel.style.display = "block";
-    panel.scrollIntoView({behavior:"smooth", block:"start"});
-    document.getElementById("message").textContent = "";
+    panel.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    const message = document.getElementById("message");
+    if (message) message.textContent = "";
   }
 }
 
@@ -899,7 +919,7 @@ document.querySelectorAll("[data-home]").forEach(button => {
     document.querySelectorAll(".panel").forEach(panel => {
       panel.style.display = "none";
     });
-    window.scrollTo({top:0, behavior:"smooth"});
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
 
