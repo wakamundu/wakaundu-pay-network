@@ -989,12 +989,60 @@ function renderBalance() {
 }
 
 let currentRole = null;
+let currentCustomer = null;
 
 const publicPanels = [
   "admin-login",
   "member-login",
   "register"
 ];
+
+// MEMBER LOGIN — DEMO
+document.getElementById("memberLoginForm")
+.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const rawPhone = document.getElementById("loginPhone").value.trim();
+  const phone = rawPhone.replace(/[\s()-]/g, "");
+  const pin = document.getElementById("loginPIN").value;
+  const result = document.getElementById("memberLoginMessage");
+
+  const customer = customers.find(item =>
+    item.phone === phone &&
+    item.pin === pin &&
+    item.status === "ACTIVE"
+  );
+
+  if (!customer) {
+    result.textContent = "Incorrect phone number or PIN.";
+    return;
+  }
+
+  currentRole = "member";
+  currentCustomer = customer;
+
+  document.querySelectorAll(".panel").forEach(panel => {
+    panel.style.display = "none";
+  });
+
+  document.getElementById("publicPortal").style.display = "none";
+  document.getElementById("memberDashboard").style.display = "block";
+  document.getElementById("memberDashboardContent").style.display = "block";
+
+  document.getElementById("receiveAccountName").textContent =
+    customer.name;
+
+  document.getElementById("receiveAccountNumber").textContent =
+    "Demo account number: " + customer.id;
+
+  result.textContent = "";
+
+  this.reset();
+
+  renderBalance();
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
 document.querySelectorAll(".panel").forEach(panel => {
   panel.style.display = "none";
