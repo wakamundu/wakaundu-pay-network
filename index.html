@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -637,160 +636,146 @@
 </section>
 
 <!-- WAKauNdu CHAMA GROUPS -->
-
-<!-- CHAMA MAIN MENU -->
 <section id="chama" class="panel">
-  <h2>👥 Wakaundu Chama Groups</h2>
-  <p>Group Registration • Membership • Contributions</p>
-
-  <div class="chama-menu">
-    <button type="button" class="action" data-open="chama-registration">
-      Register Chama Group
-    </button>
-
-    <button type="button" class="action" data-open="chama-members">
-      Register Chama Member
-    </button>
-
-    <button type="button" class="action" data-open="chama-contributions">
-      Record Contributions
-    </button>
-    
-<button type="button" class="action" data-open="chama-member-login">
-  Chama Member Login
-</button>
-  </div>
-
-  <button class="back" data-home>Back to Dashboard</button>
-</section>
-
-<!-- CHAMA GROUP REGISTRATION -->
-<section id="chama-registration" class="panel">
-  <h2>1. Register Chama Group</h2>
-
-  <form id="chamaRegistrationForm">
-    <label>Chama / Group Name</label>
-    <input id="chamaName" required placeholder="Enter group name">
-
-    <label>Group Purpose</label>
-    <input id="chamaPurpose" required placeholder="Enter group purpose">
-
-    <label>Chairperson Full Name</label>
-    <input id="chairpersonName" required placeholder="Full name">
-
-    <label>Chairperson Phone Number</label>
-    <input id="chairpersonPhone" type="tel" required placeholder="Phone number">
-
-    <label>Identity Document Type</label>
-    <select id="chairpersonIdType" required>
-      <option value="">Select document</option>
-      <option value="National ID">National ID</option>
-      <option value="Passport">Passport</option>
-    </select>
-
-    <label>National ID / Passport Number</label>
-    <input id="chairpersonIdNumber" required placeholder="Document number">
-
-    <button class="action" type="submit">Register Chama Group</button>
-  </form>
-
-  <p class="result" id="chamaRegistrationMessage"></p>
-
-  <div id="chamaCertificate" style="display:none; margin-top:20px;">
-    <div id="certificatePrint" style="border:3px solid #c69a36; padding:25px; background:#fff; color:#111; text-align:center; border-radius:12px;">
-      <h2 style="color:#9b7625;">WAKauNduPay GLOBAL</h2>
-      <h3>CHAMA REGISTRATION CERTIFICATE</h3>
-      <p>This certifies successful registration on WakaunduPay Global.</p>
-      <h2 id="certChamaName"></h2>
-      <p>Chairperson: <strong id="certChairperson"></strong></p>
-      <p>Certificate Number: <strong id="certNumber"></strong></p>
-      <p>Verification Code: <strong id="certCode"></strong></p>
-      <p>Date Issued: <strong id="certDate"></strong></p>
-      <p>Platform registration proof only. Not a government certificate.</p>
-    </div>
-
-    <button type="button" onclick="window.print()">Print Certificate</button>
-  </div>
-
-  <hr>
-
-  <h3>Verify Chama Certificate</h3>
-
-  <label>Certificate Verification Code</label>
-  <input id="certificateCodeInput" type="text" placeholder="Enter verification code">
-
-  <button type="button" class="action" id="verifyCertificateButton">
-    Verify Certificate
+<h2>👥 Wakaundu Chama Groups</h2>
+<div class="chama-menu">
+  <button type="button" class="action" data-open="chama-registration">
+    Register Chama
   </button>
 
-  <p class="result" id="certificateVerificationResult"></p>
+  <button type="button" class="action" data-open="chama-members">
+    Chama Members
+  </button>
 
-  <button class="back" data-open="chama">Back to Chama Menu</button>
-</section>
+  <button type="button" class="action" data-open="chama-contributions">
+    Chama Contributions
+  </button>
+</div>
+<p>Group Registration • Membership • Contributions</p>
 
-<!-- CHAMA MEMBER REGISTRATION -->
-<section id="chama-members" class="panel">
-  <h2>2. Register Chama Member</h2>
+<h3>1. Register Chama Group</h3>
+<form id="chamaRegistrationForm">
+<label>Chama / Group Name</label>
+<input id="chamaName" required placeholder="Enter group name">
 
-  <form id="chamaMemberForm">
-    <label>Chama Group Name</label>
-    <input id="memberChamaName" required placeholder="Registered group name">
+<label>Group Purpose</label>
+<input id="chamaPurpose" required placeholder="Enter group purpose">
 
-    <label>Member Full Name</label>
-    <input id="chamaMemberName" required placeholder="Full name">
+<label>Chairperson Full Name</label>
+<input id="chairpersonName" required placeholder="Full name">
 
-    <label>Member Phone Number</label>
-    <input id="chamaMemberPhone" type="tel" required placeholder="Phone number">
+<label>Chairperson Phone Number</label>
+<input id="chairpersonPhone" type="tel" required placeholder="Phone number">
 
-    <label>Identity Document Type</label>
-    <select id="chamaMemberIdType" required>
-      <option value="">Select document</option>
-      <option value="National ID">National ID</option>
-      <option value="Passport">Passport</option>
-    </select>
+<label>Identity Document Type</label>
+<select id="chairpersonIdType" required>
+<option value="">Select document</option>
+<option value="National ID">National ID</option>
+<option value="Passport">Passport</option>
+</select>
 
-    <label>National ID / Passport Number</label>
-    <input id="chamaMemberIdNumber" required placeholder="Document number">
+<label>National ID / Passport Number</label>
+<input id="chairpersonIdNumber" required placeholder="Document number">
 
-    <label>Member Role</label>
-    <select id="chamaMemberRole" required>
-      <option value="">Select role</option>
-      <option>Chairperson</option>
-      <option>Treasurer</option>
-      <option>Secretary</option>
-      <option>Member</option>
-    </select>
+<button class="action" type="submit">Register Chama Group</button>
+</form>
+<p class="result" id="chamaRegistrationMessage"></p>
+<div id="chamaCertificate" style="display:none; margin-top:20px;">
+  <div id="certificatePrint" style="border:3px solid #c69a36; padding:25px; background:#fff; color:#111; text-align:center; border-radius:12px;">
+    <h2 style="color:#9b7625;">WAKauNduPay GLOBAL</h2>
+    <h3>CHAMA REGISTRATION CERTIFICATE</h3>
+    <p>This certifies successful registration on WakaunduPay Global.</p>
+    <h2 id="certChamaName"></h2>
+    <p>Chairperson: <strong id="certChairperson"></strong></p>
+    <p>Certificate Number: <strong id="certNumber"></strong></p>
+    <p>Verification Code: <strong id="certCode"></strong></p>
+    <p>Date Issued: <strong id="certDate"></strong></p>
+    <p>Platform registration proof only. Not a government certificate.</p>
+  </div>
 
-    <button class="action" type="submit">Register Member</button>
-  </form>
+  <button type="button" onclick="window.print()">Print Certificate</button>
+</div>
 
-  <p class="result" id="chamaMemberMessage"></p>
+<hr>
 
-  <button class="back" data-open="chama">Back to Chama Menu</button>
-</section>
+<h3>Verify Chama Certificate</h3>
 
-<!-- CHAMA CONTRIBUTIONS -->
-<section id="chama-contributions" class="panel">
-  <h2>3. Record Group Contribution</h2>
+<label>Certificate Verification Code</label>
+<input
+  id="certificateCodeInput"
+  type="text"
+  placeholder="Enter verification code"
+>
 
-  <form id="chamaContributionForm">
-    <label>Chama Group Name</label>
-    <input required placeholder="Group name">
+<button
+  type="button"
+  class="action"
+  id="verifyCertificateButton">
+  Verify Certificate
+</button>
 
-    <label>Member Name</label>
-    <input required placeholder="Member name">
+<p
+  class="result"
+  id="certificateVerificationResult">
+</p>
 
-    <label>Contribution Amount (KSh)</label>
-    <input type="number" min="1" required placeholder="Amount">
+<hr>
 
-    <button class="action" type="submit">Record Contribution</button>
-  </form>
+<h3>2. Register Chama Member</h3>
 
-  <p class="result" id="chamaContributionMessage"></p>
+<form id="chamaMemberForm">
+<label>Chama Group Name</label>
+<input id="memberChamaName" required placeholder="Registered group name">
 
-  <p><small>Demonstration only. Contributions are recorded on this device; no real money is transferred.</small></p>
+<label>Member Full Name</label>
+<input id="chamaMemberName" required placeholder="Full name">
 
-  <button class="back" data-open="chama">Back to Chama Menu</button>
+<label>Member Phone Number</label>
+<input id="chamaMemberPhone" type="tel" required placeholder="Phone number">
+
+<label>Identity Document Type</label>
+<select id="chamaMemberIdType" required>
+<option value="">Select document</option>
+<option value="National ID">National ID</option>
+<option value="Passport">Passport</option>
+</select>
+
+<label>National ID / Passport Number</label>
+<input id="chamaMemberIdNumber" required placeholder="Document number">
+
+<label>Member Role</label>
+<select id="chamaMemberRole" required>
+<option value="">Select role</option>
+<option>Chairperson</option>
+<option>Treasurer</option>
+<option>Secretary</option>
+<option>Member</option>
+</select>
+
+<button class="action" type="submit">Register Member</button>
+</form>
+<p class="result" id="chamaMemberMessage"></p>
+
+<hr>
+
+<h3>3. Record Group Contribution</h3>
+<form id="chamaContributionForm">
+<label>Chama Group Name</label>
+<input required placeholder="Group name">
+
+<label>Member Name</label>
+<input required placeholder="Member name">
+
+<label>Contribution Amount (KSh)</label>
+<input type="number" min="1" required placeholder="Amount">
+
+<button class="action" type="submit">Record Contribution</button>
+</form>
+<p class="result" id="chamaContributionMessage"></p>
+
+<p><small>Demonstration only. Identity records and financial contributions require secure backend processing before live use.</small></p>
+
+<button class="back" data-home>Back to Home</button>
 </section>
 
 <!-- PERSONAL SAVINGS -->
@@ -1071,88 +1056,6 @@ document.getElementById("memberLoginForm")
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-// 3. CHAMA MEMBER LOGIN
-document.getElementById("chamaMemberLoginForm")
-.addEventListener("submit", function(event) {
-  event.preventDefault();
-
-  if (!this.reportValidity()) return;
-
-  const rawPhone = document.getElementById("chamaLoginPhone").value.trim();
-  const phone = rawPhone.replace(/[\s()-]/g, "");
-  const pin = document.getElementById("chamaLoginPIN").value;
-
-  const result = document.getElementById("chamaLoginMessage");
-  const dashboard = document.getElementById("chamaMemberDashboard");
-  const details = document.getElementById("chamaMemberDetails");
-  const history = document.getElementById("chamaMemberContributionHistory");
-
-  // Verify existing WakaunduPay customer credentials
-  const customer = customers.find(item =>
-    item.phone === phone &&
-    item.pin === pin &&
-    item.status === "ACTIVE"
-  );
-
-  if (!customer) {
-    result.textContent = "Incorrect phone number or PIN.";
-    return;
-  }
-
-  // Find all Chama memberships linked to this customer
-  const memberships = chamaMembers.filter(member =>
-    member.phone === phone &&
-    member.customerId === customer.id
-  );
-
-  if (memberships.length === 0) {
-    result.textContent =
-      "No Chama membership found for this customer.";
-    dashboard.style.display = "none";
-    return;
-  }
-
-  currentRole = "member";
-  currentCustomer = customer;
-
-  // Display membership information
-  details.textContent = memberships.map(member =>
-    "Chama: " + member.groupName +
-    " | Membership Code: " + member.membershipCode +
-    " | Role: " + member.role
-  ).join("\n\n");
-
-  // Display contribution history
-  const records = [];
-
-  memberships.forEach(member => {
-    const contributions = chamaContributions.filter(item =>
-      item.memberId === member.id &&
-      item.groupId === member.groupId
-    );
-
-    contributions.forEach(item => {
-      records.push(
-        member.groupName +
-        " | KSh " + Number(item.amount).toFixed(2) +
-        " | " + new Date(item.date).toLocaleDateString()
-      );
-    });
-  });
-
-  history.textContent = records.length
-    ? records.join("\n")
-    : "No contributions recorded yet.";
-
-  dashboard.style.display = "block";
-  result.textContent =
-    "Welcome " + customer.name + "! Your Chama membership is verified.";
-
-  this.reset();
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
 document.querySelectorAll(".panel").forEach(panel => {
   panel.style.display = "none";
 });
@@ -1379,14 +1282,9 @@ document.getElementById("chamaMemberForm")
 
   const groupName = document.getElementById("memberChamaName").value.trim();
   const name = document.getElementById("chamaMemberName").value.trim();
-  const rawPhone = document.getElementById("chamaMemberPhone").value.trim();
-  const phone = rawPhone.replace(/[\s()-]/g, "");
-  const idType = document.getElementById("chamaMemberIdType").value;
-  const idNumber = document.getElementById("chamaMemberIdNumber").value.trim();
   const role = document.getElementById("chamaMemberRole").value;
   const result = document.getElementById("chamaMemberMessage");
 
-  // Find existing Chama
   const group = chamaGroups.find(item =>
     sameText(item.name, groupName)
   );
@@ -1397,57 +1295,20 @@ document.getElementById("chamaMemberForm")
     return;
   }
 
-  // Validate phone number
-  if (!/^(0[17]\d{8}|\+[1-9]\d{7,14})$/.test(phone)) {
-    result.textContent = "Enter a valid phone number.";
-    return;
-  }
-
-  // Find existing WakaunduPay customer
-  const customer = customers.find(item =>
-    item.phone === phone && item.status === "ACTIVE"
-  );
-
-  if (!customer) {
-    result.textContent =
-      "Customer account not found. Register with WakaunduPay first.";
-    return;
-  }
-
-  // Confirm customer name
-  if (!sameText(customer.name, name)) {
-    result.textContent =
-      "Member name must match the existing WakaunduPay customer account.";
-    return;
-  }
-
-  // Prevent duplicate membership in this Chama
   const alreadyRegistered = chamaMembers.some(member =>
-    member.groupId === group.id &&
-    (member.phone === phone || sameText(member.name, name))
+    member.groupId === group.id && sameText(member.name, name)
   );
 
   if (alreadyRegistered) {
-    result.textContent =
-      "This customer is already registered in this Chama.";
+    result.textContent = "This member is already registered in this Chama.";
     return;
   }
 
-  // Generate unique membership code
-  const membershipCode =
-    "WPG-MB-" + Date.now() + "-" +
-    Math.floor(Math.random() * 1000);
-
   const member = {
     id: "MB" + Date.now(),
-    membershipCode: membershipCode,
-    customerId: customer.id,
     groupId: group.id,
     groupName: group.name,
-    name: customer.name,
-    phone: customer.phone,
-    idType: idType,
-    idNumber: idNumber,
+    name: name,
     role: role,
     created: new Date().toISOString()
   };
@@ -1461,10 +1322,7 @@ document.getElementById("chamaMemberForm")
   }
 
   result.textContent =
-    "Chama membership successful! " +
-    name + " has joined " + group.name +
-    ". Membership Code: " + membershipCode +
-    ". Use your normal WakaunduPay phone number and PIN to log in.";
+    name + " successfully registered in " + group.name + ".";
 
   this.reset();
 });
