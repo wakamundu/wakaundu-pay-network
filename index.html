@@ -1327,7 +1327,45 @@ function openPanel(id) {
     block: "start"
   });
 }
+// ==========================================
+// WAKauNduPAY NAVIGATION CONTROLS
+// ==========================================
 
+document.addEventListener("click", function(event) {
+
+  const openButton = event.target.closest("[data-open]");
+
+  if (openButton) {
+    openPanel(openButton.dataset.open);
+    return;
+  }
+
+  const homeButton = event.target.closest("[data-home]");
+
+  if (homeButton) {
+
+    document.querySelectorAll(".panel").forEach(panel => {
+      panel.style.display = "none";
+    });
+
+    if (currentRole === "ceo") {
+      document.getElementById("ceo-dashboard").style.display = "block";
+
+    } else if (currentRole === "md") {
+      document.getElementById("md-dashboard").style.display = "block";
+
+    } else if (currentRole === "member") {
+      document.getElementById("memberDashboard").style.display = "block";
+      document.getElementById("memberDashboardContent").style.display = "block";
+
+    } else {
+      document.getElementById("publicPortal").style.display = "block";
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+});
 
 // CHAMA GROUP DEMO RECORDS
 let chamaGroups = getSaved("wakaunduChamas", []);
