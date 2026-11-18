@@ -1259,13 +1259,61 @@ document.querySelectorAll(".panel").forEach(panel => {
 });
 
 function openPanel(id) {
+
+  const memberAllowed = [
+    "send",
+    "receive",
+    "account-secure",
+    "financial-growth",
+    "airtime",
+    "bills",
+    "goods",
+    "withdraw",
+    "chama",
+    "personal",
+    "global-transfer",
+    "international-banking",
+    "history",
+    "customer-care"
+  ];
+
+  const mdAllowed = [
+    "chama",
+    "history",
+    "international-banking",
+    "customer-care",
+    "personal",
+    "global-transfer",
+    "withdraw"
+  ];
+
+  // Public access before login
   if (!currentRole && !publicPanels.includes(id)) {
     alert("Please log in to access WakaunduPay services.");
     return;
   }
 
-  document.querySelectorAll(".panel").forEach(panel => {
-    panel.style.display = "none";
+  // Member access restrictions
+  if (currentRole === "member" && !memberAllowed.includes(id)) {
+    alert("This section is not available to member accounts.");
+    return;
+  }
+
+  // Managing Director access restrictions
+  if (currentRole === "md" && !mdAllowed.includes(id)) {
+    alert("This section requires CEO/Admin authorization.");
+    return;
+  }
+
+  const panel = document.getElementById(id);
+
+  if (!panel) {
+    alert("This service section is not yet available.");
+    return;
+  }
+
+  document.querySelectorAll(".panel").forEach(item => {
+    item.style.display = "none";
   });
 
   if (currentRole === "member") {
@@ -1273,102 +1321,13 @@ function openPanel(id) {
     document.getElementById("memberDashboardContent").style.display = "none";
   }
 
-  const panel = document.getElementById(id);
-
-  if (panel) {
-    panel.style.display = "block";
-    panel.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-}
-
-document.querySelectorAll("[data-open]").forEach(button => {
-  button.addEventListener("click", function() {
-    openPanel(this.dataset.open);
-  });
-});
-
-document.querySelectorAll("[data-home]").forEach(button => {
-  button.addEventListener("click", function() {
-    document.querySelectorAll(".panel").forEach(panel => {
-      panel.style.display = "none";
-    });
-
-    if (currentRole === "member") {
-      document.getElementById("memberDashboard").style.display = "block";
-      document.getElementById("memberDashboardContent").style.display = "block";
-    }
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-});
-
-function renderHistory() {
-  const list = document.getElementById("transactionList");
-
-  if(!transactions.length) {
-    list.textContent = "No demo transactions yet.";
-    return;
-  }
-
-  list.innerHTML = "";
-
-  transactions.slice().reverse().forEach(item => {
-    const record = document.createElement("div");
-    record.className = "record";
-
-    const heading = document.createElement("strong");
-    heading.textContent = item.service;
-
-    const detail = document.createElement("p");
-    detail.textContent = item.amount ?
-      "Amount: KSh " + item.amount :
-      "Demo account registration";
-
-    const date = document.createElement("small");
-    date.textContent = item.date + " • DEMO ONLY";
-
-    record.append(heading, detail, date);
-    list.appendChild(record);
+  panel.style.display = "block";
+  panel.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
   });
 }
-function addTransaction(service, amount) {
-  const value = amount === "" ? 0 : Number(amount);
 
-  if (amount !== "" && (!Number.isFinite(value) || value <= 0)) {
-    return false;
-  }
-
-  if (value > demoBalance) {
-    return false;
-  }
-
-  const oldBalance = demoBalance;
-
-  demoBalance -= value;
-
-  transactions.push({
-    service: service,
-    amount: value || "",
-    date: new Date().toLocaleString()
-  });
-
-  if (!save("wakaunduDemoBalance", demoBalance) ||
-      !save("wakaunduTransactions", transactions)) {
-    demoBalance = oldBalance;
-    transactions.pop();
-
-    save("wakaunduDemoBalance", demoBalance);
-    save("wakaunduTransactions", transactions);
-
-    renderBalance();
-    return false;
-  }
-
-  renderBalance();
-  renderHistory();
-
-  return true;
-}
 
 // CHAMA GROUP DEMO RECORDS
 let chamaGroups = getSaved("wakaunduChamas", []);
