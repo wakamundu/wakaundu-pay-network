@@ -1026,6 +1026,181 @@ function renderBalance() {
 let currentRole = null;
 let currentCustomer = null;
 
+// ==========================================
+// WAKauNduPAY CEO / MD AUTHENTICATION — DEMO
+// ==========================================
+
+const CEO_USERNAME = "ceo";
+const CEO_PASSWORD = "ChangeMe123!";
+
+const MD_USERNAME = "managingdirector";
+const MD_PASSWORD = "ChangeMD123!";
+
+// Create the Managing Director Dashboard
+const mdDashboard = document.createElement("section");
+mdDashboard.id = "md-dashboard";
+mdDashboard.className = "panel";
+
+mdDashboard.innerHTML = `
+  <h2 style="color:#d6ad45;">
+    🏢 MANAGING DIRECTOR DASHBOARD
+  </h2>
+
+  <p>Welcome to WakaunduPay Global Operations.</p>
+
+  <div class="balance">
+    <h3>MANAGING DIRECTOR</h3>
+    <p>Operational Management</p>
+    <p>Reports to: CEO / Admin</p>
+  </div>
+
+  <h3>Operational Management</h3>
+
+  <div class="grid">
+    <button data-open="chama">👥 Chama Management</button>
+    <button data-open="history">📋 Transaction Monitoring</button>
+    <button data-open="international-banking">🏦 Banking Operations</button>
+    <button data-open="customer-care">☎️ Customer Care</button>
+  </div>
+
+  <hr>
+
+  <h3>Role Restrictions</h3>
+  <ul>
+    <li>Cannot change CEO credentials.</li>
+    <li>Cannot appoint or remove administrators.</li>
+    <li>Cannot override CEO-controlled settings.</li>
+    <li>Operates under CEO oversight.</li>
+  </ul>
+
+  <button type="button" class="back" id="mdLogout">
+    Logout
+  </button>
+`;
+
+document.getElementById("ceo-dashboard")
+.insertAdjacentElement("afterend", mdDashboard);
+
+// Add CEO logout button
+const ceoLogout = document.createElement("button");
+ceoLogout.type = "button";
+ceoLogout.className = "back";
+ceoLogout.id = "ceoLogout";
+ceoLogout.textContent = "Logout";
+document.getElementById("ceo-dashboard").appendChild(ceoLogout);
+
+// Add Member logout button
+const memberLogout = document.createElement("button");
+memberLogout.type = "button";
+memberLogout.className = "back";
+memberLogout.id = "memberLogout";
+memberLogout.textContent = "Logout";
+document.getElementById("memberDashboardContent")
+.appendChild(memberLogout);
+
+// Display a role dashboard
+function showRoleDashboard(dashboardId) {
+  document.querySelectorAll(".panel").forEach(panel => {
+    panel.style.display = "none";
+  });
+
+  document.getElementById("publicPortal").style.display = "none";
+  document.getElementById("memberDashboard").style.display = "none";
+  document.getElementById("memberDashboardContent").style.display = "none";
+
+  document.getElementById(dashboardId).style.display = "block";
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// CEO / ADMIN LOGIN
+document.getElementById("adminLoginForm")
+.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const username =
+    document.getElementById("adminUsername").value.trim();
+
+  const password =
+    document.getElementById("adminPassword").value;
+
+  const result =
+    document.getElementById("adminLoginMessage");
+
+  if (
+    username !== CEO_USERNAME ||
+    password !== CEO_PASSWORD
+  ) {
+    result.textContent = "Incorrect CEO/Admin username or password.";
+    return;
+  }
+
+  currentRole = "ceo";
+  currentCustomer = null;
+
+  result.textContent = "";
+  this.reset();
+
+  showRoleDashboard("ceo-dashboard");
+});
+
+// MANAGING DIRECTOR LOGIN
+document.getElementById("mdLoginForm")
+.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const username =
+    document.getElementById("mdUsername").value.trim();
+
+  const password =
+    document.getElementById("mdPassword").value;
+
+  const result =
+    document.getElementById("mdLoginMessage");
+
+  if (
+    username !== MD_USERNAME ||
+    password !== MD_PASSWORD
+  ) {
+    result.textContent =
+      "Incorrect Managing Director username or password.";
+    return;
+  }
+
+  currentRole = "md";
+  currentCustomer = null;
+
+  result.textContent = "";
+  this.reset();
+
+  showRoleDashboard("md-dashboard");
+});
+
+// LOGOUT FUNCTION
+function logoutUser() {
+  currentRole = null;
+  currentCustomer = null;
+
+  document.querySelectorAll(".panel").forEach(panel => {
+    panel.style.display = "none";
+  });
+
+  document.getElementById("memberDashboard").style.display = "none";
+  document.getElementById("memberDashboardContent").style.display = "none";
+  document.getElementById("publicPortal").style.display = "block";
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.getElementById("ceoLogout")
+.addEventListener("click", logoutUser);
+
+document.getElementById("mdLogout")
+.addEventListener("click", logoutUser);
+
+document.getElementById("memberLogout")
+.addEventListener("click", logoutUser);
+
 const publicPanels = [
   "admin-login",
   "member-login",
