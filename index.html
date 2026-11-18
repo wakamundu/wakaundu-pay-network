@@ -1026,6 +1026,101 @@ let currentRole = null;
 let currentCustomer = null;
 
 // ==========================================
+// WAKauNduPAY TRANSACTION RECORDING & HISTORY
+// ==========================================
+
+function addTransaction(service, amount) {
+  const value = Number(amount);
+
+  if (!Number.isFinite(value) || value <= 0) {
+    return false;
+  }
+
+  const transaction = {
+    id: "TX" + Date.now(),
+    service: service,
+    amount: value,
+    ownerPhone: currentRole === "member" && currentCustomer
+      ? currentCustomer.phone : "",
+    ownerName: currentRole === "member" && currentCustomer
+      ? currentCustomer.name : "",
+    date: new Date().toISOString(),
+    status: "DEMO RECORDED"
+  };
+
+  transactions.push(transaction);
+
+  if (!save("wakaunduTransactions", transactions)) {
+    transactions.pop();
+    return false;
+  }
+
+  renderHistory();
+  return true;
+}
+
+// DISPLAY TRANSACTION HISTORY
+function renderHistory() {
+  const list = document.getElementById("transactionList");
+
+  if (!list) return;
+
+  list.replaceChildren();
+
+  let records = [];
+
+  if (currentRole === "member" && currentCustomer) {
+    records = transactions.filter(item =>
+      item.ownerPhone === currentCustomer.phone
+    );
+  } else if (
+    currentRole === "ceo" ||
+    currentRole === "md"
+  ) {
+    records = transactions;
+  } else {
+    list.textContent = "Please log in to view transaction history.";
+    return;
+  }
+
+  if (records.length === 0) {
+    list.textContent = "No transaction history available.";
+    return;
+  }
+
+  records.slice().reverse().forEach(item => {
+    const card = document.createElement("div");
+
+    card.style.cssText =
+      "background:#123f69;padding:14px;margin:10px 0;" +
+      "border:1px solid #c69a36;border-radius:10px;";
+
+    const heading = document.createElement("strong");
+    heading.textContent = item.service;
+
+    const owner = document.createElement("p");
+    owner.textContent = item.ownerName
+      ? "Member: " + item.ownerName
+      : "Management transaction";
+
+    const amount = document.createElement("p");
+    amount.textContent =
+      "Amount: KSh " +
+      Number(item.amount).toLocaleString("en-KE");
+
+    const date = document.createElement("small");
+    date.textContent =
+      "Date: " + new Date(item.date).toLocaleString("en-KE");
+
+    const status = document.createElement("p");
+    status.textContent = item.status || "DEMO RECORDED";
+
+    card.append(heading, owner, amount, date, status);
+    list.appendChild(card);
+  });
+}
+
+// ==========================================
 // WAKauNduPAY CEO / MD AUTHENTICATION — DEMO
 // ==========================================
 
