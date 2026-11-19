@@ -986,7 +986,30 @@ function save(key, value) {
 
 let customers = getSaved("wakaunduCustomers", []);
 let transactions = getSaved("wakaunduTransactions", []);
-let demoBalance = getSaved("wakaunduDemoBalance", 10000);
+// Separate demo wallets for CEO and every member
+let wallets = getSaved("wakaunduWallets", {});
+
+function getWallet() {
+  let walletId;
+
+  if (currentRole === "ceo") {
+    walletId = "CEO";
+  } else if (currentCustomer) {
+    walletId = "MEMBER_" + currentCustomer.id;
+  } else {
+    return null;
+  }
+
+  if (!wallets[walletId]) {
+    wallets[walletId] = {
+      available: 10000,
+      savings: 0
+    };
+    save("wakaunduWallets", wallets);
+  }
+
+  return wallets[walletId];
+}
 
 // CUSTOMER REGISTRATION — DEMO
 document.getElementById("registrationForm")
