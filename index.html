@@ -1056,11 +1056,35 @@ function renderBalance() {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
-}
+} 
 
 let currentRole = null;
 let currentCustomer = null;
+// ==========================================
+// WAKauNduPAY PERSISTENT LOGIN SESSION
+// ==========================================
 
+function saveLoginSession() {
+  const session = {
+    role: currentRole,
+    customerId: currentCustomer ? currentCustomer.id : null,
+    chamaGroupId: currentChamaGroup ? currentChamaGroup.id : null,
+    chamaMemberId: currentChamaMember ? currentChamaMember.id : null
+  };
+
+  try {
+    localStorage.setItem(
+      "wakaunduLoginSession",
+      JSON.stringify(session)
+    );
+  } catch (error) {
+    console.error("Could not save login session:", error);
+  }
+}
+
+function clearLoginSession() {
+  localStorage.removeItem("wakaunduLoginSession");
+}
 // ==========================================
 // WAKauNduPAY TRANSACTION RECORDING & HISTORY
 // ==========================================
