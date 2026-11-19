@@ -658,98 +658,39 @@
 <button class="back" data-home>Back to Home</button>
 </section>
 
-<!-- WAKauNdu CHAMA GROUPS -->
-<section id="chama" class="panel">
-<h2>👥 Wakaundu Chama Groups</h2>
+
 <div id="chamaMainMenu" class="chama-menu">
-  <p>Group Registration • Membership • Contributions</p>
+  <p>Registered Chama Groups</p>
 
-  <button type="button" class="action" data-chama-view="register">
-    Register Chama
-  </button>
+  <div id="registeredChamaList">
+    <p>Loading registered Chamas...</p>
+  </div>
 
-  <button type="button" class="action" data-chama-view="verify">
-    Chama Members
-  </button>
-
-  <button type="button" class="action" data-chama-view="contributions">
-    Chama Contributions
+  <button type="button" class="action"
+          data-chama-view="register">
+    + Register New Chama
   </button>
 </div>
 
-<!-- STEP 1: REGISTER CHAMA -->
-<div id="chamaRegisterView" class="chama-view" hidden>
-  <h3>Register Chama Group</h3>
+<!-- SELECTED CHAMA ACCESS -->
+<div id="chamaAccessView" class="chama-view" hidden>
+  <h3 id="selectedChamaName">Chama Group</h3>
 
-  <form id="chamaRegistrationForm">
-    <label>Chama / Group Name</label>
-    <input id="chamaName" required placeholder="Enter group name">
+  <p>Choose how to access this Chama.</p>
 
-    <label>Group Purpose</label>
-    <input id="chamaPurpose" required placeholder="Enter group purpose">
-
-    <label>Chairperson Full Name</label>
-    <input id="chairpersonName" required placeholder="Full name">
-
-    <label>Chairperson Phone Number</label>
-    <input id="chairpersonPhone" type="tel" required placeholder="Phone number">
-
-    <label>Identity Document Type</label>
-    <select id="chairpersonIdType" required>
-      <option value="">Select document</option>
-      <option value="National ID">National ID</option>
-      <option value="Passport">Passport</option>
-    </select>
-
-    <label>National ID / Passport Number</label>
-    <input id="chairpersonIdNumber" required placeholder="Document number">
-
-    <button class="action" type="submit">Register Chama Group</button>
-  </form>
-
-  <p class="result" id="chamaRegistrationMessage"></p>
-
-  <div id="chamaCertificate" style="display:none; margin-top:20px;">
-    <div id="certificatePrint" style="border:3px solid #c69a36; padding:25px; background:#fff; color:#111; text-align:center; border-radius:12px;">
-      <h2 style="color:#9b7625;">WAKauNduPay GLOBAL</h2>
-      <h3>CHAMA REGISTRATION CERTIFICATE</h3>
-      <p>This certifies successful registration on WakaunduPay Global.</p>
-      <h2 id="certChamaName"></h2>
-      <p>Chairperson: <strong id="certChairperson"></strong></p>
-      <p>Certificate Number: <strong id="certNumber"></strong></p>
-      <p>Verification Code: <strong id="certCode"></strong></p>
-      <p>Date Issued: <strong id="certDate"></strong></p>
-      <p>Platform registration proof only. Not a government certificate.</p>
-    </div>
-    <button type="button" onclick="window.print()">Print Certificate</button>
-  </div>
-
-  <button type="button" class="back" data-chama-home>Back to Chama Menu</button>
-</div>
-
-<!-- STEP 2: VERIFY EXISTING CHAMA -->
-<div id="chamaVerifyView" class="chama-view" hidden>
-  <h3>Verify Chama Certificate</h3>
-
-  <p>Enter the verification code provided by your Chama chairperson.</p>
-
-  <label>Certificate Verification Code</label>
-  <input id="certificateCodeInput" placeholder="Enter verification code">
-
-  <button type="button" class="action" id="verifyCertificateButton">
-    Verify Certificate
+  <button type="button" class="action"
+          id="chamaMemberLoginButton">
+    Existing Member Login
   </button>
 
-  <p class="result" id="certificateVerificationResult"></p>
+  <button type="button" class="action"
+          id="chamaNewMemberButton">
+    Register as New Member
+  </button>
 
-  <div id="chamaVerifiedNext" hidden>
-    <p>Certificate verified. You can now proceed with membership registration.</p>
-    <button type="button" class="action" data-chama-view="member">
-      Next: Register Membership
-    </button>
-  </div>
-
-  <button type="button" class="back" data-chama-home>Back to Chama Menu</button>
+  <button type="button" class="back" data-chama-home>
+    Back to Chama List
+  </button>
 </div>
 
 <!-- STEP 3: REGISTER MEMBER -->
