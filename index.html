@@ -661,85 +661,164 @@
 <!-- WAKauNdu CHAMA GROUPS -->
 <section id="chama" class="panel">
 <h2>👥 Wakaundu Chama Groups</h2>
-<div class="chama-menu">
-  <button type="button" class="action" data-open="chama">
-  Register Chama
-</button>
+<div id="chamaMainMenu" class="chama-menu">
+  <p>Group Registration • Membership • Contributions</p>
 
-<button type="button" class="action" data-open="chama">
-  Chama Members
-</button>
+  <button type="button" class="action" data-chama-view="register">
+    Register Chama
+  </button>
 
-<button type="button" class="action" data-open="chama">
-  Chama Contributions
-</button>
-<p>Group Registration • Membership • Contributions</p>
+  <button type="button" class="action" data-chama-view="verify">
+    Chama Members
+  </button>
 
-<h3>1. Register Chama Group</h3>
-<form id="chamaRegistrationForm">
-<label>Chama / Group Name</label>
-<input id="chamaName" required placeholder="Enter group name">
-
-<label>Group Purpose</label>
-<input id="chamaPurpose" required placeholder="Enter group purpose">
-
-<label>Chairperson Full Name</label>
-<input id="chairpersonName" required placeholder="Full name">
-
-<label>Chairperson Phone Number</label>
-<input id="chairpersonPhone" type="tel" required placeholder="Phone number">
-
-<label>Identity Document Type</label>
-<select id="chairpersonIdType" required>
-<option value="">Select document</option>
-<option value="National ID">National ID</option>
-<option value="Passport">Passport</option>
-</select>
-
-<label>National ID / Passport Number</label>
-<input id="chairpersonIdNumber" required placeholder="Document number">
-
-<button class="action" type="submit">Register Chama Group</button>
-</form>
-<p class="result" id="chamaRegistrationMessage"></p>
-<div id="chamaCertificate" style="display:none; margin-top:20px;">
-  <div id="certificatePrint" style="border:3px solid #c69a36; padding:25px; background:#fff; color:#111; text-align:center; border-radius:12px;">
-    <h2 style="color:#9b7625;">WAKauNduPay GLOBAL</h2>
-    <h3>CHAMA REGISTRATION CERTIFICATE</h3>
-    <p>This certifies successful registration on WakaunduPay Global.</p>
-    <h2 id="certChamaName"></h2>
-    <p>Chairperson: <strong id="certChairperson"></strong></p>
-    <p>Certificate Number: <strong id="certNumber"></strong></p>
-    <p>Verification Code: <strong id="certCode"></strong></p>
-    <p>Date Issued: <strong id="certDate"></strong></p>
-    <p>Platform registration proof only. Not a government certificate.</p>
-  </div>
-
-  <button type="button" onclick="window.print()">Print Certificate</button>
+  <button type="button" class="action" data-chama-view="contributions">
+    Chama Contributions
+  </button>
 </div>
 
-<hr>
+<!-- STEP 1: REGISTER CHAMA -->
+<div id="chamaRegisterView" class="chama-view" hidden>
+  <h3>Register Chama Group</h3>
 
-<h3>Verify Chama Certificate</h3>
+  <form id="chamaRegistrationForm">
+    <label>Chama / Group Name</label>
+    <input id="chamaName" required placeholder="Enter group name">
 
-<label>Certificate Verification Code</label>
-<input
-  id="certificateCodeInput"
-  type="text"
-  placeholder="Enter verification code"
->
+    <label>Group Purpose</label>
+    <input id="chamaPurpose" required placeholder="Enter group purpose">
 
-<button
-  type="button"
-  class="action"
-  id="verifyCertificateButton">
-  Verify Certificate
-</button>
+    <label>Chairperson Full Name</label>
+    <input id="chairpersonName" required placeholder="Full name">
 
-<p
-  class="result"
-  id="certificateVerificationResult">
-</p>
+    <label>Chairperson Phone Number</label>
+    <input id="chairpersonPhone" type="tel" required placeholder="Phone number">
+
+    <label>Identity Document Type</label>
+    <select id="chairpersonIdType" required>
+      <option value="">Select document</option>
+      <option value="National ID">National ID</option>
+      <option value="Passport">Passport</option>
+    </select>
+
+    <label>National ID / Passport Number</label>
+    <input id="chairpersonIdNumber" required placeholder="Document number">
+
+    <button class="action" type="submit">Register Chama Group</button>
+  </form>
+
+  <p class="result" id="chamaRegistrationMessage"></p>
+
+  <div id="chamaCertificate" style="display:none; margin-top:20px;">
+    <div id="certificatePrint" style="border:3px solid #c69a36; padding:25px; background:#fff; color:#111; text-align:center; border-radius:12px;">
+      <h2 style="color:#9b7625;">WAKauNduPay GLOBAL</h2>
+      <h3>CHAMA REGISTRATION CERTIFICATE</h3>
+      <p>This certifies successful registration on WakaunduPay Global.</p>
+      <h2 id="certChamaName"></h2>
+      <p>Chairperson: <strong id="certChairperson"></strong></p>
+      <p>Certificate Number: <strong id="certNumber"></strong></p>
+      <p>Verification Code: <strong id="certCode"></strong></p>
+      <p>Date Issued: <strong id="certDate"></strong></p>
+      <p>Platform registration proof only. Not a government certificate.</p>
+    </div>
+    <button type="button" onclick="window.print()">Print Certificate</button>
+  </div>
+
+  <button type="button" class="back" data-chama-home>Back to Chama Menu</button>
+</div>
+
+<!-- STEP 2: VERIFY EXISTING CHAMA -->
+<div id="chamaVerifyView" class="chama-view" hidden>
+  <h3>Verify Chama Certificate</h3>
+
+  <p>Enter the verification code provided by your Chama chairperson.</p>
+
+  <label>Certificate Verification Code</label>
+  <input id="certificateCodeInput" placeholder="Enter verification code">
+
+  <button type="button" class="action" id="verifyCertificateButton">
+    Verify Certificate
+  </button>
+
+  <p class="result" id="certificateVerificationResult"></p>
+
+  <div id="chamaVerifiedNext" hidden>
+    <p>Certificate verified. You can now proceed with membership registration.</p>
+    <button type="button" class="action" data-chama-view="member">
+      Next: Register Membership
+    </button>
+  </div>
+
+  <button type="button" class="back" data-chama-home>Back to Chama Menu</button>
+</div>
+
+<!-- STEP 3: REGISTER MEMBER -->
+<div id="chamaMemberView" class="chama-view" hidden>
+  <h3>Register Chama Member</h3>
+
+  <p>Use your existing WakaunduPay login account.</p>
+
+  <form id="chamaMemberForm">
+    <label>Chama Group Name</label>
+    <input id="memberChamaName" required placeholder="Verified group name">
+
+    <label>Member Full Name</label>
+    <input id="chamaMemberName" required placeholder="Full name">
+
+    <label>Member Phone Number</label>
+    <input id="chamaMemberPhone" type="tel" required placeholder="WakaunduPay registered phone">
+
+    <label>Identity Document Type</label>
+    <select id="chamaMemberIdType" required>
+      <option value="">Select document</option>
+      <option value="National ID">National ID</option>
+      <option value="Passport">Passport</option>
+    </select>
+
+    <label>National ID / Passport Number</label>
+    <input id="chamaMemberIdNumber" required placeholder="Document number">
+
+    <label>Member Role</label>
+    <select id="chamaMemberRole" required>
+      <option value="">Select role</option>
+      <option value="Treasurer">Treasurer</option>
+      <option value="Secretary">Secretary</option>
+      <option value="Member">Member</option>
+    </select>
+
+    <button class="action" type="submit">Submit Membership Request</button>
+  </form>
+
+  <p class="result" id="chamaMemberMessage"></p>
+
+  <button type="button" class="back" data-chama-view="verify">Back to Verification</button>
+</div>
+
+<!-- STEP 4: CONTRIBUTIONS -->
+<div id="chamaContributionsView" class="chama-view" hidden>
+  <h3>Record Group Contribution</h3>
+
+  <form id="chamaContributionForm">
+    <label>Chama Group Name</label>
+    <input id="contributionChamaName" required placeholder="Group name">
+
+    <label>Member Name</label>
+    <input id="contributionMemberName" required placeholder="Member name">
+
+    <label>Contribution Amount (KSh)</label>
+    <input id="contributionAmount" type="number" min="1" required placeholder="Amount">
+
+    <button class="action" type="submit">Record Contribution</button>
+  </form>
+
+  <p class="result" id="chamaContributionMessage"></p>
+
+  <button type="button" class="back" data-chama-home>Back to Chama Menu</button>
+</div>
+
+<p><small>Demonstration only. Identity records and financial contributions require secure backend processing before live use.</small></p>
+
+<button class="back" data-home>Back to Home</button>
 
 <hr>
 
@@ -798,7 +877,7 @@
 <p><small>Demonstration only. Identity records and financial contributions require secure backend processing before live use.</small></p>
 
 <button class="back" data-home>Back to Home</button>
-</section>
+</section
 
 <!-- PERSONAL SAVINGS -->
 <section id="personal" class="panel">
