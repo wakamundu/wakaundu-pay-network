@@ -1072,8 +1072,32 @@ document.getElementById("registrationForm")
 
   this.reset();
 });
-
 function renderBalance() {
+  const wallet = getWallet();
+
+  if (!wallet) return;
+
+  const balanceElement = document.getElementById("accountBalance");
+
+  if (balanceElement) {
+    balanceElement.textContent =
+      "KSh " + wallet.available.toLocaleString("en-KE", {
+        minimumFractionDigits: 2
+      });
+  }
+
+  const savingsElement = document.getElementById("savingsBalance");
+
+  if (savingsElement) {
+    savingsElement.textContent =
+      "KSh " + wallet.savings.toLocaleString("en-KE", {
+        minimumFractionDigits: 2
+      });
+  }
+
+  save("wakaunduWallets", wallets);
+}
+
   document.getElementById("accountBalance").textContent =
     "KSh " + Number(demoBalance).toLocaleString("en-KE", {
       minimumFractionDigits: 2,
