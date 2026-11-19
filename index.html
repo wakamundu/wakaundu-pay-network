@@ -1532,7 +1532,122 @@ function sameText(a, b) {
 }
 
 
-// 1. REGISTER CHAMA GROUP
+// ==========================================
+// CHAMA GROUP MANAGEMENT — CONNECTED DEMO
+// ==========================================
+
+let selectedChamaGroup = null;
+let currentChamaGroup = null;
+let currentChamaMember = null;
+
+function normalizeChamaPhone(phone) {
+  return String(phone || "").replace(/[\s()-]/g, "");
+}
+
+// Restore older chairperson records where possible
+chamaMembers = chamaMembers.map(member => {
+  if (!member.status && member.role === "Chairperson") {
+    const account = customers.find(customer =>
+      normalizeChamaPhone(customer.phone) ===
+      normalizeChamaPhone(member.phone)
+    );
+
+    if (account) {
+      return {
+        ...member,
+        phone: account.phone,
+        customerId: account.id,
+        status: "ACTIVE"
+      };
+    }
+  }
+
+  return member;
+});
+
+save("wakaunduChamaMembers", chamaMembers);
+
+// Switch between Chama screens
+function showChamaView(viewId) {
+  document.querySelectorAll("#chama .chama-view").forEach(view => {
+    view.hidden = view.id !== viewId;
+  });
+
+  if (viewId === "chamaMainMenu") {
+    renderChamaDirectory();
+  }
+}
+
+// Display registered Chama groups
+function renderChamaDirectory() {
+  const list = document.getElementById("registeredChamaList");
+  if (!list) return;
+
+  list.replaceChildren();
+
+  if (chamaGroups.length === 0) {
+    const message = document.createElement("p");
+    message.textContent = "No Chama groups registered yet.";
+    list.appendChild(message);
+    return;
+  }
+
+  chamaGroups.forEach(group => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "action";
+    button.style.display = "block";
+    button.style.width = "100%";
+    button.style.margin = "10px 0";
+    button.textContent = "👥 " + group.name;
+    button.dataset.chamaGroupId = group.id;
+    list.appendChild(button);
+  });
+}
+
+// Open selected Chama
+document.addEventListener("click", function(event) {
+  const groupButton = event.target.closest("[data-chama-group-id]");
+
+  if (groupButton) {
+    selectedChamaGroup = chamaGroups.find(group =>
+      group.id === groupButton.dataset.chamaGroupId
+    );
+
+    if (!selectedChamaGroup) return;
+
+    document.getElementById("selectedChamaName").textContent =
+      selectedChamaGroup.name;
+
+    showChamaView("chamaAccessView");
+    return;
+  }
+
+  const viewButton = event.target.closest("[data-chama-view]");
+
+  if (viewButton) {
+    showChamaView("chamaRegisterView");
+    return;
+  }
+
+  const homeButton = event.target.closest("[data-chama-home]");
+
+  if (homeButton) {
+    showChamaView("chamaMainMenu");
+    return;
+  }
+
+  const approveButton = event.target.closest("[data-approve-member]");
+
+  if (approveButton) {
+    approveChamaMember(approveButton.dataset.approveMember);
+  }
+});
+
+// ==========================================
+// 1. REGISTER A CHAMA
+// ==========================================
+
 document.getElementById("chamaRegistrationForm")
 .addEventListener("submit", function(event) {
   event.preventDefault();
@@ -1542,11 +1657,34 @@ document.getElementById("chamaRegistrationForm")
   const name = document.getElementById("chamaName").value.trim();
   const purpose = document.getElementById("chamaPurpose").value.trim();
   const chairperson = document.getElementById("chairpersonName").value.trim();
-  const phone = document.getElementById("chairpersonPhone").value.trim();
+  const phone = normalizeChamaPhone(
+    document.getElementById("chairpersonPhone").value
+  );
   const idType = document.getElementById("chairpersonIdType").value;
   const idNumber = document.getElementById("chairpersonIdNumber").value.trim();
-
   const result = document.getElementById("chamaRegistrationMessage");
+
+  // Chairperson must already have a WakaunduPay account
+  const account = customers.find(customer =>
+    customer.phone === phone &&
+    customer.status === "ACTIVE"
+  );
+
+  if (!account) {
+    result.textContent =
+      "Chairperson must first register a WakaunduPay account using this phone number.";
+    return;
+  }
+
+  if (
+    !sameText(account.name, chairperson) ||
+    account.idType !== idType ||
+    !sameText(account.idNumber, idNumber)
+  ) {
+    result.textContent =
+      "Chairperson name and identity details must match the WakaunduPay account.";
+    return;
+  }
 
   if (chamaGroups.some(group => sameText(group.name, name))) {
     result.textContent = "This Chama group is already registered.";
@@ -1555,21 +1693,25 @@ document.getElementById("chamaRegistrationForm")
 
   const group = {
     id: "CH" + Date.now(),
-    name: name,
-    purpose: purpose,
-    chairperson: chairperson,
-    created: new Date().toISOString()
+    name,
+    purpose,
+    chairperson,
+    created: new Date().toISOString(),
+    status: "ACTIVE"
   };
 
   const member = {
     id: "MB" + Date.now(),
     groupId: group.id,
     groupName: group.name,
-    name: chairperson,
-    phone: phone,
-    idType: idType,
-    idNumber: idNumber,
-    role: "Chairperson"
+    customerId: account.id,
+    name: account.name,
+    phone: account.phone,
+    idType: account.idType,
+    idNumber: account.idNumber,
+    role: "Chairperson",
+    status: "ACTIVE",
+    created: new Date().toISOString()
   };
 
   const certificate = {
@@ -1603,10 +1745,8 @@ document.getElementById("chamaRegistrationForm")
     return;
   }
 
-  document.getElementById("certChamaName").textContent =
-    certificate.chamaName;
-  document.getElementById("certChairperson").textContent =
-    certificate.chairpersonName;
+  document.getElementById("certChamaName").textContent = group.name;
+  document.getElementById("certChairperson").textContent = chairperson;
   document.getElementById("certNumber").textContent =
     certificate.certificateNumber;
   document.getElementById("certCode").textContent =
@@ -1614,51 +1754,103 @@ document.getElementById("chamaRegistrationForm")
   document.getElementById("certDate").textContent =
     new Date(certificate.issueDate).toLocaleDateString();
 
-  document.getElementById("chamaCertificate").style.display = "block";
+  document.getElementById("chamaCertificate").hidden = false;
 
   result.textContent =
-    "Chama registered successfully. Chairperson added as the first member.";
+    "Chama registered. Chairperson is now the first active group member.";
 
+  renderChamaDirectory();
   this.reset();
 });
 
-// 2. REGISTER CHAMA MEMBER
+// ==========================================
+// 2. OPEN MEMBER LOGIN OR REGISTRATION
+// ==========================================
+
+document.getElementById("chamaMemberLoginButton")
+.addEventListener("click", function() {
+  document.getElementById("chamaLoginMessage").textContent = "";
+  showChamaView("chamaLoginView");
+});
+
+document.getElementById("chamaNewMemberButton")
+.addEventListener("click", function() {
+  if (!selectedChamaGroup) return;
+
+  document.getElementById("memberChamaName").value =
+    selectedChamaGroup.name;
+
+  document.getElementById("memberSelectedGroup").textContent =
+    "Membership request for " + selectedChamaGroup.name;
+
+  document.getElementById("chamaMemberMessage").textContent = "";
+  showChamaView("chamaMemberView");
+});
+
+// ==========================================
+// 3. SUBMIT NEW MEMBERSHIP REQUEST
+// ==========================================
+
 document.getElementById("chamaMemberForm")
 .addEventListener("submit", function(event) {
   event.preventDefault();
 
-  if (!this.reportValidity()) return;
+  if (!this.reportValidity() || !selectedChamaGroup) return;
 
-  const groupName = document.getElementById("memberChamaName").value.trim();
   const name = document.getElementById("chamaMemberName").value.trim();
-  const role = document.getElementById("chamaMemberRole").value;
+  const phone = normalizeChamaPhone(
+    document.getElementById("chamaMemberPhone").value
+  );
+  const idType = document.getElementById("chamaMemberIdType").value;
+  const idNumber = document.getElementById("chamaMemberIdNumber").value.trim();
+  const requestedRole = document.getElementById("chamaMemberRole").value;
   const result = document.getElementById("chamaMemberMessage");
 
-  const group = chamaGroups.find(item =>
-    sameText(item.name, groupName)
+  const account = customers.find(customer =>
+    customer.phone === phone &&
+    customer.status === "ACTIVE"
   );
 
-  if (!group) {
+  if (!account) {
     result.textContent =
-      "Chama not found. Register the Chama group first.";
+      "Register a WakaunduPay account first using this phone number.";
     return;
   }
 
-  const alreadyRegistered = chamaMembers.some(member =>
-    member.groupId === group.id && sameText(member.name, name)
+  if (
+    !sameText(account.name, name) ||
+    account.idType !== idType ||
+    !sameText(account.idNumber, idNumber)
+  ) {
+    result.textContent =
+      "Your name and identity details must match your WakaunduPay account.";
+    return;
+  }
+
+  const existing = chamaMembers.find(member =>
+    member.groupId === selectedChamaGroup.id &&
+    member.phone === account.phone
   );
 
-  if (alreadyRegistered) {
-    result.textContent = "This member is already registered in this Chama.";
+  if (existing) {
+    result.textContent = existing.status === "PENDING"
+      ? "Your membership request is already awaiting approval."
+      : "You are already registered in this Chama.";
     return;
   }
 
   const member = {
     id: "MB" + Date.now(),
-    groupId: group.id,
-    groupName: group.name,
-    name: name,
-    role: role,
+    groupId: selectedChamaGroup.id,
+    groupName: selectedChamaGroup.name,
+    customerId: account.id,
+    name: account.name,
+    phone: account.phone,
+    idType: account.idType,
+    idNumber: account.idNumber,
+    role: "Member",
+    requestedRole,
+    status: "PENDING",
     created: new Date().toISOString()
   };
 
@@ -1666,62 +1858,231 @@ document.getElementById("chamaMemberForm")
 
   if (!save("wakaunduChamaMembers", chamaMembers)) {
     chamaMembers.pop();
-    result.textContent = "Could not save member registration.";
+    result.textContent = "Could not save your membership request.";
     return;
   }
 
   result.textContent =
-    name + " successfully registered in " + group.name + ".";
+    "Your request has been submitted. Your status is PENDING until the Chairperson approves it.";
 
   this.reset();
+  document.getElementById("memberChamaName").value =
+    selectedChamaGroup.name;
 });
 
-// 3. RECORD CHAMA CONTRIBUTION
-document.getElementById("chamaContributionForm")
+// ==========================================
+// 4. EXISTING MEMBER LOGIN
+// ==========================================
+
+document.getElementById("chamaLoginForm")
 .addEventListener("submit", function(event) {
   event.preventDefault();
 
-  if (!this.reportValidity()) return;
+  if (!this.reportValidity() || !selectedChamaGroup) return;
 
-  const fields = this.querySelectorAll("input");
-  const groupName = fields[0].value.trim();
-  const memberName = fields[1].value.trim();
-  const amount = Number(fields[2].value);
+  const phone = normalizeChamaPhone(
+    document.getElementById("chamaLoginPhone").value
+  );
+  const pin = document.getElementById("chamaLoginPIN").value;
+  const result = document.getElementById("chamaLoginMessage");
 
-  const result = document.getElementById("chamaContributionMessage");
-
-  const group = chamaGroups.find(item =>
-    sameText(item.name, groupName)
+  const account = customers.find(customer =>
+    customer.phone === phone &&
+    customer.pin === pin &&
+    customer.status === "ACTIVE"
   );
 
-  if (!group) {
-    result.textContent = "Register the Chama group first.";
+  if (!account) {
+    result.textContent = "Incorrect WakaunduPay phone number or PIN.";
     return;
   }
 
   const member = chamaMembers.find(item =>
-    item.groupId === group.id &&
-    sameText(item.name, memberName)
+    item.groupId === selectedChamaGroup.id &&
+    item.phone === account.phone
   );
 
   if (!member) {
     result.textContent =
-      "Member not found in this Chama. Register the member first.";
+      "You are not registered in this Chama. Submit a membership request first.";
     return;
   }
 
-  if (!Number.isFinite(amount) || amount <= 0) {
-    result.textContent = "Enter a valid contribution amount.";
+  if (member.status !== "ACTIVE") {
+    result.textContent =
+      "Your membership is PENDING. Please wait for Chairperson approval.";
+    return;
+  }
+
+  currentChamaGroup = selectedChamaGroup;
+  currentChamaMember = member;
+  currentCustomer = account;
+
+  document.getElementById("chamaDashboardName").textContent =
+    currentChamaGroup.name;
+
+  document.getElementById("chamaLoggedInMember").textContent =
+    "Welcome " + member.name + " | Role: " + member.role;
+
+  renderChamaDashboard();
+  this.reset();
+  showChamaView("chamaDashboardView");
+});
+
+// ==========================================
+// 5. APPROVE MEMBERS — CHAIRPERSON ONLY
+// ==========================================
+
+function approveChamaMember(memberId) {
+  if (
+    !currentChamaMember ||
+    currentChamaMember.role !== "Chairperson"
+  ) {
+    alert("Only the group Chairperson can approve membership requests.");
+    return;
+  }
+
+  const member = chamaMembers.find(item =>
+    item.id === memberId &&
+    item.groupId === currentChamaGroup.id &&
+    item.status === "PENDING"
+  );
+
+  if (!member) return;
+
+  member.status = "ACTIVE";
+  member.role = member.requestedRole || "Member";
+  member.approvedBy = currentChamaMember.name;
+  member.approvedAt = new Date().toISOString();
+
+  if (!save("wakaunduChamaMembers", chamaMembers)) {
+    member.status = "PENDING";
+    member.role = "Member";
+    delete member.approvedBy;
+    delete member.approvedAt;
+
+    alert("Approval could not be saved. Please try again.");
+    return;
+  }
+
+  renderChamaDashboard();
+}
+
+// ==========================================
+// 6. DISPLAY MEMBERS AND PENDING REQUESTS
+// ==========================================
+
+function renderChamaDashboard() {
+  if (!currentChamaGroup || !currentChamaMember) return;
+
+  const container = document.getElementById("chamaGroupMembers");
+  container.replaceChildren();
+
+  const groupMembers = chamaMembers.filter(member =>
+    member.groupId === currentChamaGroup.id
+  );
+
+  groupMembers.forEach(member => {
+    const card = document.createElement("div");
+    card.style.cssText =
+      "background:#123f69;padding:12px;margin:8px 0;" +
+      "border:1px solid #c69a36;border-radius:10px;";
+
+    const details = document.createElement("p");
+    details.textContent =
+      member.name + " — " + member.role + " — " + member.status;
+
+    card.appendChild(details);
+
+    if (
+      member.status === "PENDING" &&
+      currentChamaMember.role === "Chairperson"
+    ) {
+      const approve = document.createElement("button");
+      approve.type = "button";
+      approve.className = "action";
+      approve.textContent = "Approve Member";
+      approve.dataset.approveMember = member.id;
+      card.appendChild(approve);
+    }
+
+    container.appendChild(card);
+  });
+
+  // Populate contribution member list
+  const select = document.getElementById("contributionMember");
+  select.replaceChildren();
+
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Select member";
+  select.appendChild(placeholder);
+
+  groupMembers.filter(member => member.status === "ACTIVE")
+  .forEach(member => {
+    const option = document.createElement("option");
+    option.value = member.id;
+    option.textContent = member.name;
+    select.appendChild(option);
+  });
+
+  // Only Chairperson and Treasurer can record contributions
+  const canRecord =
+    currentChamaMember.role === "Chairperson" ||
+    currentChamaMember.role === "Treasurer";
+
+  document.getElementById("chamaContributionForm").style.display =
+    canRecord ? "block" : "none";
+
+  renderChamaContributionHistory();
+}
+
+// ==========================================
+// 7. RECORD GROUP CONTRIBUTIONS
+// ==========================================
+
+document.getElementById("chamaContributionForm")
+.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  if (!this.reportValidity() || !currentChamaGroup) return;
+
+  const result = document.getElementById("chamaContributionMessage");
+  const memberId = document.getElementById("contributionMember").value;
+  const amount = Number(
+    document.getElementById("contributionAmount").value
+  );
+
+  if (
+    currentChamaMember.role !== "Chairperson" &&
+    currentChamaMember.role !== "Treasurer"
+  ) {
+    result.textContent =
+      "Only the Chairperson or Treasurer can record contributions.";
+    return;
+  }
+
+  const member = chamaMembers.find(item =>
+    item.id === memberId &&
+    item.groupId === currentChamaGroup.id &&
+    item.status === "ACTIVE"
+  );
+
+  if (!member || !Number.isFinite(amount) || amount <= 0) {
+    result.textContent = "Select an active member and enter a valid amount.";
     return;
   }
 
   const contribution = {
-    groupId: group.id,
-    groupName: group.name,
+    id: "CON" + Date.now(),
+    groupId: currentChamaGroup.id,
+    groupName: currentChamaGroup.name,
     memberId: member.id,
     memberName: member.name,
-    amount: amount,
-    date: new Date().toISOString()
+    amount,
+    recordedBy: currentChamaMember.name,
+    date: new Date().toISOString(),
+    status: "DEMO RECORDED"
   };
 
   chamaContributions.push(contribution);
@@ -1735,10 +2096,71 @@ document.getElementById("chamaContributionForm")
   result.textContent =
     "Demo contribution of KSh " +
     amount.toLocaleString("en-KE") +
-    " recorded for " + member.name + " in " + group.name + ".";
+    " recorded for " + member.name + ".";
 
   this.reset();
+  renderChamaDashboard();
 });
+
+// ==========================================
+// 8. CONTRIBUTION HISTORY
+// ==========================================
+
+function renderChamaContributionHistory() {
+  const history = document.getElementById("chamaContributionHistory");
+  history.replaceChildren();
+
+  const records = chamaContributions.filter(item =>
+    item.groupId === currentChamaGroup.id
+  );
+
+  if (records.length === 0) {
+    history.textContent = "No contributions recorded yet.";
+    return;
+  }
+
+  records.slice().reverse().forEach(item => {
+    const entry = document.createElement("div");
+    entry.style.cssText =
+      "background:#123f69;padding:12px;margin:8px 0;" +
+      "border:1px solid #c69a36;border-radius:10px;";
+
+    const details = document.createElement("p");
+    details.textContent =
+      item.memberName + " contributed KSh " +
+      Number(item.amount).toLocaleString("en-KE");
+
+    const date = document.createElement("small");
+    date.textContent =
+      new Date(item.date).toLocaleString("en-KE");
+
+    entry.append(details, date);
+    history.appendChild(entry);
+  });
+}
+
+// ==========================================
+// 9. LOGOUT OF CHAMA
+// ==========================================
+
+document.getElementById("chamaLogoutButton")
+.addEventListener("click", function() {
+  currentChamaGroup = null;
+  currentChamaMember = null;
+  selectedChamaGroup = null;
+
+  showChamaView("chamaMainMenu");
+});
+
+// PRINT CHAMA CERTIFICATE
+document.getElementById("certificatePrint")
+.addEventListener("click", function() {
+  window.print();
+});
+
+// Initial Chama directory
+renderChamaDirectory();
+
 // VERIFY CHAMA CERTIFICATE — SAFE CONNECTION
 const verifyButton = document.getElementById("verifyCertificateButton");
 
