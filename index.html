@@ -1087,33 +1087,37 @@ function renderBalance() {
 
   if (!wallet) return;
 
+  const formatMoney = amount =>
+    "KSh " + Number(amount).toLocaleString("en-KE", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+
   const balanceElement = document.getElementById("accountBalance");
+  const savingsElement = document.getElementById("savingsBalance");
+  const ceoAvailable = document.getElementById("ceoAvailableBalance");
+  const ceoSavings = document.getElementById("ceoSavingsBalance");
 
   if (balanceElement) {
-    balanceElement.textContent =
-      "KSh " + wallet.available.toLocaleString("en-KE", {
-        minimumFractionDigits: 2
-      });
+    balanceElement.textContent = formatMoney(wallet.available);
   }
 
-  const savingsElement = document.getElementById("savingsBalance");
-
   if (savingsElement) {
-    savingsElement.textContent =
-      "KSh " + wallet.savings.toLocaleString("en-KE", {
-        minimumFractionDigits: 2
-      });
+    savingsElement.textContent = formatMoney(wallet.savings);
+  }
+
+  if (currentRole === "ceo") {
+    if (ceoAvailable) {
+      ceoAvailable.textContent = formatMoney(wallet.available);
+    }
+
+    if (ceoSavings) {
+      ceoSavings.textContent = formatMoney(wallet.savings);
+    }
   }
 
   save("wakaunduWallets", wallets);
 }
-
-  document.getElementById("accountBalance").textContent =
-    "KSh " + Number(demoBalance).toLocaleString("en-KE", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-} 
 
 let currentRole = null;
 let currentCustomer = null;
