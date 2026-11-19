@@ -817,68 +817,8 @@
 </div>
 
 <p><small>Demonstration only. Identity records and financial contributions require secure backend processing before live use.</small></p>
-
-<button class="back" data-home>Back to Home</button>
-
-<hr>
-
-<h3>2. Register Chama Member</h3>
-
-<form id="chamaMemberForm">
-<label>Chama Group Name</label>
-<input id="memberChamaName" required placeholder="Registered group name">
-
-<label>Member Full Name</label>
-<input id="chamaMemberName" required placeholder="Full name">
-
-<label>Member Phone Number</label>
-<input id="chamaMemberPhone" type="tel" required placeholder="Phone number">
-
-<label>Identity Document Type</label>
-<select id="chamaMemberIdType" required>
-<option value="">Select document</option>
-<option value="National ID">National ID</option>
-<option value="Passport">Passport</option>
-</select>
-
-<label>National ID / Passport Number</label>
-<input id="chamaMemberIdNumber" required placeholder="Document number">
-
-<label>Member Role</label>
-<select id="chamaMemberRole" required>
-<option value="">Select role</option>
-<option>Chairperson</option>
-<option>Treasurer</option>
-<option>Secretary</option>
-<option>Member</option>
-</select>
-
-<button class="action" type="submit">Register Member</button>
-</form>
-<p class="result" id="chamaMemberMessage"></p>
-
-<hr>
-
-<h3>3. Record Group Contribution</h3>
-<form id="chamaContributionForm">
-<label>Chama Group Name</label>
-<input required placeholder="Group name">
-
-<label>Member Name</label>
-<input required placeholder="Member name">
-
-<label>Contribution Amount (KSh)</label>
-<input type="number" min="1" required placeholder="Amount">
-
-<button class="action" type="submit">Record Contribution</button>
-</form>
-<p class="result" id="chamaContributionMessage"></p>
-
-<p><small>Demonstration only. Identity records and financial contributions require secure backend processing before live use.</small></p>
-
-<button class="back" data-home>Back to Home</button>
-</section
-
+  class="back" data-home>Back to Home</button>
+</section>
 <!-- PERSONAL SAVINGS -->
 <section id="personal" class="panel">
 <h2>🏦 Personal Savings</h2>
@@ -1030,6 +970,51 @@ function save(key, value) {
 let customers = getSaved("wakaunduCustomers", []);
 let transactions = getSaved("wakaunduTransactions", []);
 let demoBalance = getSaved("wakaunduDemoBalance", 10000);
+
+(function () {
+  const menu = document.getElementById("chamaMainMenu");
+
+  if (!menu) return;
+
+  const views = {
+    register: "chamaRegisterView",
+    verify: "chamaVerifyView",
+    member: "chamaMemberView",
+    contributions: "chamaContributionsView"
+  };
+
+  function openChamaView(view) {
+    menu.hidden = true;
+
+    Object.values(views).forEach(id => {
+      document.getElementById(id).hidden = true;
+    });
+
+    if (view === "home") {
+      menu.hidden = false;
+      return;
+    }
+
+    if (views[view]) {
+      document.getElementById(views[view]).hidden = false;
+    }
+  }
+
+  document.querySelectorAll("[data-chama-view]").forEach(button => {
+    button.addEventListener("click", () => {
+      openChamaView(button.dataset.chamaView);
+    });
+  });
+
+  document.querySelectorAll("[data-chama-home]").forEach(button => {
+    button.addEventListener("click", () => {
+      openChamaView("home");
+    });
+  });
+
+  // Start with the Chama menu
+  openChamaView("home");
+})();
 
 // CUSTOMER REGISTRATION — DEMO
 document.getElementById("registrationForm")
