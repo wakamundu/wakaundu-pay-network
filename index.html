@@ -1915,7 +1915,43 @@ document.getElementById("chamaLoginForm")
 // ==========================================
 // 5. APPROVE MEMBERS — CHAIRPERSON ONLY
 // ==========================================
+function approveChamaMember(memberId) {
+  if (!currentChamaGroup || !currentChamaMember ||
+      currentChamaMember.role !== "Chairperson") {
+    alert("Only the Chairperson can approve membership requests.");
+    return;
+  }
 
+  const member = chamaMembers.find(item =>
+    item.id === memberId &&
+    item.groupId === currentChamaGroup.id &&
+    item.status === "PENDING"
+  );
+
+  if (!member) {
+    alert("Pending membership request not found.");
+    return;
+  }
+
+  const previousRole = member.role;
+
+  member.status = "ACTIVE";
+  member.role = member.requestedRole || "Member";
+  member.approvedBy = currentChamaMember.name;
+  member.approvedAt = new Date().toISOString();
+
+  if (!save("wakaunduChamaMembers", chamaMembers)) {
+    member.status = "PENDING";
+    member.role = previousRole;
+    delete member.approvedBy;
+    delete member.approvedAt;
+    alert("Approval could not be saved. Please try again.");
+    return;
+  }
+
+  renderChamaDashboard();
+  alert(member.name + " has been approved as " + member.role + ".");
+}
 // ==========================================
 // 6. DISPLAY MEMBERS AND PENDING REQUESTS
 // ==========================================
