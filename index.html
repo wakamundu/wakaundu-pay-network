@@ -662,107 +662,200 @@
 <section id="chama" class="panel">
 <h2>👥 Wakaundu Chama Groups</h2>
 
-<div id="chamaMainMenu" class="chama-menu">
-  <p>Registered Chama Groups</p>
+<section id="chama" class="panel">
+  <h2>👥 Wakaundu Chama Groups</h2>
 
-  <div id="registeredChamaList">
-    <p>Loading registered Chamas...</p>
+  <!-- CHAMA DIRECTORY -->
+  <div id="chamaMainMenu" class="chama-view">
+    <h3>Registered Chama Groups</h3>
+    <div id="registeredChamaList">
+      <p>Loading registered Chamas...</p>
+    </div>
+    <button type="button" class="action" data-chama-view="register">
+      + Register New Chama
+    </button>
   </div>
 
-  <button type="button" class="action"
-          data-chama-view="register">
-    + Register New Chama
-  </button>
-</div>
+  <!-- REGISTER A CHAMA -->
+  <div id="chamaRegisterView" class="chama-view" hidden>
+    <h3>Register New Chama</h3>
+    <form id="chamaRegistrationForm">
+      <label>Chama Group Name</label>
+      <input id="chamaName" required>
 
-<!-- SELECTED CHAMA ACCESS -->
-<div id="chamaAccessView" class="chama-view" hidden>
-  <h3 id="selectedChamaName">Chama Group</h3>
+      <label>Group Purpose</label>
+      <textarea id="chamaPurpose" required></textarea>
 
-  <p>Choose how to access this Chama.</p>
+      <label>Chairperson Full Name</label>
+      <input id="chairpersonName" required>
 
-  <button type="button" class="action"
-          id="chamaMemberLoginButton">
-    Existing Member Login
-  </button>
+      <label>Chairperson WakaunduPay Phone</label>
+      <input id="chairpersonPhone" type="tel" required>
 
-  <button type="button" class="action"
-          id="chamaNewMemberButton">
-    Register as New Member
-  </button>
+      <label>Identity Document Type</label>
+      <select id="chairpersonIdType" required>
+        <option value="">Select document</option>
+        <option value="National ID">National ID</option>
+        <option value="Passport">Passport</option>
+      </select>
 
-  <button type="button" class="back" data-chama-home>
-    Back to Chama List
-  </button>
-</div>
+      <label>National ID / Passport Number</label>
+      <input id="chairpersonIdNumber" required>
 
-<!-- CHAMA MEMBER REGISTRATION -->
-<div id="chamaMemberView" class="chama-view" hidden>
+      <button class="action" type="submit">Register Chama</button>
+    </form>
 
-  <h3>Register Chama Member</h3>
+    <p id="chamaRegistrationMessage" class="result"></p>
 
-  <p id="memberSelectedGroup"></p>
+    <div id="chamaCertificate" hidden>
+      <h3>WakaunduPay Chama Registration Certificate</h3>
+      <p>Chama: <strong id="certChamaName"></strong></p>
+      <p>Chairperson: <strong id="certChairperson"></strong></p>
+      <p>Certificate No: <strong id="certNumber"></strong></p>
+      <p>Certificate Code: <strong id="certCode"></strong></p>
+      <p>Issue Date: <strong id="certDate"></strong></p>
+      <button type="button" class="action" id="certificatePrint">
+        Print Certificate
+      </button>
+    </div>
 
-  <form id="chamaMemberForm">
+    <button type="button" class="back" data-chama-home>
+      Back to Chama List
+    </button>
+  </div>
 
-    <label>Chama Group Name</label>
-    <input id="memberChamaName" readonly required>
+  <!-- SELECTED GROUP ACCESS -->
+  <div id="chamaAccessView" class="chama-view" hidden>
+    <h3 id="selectedChamaName">Chama Group</h3>
+    <p>Choose how to access this Chama.</p>
 
-    <label>Member Full Name</label>
-    <input id="chamaMemberName" required placeholder="Full name">
-
-    <label>Member Phone Number</label>
-    <input id="chamaMemberPhone" type="tel" required placeholder="WakaunduPay registered phone">
-
-    <label>Identity Document Type</label>
-    <select id="chamaMemberIdType" required>
-      <option value="">Select document</option>
-      <option value="National ID">National ID</option>
-      <option value="Passport">Passport</option>
-    </select>
-
-    <label>National ID / Passport Number</label>
-    <input id="chamaMemberIdNumber" required placeholder="Document number">
-
-    <label>Member Role</label>
-    <select id="chamaMemberRole" required>
-      <option value="Member">Member</option>
-      <option value="Treasurer">Treasurer</option>
-      <option value="Secretary">Secretary</option>
-    </select>
-
-    <button class="action" type="submit">
-      Submit Membership Request
+    <button type="button" class="action" id="chamaMemberLoginButton">
+      Existing Member Login
     </button>
 
-  </form>
+    <button type="button" class="action" id="chamaNewMemberButton">
+      Register as New Member
+    </button>
 
-  <p class="result" id="chamaMemberMessage"></p>
+    <button type="button" class="back" data-chama-home>
+      Back to Chama List
+    </button>
+  </div>
 
-  <button type="button" class="back" data-chama-home>
-    Back to Chama List
-  </button>
+  <!-- EXISTING MEMBER LOGIN -->
+  <div id="chamaLoginView" class="chama-view" hidden>
+    <h3>Chama Member Login</h3>
+    <p>Use your existing WakaunduPay login credentials.</p>
 
-</div>
+    <form id="chamaLoginForm">
+      <label>WakaunduPay Phone Number</label>
+      <input id="chamaLoginPhone" type="tel" required>
 
-<h3>3. Record Group Contribution</h3>
-<form id="chamaContributionForm">
-<label>Chama Group Name</label>
-<input required placeholder="Group name">
+      <label>WakaunduPay PIN</label>
+      <input id="chamaLoginPIN" type="password"
+        inputmode="numeric" maxlength="4" required>
 
-<label>Member Name</label>
-<input required placeholder="Member name">
+      <button class="action" type="submit">Login to Chama</button>
+    </form>
 
-<label>Contribution Amount (KSh)</label>
-<input type="number" min="1" required placeholder="Amount">
+    <p id="chamaLoginMessage" class="result"></p>
 
-<button class="action" type="submit">Record Contribution</button>
-</form>
-<p class="result" id="chamaContributionMessage"></p>
+    <button type="button" class="back" data-chama-home>
+      Back to Chama List
+    </button>
+  </div>
 
-<p><small>Demonstration only. Identity records and financial contributions require secure backend processing before live use.</small></p>
+  <!-- NEW MEMBER REGISTRATION -->
+  <div id="chamaMemberView" class="chama-view" hidden>
+    <h3>Register Chama Member</h3>
+    <p id="memberSelectedGroup"></p>
 
-<button class="back" data-home>Back to Home</button>
+    <form id="chamaMemberForm">
+      <label>Chama Group Name</label>
+      <input id="memberChamaName" readonly required>
+
+      <label>Member Full Name</label>
+      <input id="chamaMemberName" required>
+
+      <label>WakaunduPay Registered Phone</label>
+      <input id="chamaMemberPhone" type="tel" required>
+
+      <label>Identity Document Type</label>
+      <select id="chamaMemberIdType" required>
+        <option value="">Select document</option>
+        <option value="National ID">National ID</option>
+        <option value="Passport">Passport</option>
+      </select>
+
+      <label>National ID / Passport Number</label>
+      <input id="chamaMemberIdNumber" required>
+
+      <label>Requested Role</label>
+      <select id="chamaMemberRole" required>
+        <option value="Member">Member</option>
+        <option value="Treasurer">Treasurer</option>
+        <option value="Secretary">Secretary</option>
+      </select>
+
+      <button class="action" type="submit">
+        Submit Membership Request
+      </button>
+    </form>
+
+    <p id="chamaMemberMessage" class="result"></p>
+
+    <button type="button" class="back" data-chama-home>
+      Back to Chama List
+    </button>
+  </div>
+
+  <!-- CHAMA DASHBOARD -->
+  <div id="chamaDashboardView" class="chama-view" hidden>
+    <h3 id="chamaDashboardName">Chama Dashboard</h3>
+    <p id="chamaLoggedInMember"></p>
+
+    <h3>Group Members</h3>
+    <div id="chamaGroupMembers">
+      <p>Members will appear here.</p>
+    </div>
+
+    <h3>Record Group Contribution</h3>
+    <form id="chamaContributionForm">
+      <label>Member</label>
+      <select id="contributionMember" required>
+        <option value="">Select member</option>
+      </select>
+
+      <label>Contribution Amount (KSh)</label>
+      <input id="contributionAmount"
+        type="number" min="1" required>
+
+      <button class="action" type="submit">
+        Record Contribution
+      </button>
+    </form>
+
+    <p id="chamaContributionMessage" class="result"></p>
+
+    <h3>Contribution History</h3>
+    <div id="chamaContributionHistory">
+      <p>No contributions recorded yet.</p>
+    </div>
+
+    <button type="button" class="back" id="chamaLogoutButton">
+      Logout of Chama
+    </button>
+  </div>
+
+  <p>
+    <small>
+      Demonstration only. Live membership, identity verification,
+      approvals and financial contributions require secure backend
+      processing.
+    </small>
+  </p>
+
+  <button type="button" class="back" data-home>Back to Home</button>
 </section>
 
 <!-- PERSONAL SAVINGS -->
