@@ -1504,16 +1504,13 @@ document.getElementById("chamaRegistrationForm")
     created: new Date().toISOString()
   };
 const member = {
-  id: "MB" + Date.now(),
+  id: currentUser.id,
   groupId: group.id,
   groupName: group.name,
-  name: chairperson,
-  phone: phone,
-  idType: idType,
-  idNumber: idNumber,
+  name: currentUser.name,
+  phone: currentUser.phone,
   role: "Chairperson"
 };
-
   const certificate = {
     certificateNumber: "WPG-CH-" + Date.now(),
     verificationCode: "WP-" +
