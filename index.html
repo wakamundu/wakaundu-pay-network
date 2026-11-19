@@ -1416,6 +1416,9 @@ function openPanel(id) {
   }
 
   panel.style.display = "block";
+  if (id === "history") {
+  renderHistory();
+}
   panel.scrollIntoView({
     behavior: "smooth",
     block: "start"
