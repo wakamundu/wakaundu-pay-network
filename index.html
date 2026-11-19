@@ -1155,7 +1155,6 @@ function clearLoginSession() {
 // ==========================================
 // WAKauNduPAY TRANSACTION RECORDING & HISTORY
 // ==========================================
-
 function addTransaction(service, amount) {
   const value = Number(amount);
 
@@ -1163,26 +1162,71 @@ function addTransaction(service, amount) {
     return false;
   }
 
+  if (currentRole !== "ceo" && currentRole !== "member") {
+    return false;
+  }
+
+  const wallet = getWallet();
+
+  if (!wallet) {
+    return false;
+  }
+
+  const action = String(service).toLowerCase();
+
+  const isWithdrawal = action.includes("withdraw");
+  const isSavings = action.includes("saving");
+
+  if ((isWithdrawal || isSavings) && wallet.available < value) {
+    return false;
+  }
+
+  const oldAvailable = wallet.available;
+  const oldSavings = wallet.savings;
+
+  if (isWithdrawal) {
+    wallet.available -= value;
+  }
+
+  if (isSavings) {
+    wallet.available -= value;
+    wallet.savings += value;
+  }
+
   const transaction = {
     id: "TX" + Date.now(),
     service: service,
     amount: value,
-    ownerPhone: currentRole === "member" && currentCustomer
-      ? currentCustomer.phone : "",
-    ownerName: currentRole === "member" && currentCustomer
-      ? currentCustomer.name : "",
+    ownerRole: currentRole,
+    ownerId: currentRole === "ceo" ? "CEO" : currentCustomer.id,
+    ownerPhone: currentRole === "member" ? currentCustomer.phone : "",
+    ownerName: currentRole === "ceo" ? "CEO" : currentCustomer.name,
     date: new Date().toISOString(),
-    status: "DEMO RECORDED"
+    status: "DEMO RECORDED",
+    balanceAfter: wallet.available,
+    savingsAfter: wallet.savings
   };
 
   transactions.push(transaction);
 
-  if (!save("wakaunduTransactions", transactions)) {
+  if (!save("wakaunduWallets", wallets)) {
+    wallet.available = oldAvailable;
+    wallet.savings = oldSavings;
     transactions.pop();
     return false;
   }
 
+  if (!save("wakaunduTransactions", transactions)) {
+    wallet.available = oldAvailable;
+    wallet.savings = oldSavings;
+    transactions.pop();
+    save("wakaunduWallets", wallets);
+    return false;
+  }
+
+  renderBalance();
   renderHistory();
+
   return true;
 }
 
