@@ -2318,25 +2318,37 @@ document.querySelectorAll("[data-demo-form]").forEach(form => {
   form.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    if(!this.reportValidity()) return;
+    if (!this.reportValidity()) return;
 
     const service = this.dataset.service;
     const amountInput = this.querySelector('input[type="number"]');
     const amount = amountInput ? amountInput.value : "";
-const result = this.parentElement.querySelector(".result");
+    const result = this.parentElement.querySelector(".result");
 
-if (!addTransaction(service, amount)) {
-  result.textContent =
-    "Transaction not recorded. Check the amount, wallet balance or browser storage.";
-  return;
-}
-result.textContent =
-  service + " recorded successfully in your demo transaction history. No real money was moved.";
+    if (!addTransaction(service, amount)) {
+      if (result) {
+        result.textContent =
+          "Transaction not recorded. Check your available balance, amount or account access.";
+      }
+      return;
+    }
 
-this.reset();
+    const action = service.toLowerCase();
+
+    if (action.includes("withdraw")) {
+      result.textContent =
+        "Withdrawal recorded. Your available demo wallet balance has been reduced.";
+    } else if (action.includes("saving")) {
+      result.textContent =
+        "Savings recorded. Money has moved from available balance into personal savings.";
+    } else {
+      result.textContent =
+        service + " recorded in demo history. No real money was moved.";
+    }
+
+    this.reset();
   });
 });
-
 document.getElementById("callbackForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
