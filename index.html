@@ -1526,20 +1526,16 @@ document.getElementById("chamaRegistrationForm")
   };
 
   chamaGroups.push(group);
-  chamaMembers.push(member);
   chamaCertificates.push(certificate);
 
   if (
     !save("wakaunduChamas", chamaGroups) ||
-    !save("wakaunduChamaMembers", chamaMembers) ||
     !save("wakaunduChamaCertificates", chamaCertificates)
   ) {
     chamaGroups.pop();
-    chamaMembers.pop();
     chamaCertificates.pop();
 
     save("wakaunduChamas", chamaGroups);
-    save("wakaunduChamaMembers", chamaMembers);
     save("wakaunduChamaCertificates", chamaCertificates);
 
     result.textContent = "Registration could not be saved. Please try again.";
@@ -1558,9 +1554,8 @@ document.getElementById("chamaRegistrationForm")
     new Date(certificate.issueDate).toLocaleDateString();
 
   document.getElementById("chamaCertificate").style.display = "block";
-
-  result.textContent =
-    "Chama registered successfully. Chairperson added as the first member.";
+result.textContent =
+  "Chama group registered successfully. You can now register members separately.";
 
   this.reset();
 });
