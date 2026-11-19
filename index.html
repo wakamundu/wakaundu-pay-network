@@ -696,68 +696,54 @@
   </button>
 </div>
 
+<!-- CHAMA MEMBER REGISTRATION -->
+<div id="chamaMemberView" class="chama-view" hidden>
 
-<hr>
+  <h3>Register Chama Member</h3>
 
-<h3>Verify Chama Certificate</h3>
+  <p id="memberSelectedGroup"></p>
 
-<label>Certificate Verification Code</label>
-<input
-  id="certificateCodeInput"
-  type="text"
-  placeholder="Enter verification code"
->
+  <form id="chamaMemberForm">
 
-<button
-  type="button"
-  class="action"
-  id="verifyCertificateButton">
-  Verify Certificate
-</button>
+    <label>Chama Group Name</label>
+    <input id="memberChamaName" readonly required>
 
-<p
-  class="result"
-  id="certificateVerificationResult">
-</p>
+    <label>Member Full Name</label>
+    <input id="chamaMemberName" required placeholder="Full name">
 
-<hr>
+    <label>Member Phone Number</label>
+    <input id="chamaMemberPhone" type="tel" required placeholder="WakaunduPay registered phone">
 
-<h3>2. Register Chama Member</h3>
+    <label>Identity Document Type</label>
+    <select id="chamaMemberIdType" required>
+      <option value="">Select document</option>
+      <option value="National ID">National ID</option>
+      <option value="Passport">Passport</option>
+    </select>
 
-<form id="chamaMemberForm">
-<label>Chama Group Name</label>
-<input id="memberChamaName" required placeholder="Registered group name">
+    <label>National ID / Passport Number</label>
+    <input id="chamaMemberIdNumber" required placeholder="Document number">
 
-<label>Member Full Name</label>
-<input id="chamaMemberName" required placeholder="Full name">
+    <label>Member Role</label>
+    <select id="chamaMemberRole" required>
+      <option value="Member">Member</option>
+      <option value="Treasurer">Treasurer</option>
+      <option value="Secretary">Secretary</option>
+    </select>
 
-<label>Member Phone Number</label>
-<input id="chamaMemberPhone" type="tel" required placeholder="Phone number">
+    <button class="action" type="submit">
+      Submit Membership Request
+    </button>
 
-<label>Identity Document Type</label>
-<select id="chamaMemberIdType" required>
-<option value="">Select document</option>
-<option value="National ID">National ID</option>
-<option value="Passport">Passport</option>
-</select>
+  </form>
 
-<label>National ID / Passport Number</label>
-<input id="chamaMemberIdNumber" required placeholder="Document number">
+  <p class="result" id="chamaMemberMessage"></p>
 
-<label>Member Role</label>
-<select id="chamaMemberRole" required>
-<option value="">Select role</option>
-<option>Chairperson</option>
-<option>Treasurer</option>
-<option>Secretary</option>
-<option>Member</option>
-</select>
+  <button type="button" class="back" data-chama-home>
+    Back to Chama List
+  </button>
 
-<button class="action" type="submit">Register Member</button>
-</form>
-<p class="result" id="chamaMemberMessage"></p>
-
-<hr>
+</div>
 
 <h3>3. Record Group Contribution</h3>
 <form id="chamaContributionForm">
