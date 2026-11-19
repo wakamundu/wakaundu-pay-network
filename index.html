@@ -1503,8 +1503,16 @@ document.getElementById("chamaRegistrationForm")
     chairperson: chairperson,
     created: new Date().toISOString()
   };
-
-  const member = {
+const member = {
+  id: "MB" + Date.now(),
+  groupId: group.id,
+  groupName: group.name,
+  name: chairperson,
+  phone: phone,
+  idType: idType,
+  idNumber: idNumber,
+  role: "Chairperson"
+};
 
   const certificate = {
     certificateNumber: "WPG-CH-" + Date.now(),
