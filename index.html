@@ -225,6 +225,62 @@
 #dashboardArtwork .art-growth,
 #dashboardArtwork .art-secure {
   display: none;
+} 
+  
+/* WAKAÛNDŪ PAY PREMIUM MEMBER DASHBOARD */
+#memberDashboardContent {
+  display: none;
+  min-height: 100vh;
+  padding: 20px 15px 35px;
+  color: #ffffff;
+  background:
+    linear-gradient(145deg, rgba(3,12,30,.94), rgba(5,32,65,.88)),
+    url("https://raw.githubusercontent.com/wakamundu/wakaundu-pay-network/main/16c4eab2273b6dde5dbd6138a415a3463c69d15611956b1307589f30f14a2dd2.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+#memberDashboardContent h3 {
+  color: #f3c64e;
+}
+
+#memberDashboardContent .grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+}
+
+#memberDashboardContent .grid button {
+  min-height: 85px;
+  padding: 14px 8px;
+  border: 1px solid #d6ad45;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #102d58, #071629);
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 0 5px 15px rgba(0,0,0,.3);
+}
+
+#memberDashboardContent .grid button:active {
+  transform: scale(.97);
+  background: #17477d;
+}
+
+#memberDashboardContent .balance {
+  padding: 20px;
+  border: 1px solid #d6ad45;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #075c61, #102d58);
+  box-shadow: 0 8px 22px rgba(0,0,0,.3);
+  color: white;
+}
+
+@media (max-width: 360px) {
+  #memberDashboardContent .grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
@@ -287,7 +343,7 @@
   <div class="grid">
     <button data-open="international-banking">🏦 Banking & Financial Growth</button>
     <button data-open="chama">👥 Chama Groups</button>
-    <button data-open="send">💸 Send Money</button>
+    <button data-open="send">💸 Send / Receive Money</button>
     <button data-open="airtime">📱 Buy Airtime</button>
     <button data-open="bills">🧾 Pay Bills</button>
     <button data-open="goods">🛍️ Buy Goods</button>
@@ -1160,7 +1216,6 @@ function restoreLoginSession() {
       });
 
       document.getElementById("publicPortal").style.display = "none";
-      document.getElementById("memberDashboard").style.display = "block";
       document.getElementById("memberDashboardContent").style.display = "block";
 
       document.getElementById("receiveAccountName").textContent =
@@ -1450,7 +1505,6 @@ function showRoleDashboard(dashboardId) {
   });
 
   document.getElementById("publicPortal").style.display = "none";
-  document.getElementById("memberDashboard").style.display = "none";
   document.getElementById("memberDashboardContent").style.display = "none";
 
   document.getElementById(dashboardId).style.display = "block";
@@ -1546,7 +1600,6 @@ function logoutUser() {
     panel.style.display = "none";
   });
 
-  document.getElementById("memberDashboard").style.display = "none";
   document.getElementById("memberDashboardContent").style.display = "none";
 
   // Return to public login portal
@@ -1600,7 +1653,6 @@ saveLoginSession();
   });
 
   document.getElementById("publicPortal").style.display = "none";
-  document.getElementById("memberDashboard").style.display = "block";
   document.getElementById("memberDashboardContent").style.display = "block";
 
   document.getElementById("receiveAccountName").textContent =
@@ -1686,7 +1738,6 @@ const publicPanels = [
   });
 
   if (currentRole === "member") {
-    document.getElementById("memberDashboard").style.display = "none";
     document.getElementById("memberDashboardContent").style.display = "none";
   }
 panel.style.display = "block";
