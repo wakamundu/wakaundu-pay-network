@@ -1192,6 +1192,7 @@ function clearLoginSession() {
 // ==========================================
 // WAKauNduPAY TRANSACTION RECORDING & HISTORY
 // ==========================================
+
 function addTransaction(service, amount) {
   const value = Number(amount);
 
@@ -1204,30 +1205,64 @@ function addTransaction(service, amount) {
   }
 
   const wallet = getWallet();
+  if (!wallet) return false;
 
-  if (!wallet) {
-    return false;
+  // Support existing wallets
+  if (typeof wallet.locked !== "number") {
+    wallet.locked = 0;
   }
 
   const action = String(service).toLowerCase();
 
-  const isWithdrawal = action.includes("withdraw");
-  const isSavings = action.includes("saving");
+  const isDeposit = action.includes("deposit");
+  const isLocked = action.includes("locked");
+  const isSavings = !isLocked && action.includes("saving");
 
-  if ((isWithdrawal || isSavings) && wallet.available < value) {
+  const isOutgoing =
+    action.includes("send") ||
+    action.includes("transfer") ||
+    action.includes("withdraw") ||
+    action.includes("bill") ||
+    action.includes("merchant") ||
+    action.includes("goods") ||
+    action.includes("airtime") ||
+    action.includes("credit");
+
+  // Check sufficient funds before outgoing transactions
+  if ((isOutgoing || isSavings || isLocked) &&
+      wallet.available < value) {
     return false;
   }
 
   const oldAvailable = wallet.available;
   const oldSavings = wallet.savings;
+  const oldLocked = wallet.locked;
 
-  if (isWithdrawal) {
+  // DEPOSIT: Increase available balance
+  if (isDeposit) {
+    wallet.available += value;
+  }
+
+  // LOCKED SAVINGS
+  else if (isLocked) {
+    wallet.available -= value;
+    wallet.locked += value;
+  }
+
+  // PERSONAL SAVINGS
+  else if (isSavings) {
+    wallet.available -= value;
+    wallet.savings += value;
+  }
+
+  // SEND MONEY, TRANSFERS, BILLS, GOODS,
+  // AIRTIME AND WITHDRAWALS
+  else if (isOutgoing) {
     wallet.available -= value;
   }
 
-  if (isSavings) {
-    wallet.available -= value;
-    wallet.savings += value;
+  else {
+    return false;
   }
 
   const transaction = {
@@ -1235,20 +1270,28 @@ function addTransaction(service, amount) {
     service: service,
     amount: value,
     ownerRole: currentRole,
-    ownerId: currentRole === "ceo" ? "CEO" : currentCustomer.id,
-    ownerPhone: currentRole === "member" ? currentCustomer.phone : "",
-    ownerName: currentRole === "ceo" ? "CEO" : currentCustomer.name,
+    ownerId: currentRole === "ceo"
+      ? "CEO"
+      : currentCustomer.id,
+    ownerPhone: currentRole === "member"
+      ? currentCustomer.phone : "",
+    ownerName: currentRole === "ceo"
+      ? "CEO" : currentCustomer.name,
     date: new Date().toISOString(),
     status: "DEMO RECORDED",
     balanceAfter: wallet.available,
-    savingsAfter: wallet.savings
+    savingsAfter: wallet.savings,
+    lockedAfter: wallet.locked
   };
 
   transactions.push(transaction);
 
+  // Save wallet and transaction together as far as
+  // browser localStorage permits.
   if (!save("wakaunduWallets", wallets)) {
     wallet.available = oldAvailable;
     wallet.savings = oldSavings;
+    wallet.locked = oldLocked;
     transactions.pop();
     return false;
   }
@@ -1256,6 +1299,7 @@ function addTransaction(service, amount) {
   if (!save("wakaunduTransactions", transactions)) {
     wallet.available = oldAvailable;
     wallet.savings = oldSavings;
+    wallet.locked = oldLocked;
     transactions.pop();
     save("wakaunduWallets", wallets);
     return false;
@@ -1266,6 +1310,7 @@ function addTransaction(service, amount) {
 
   return true;
 }
+
 
 // DISPLAY TRANSACTION HISTORY
 function renderHistory() {
