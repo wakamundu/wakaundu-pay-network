@@ -1707,7 +1707,10 @@ saveLoginSession();
 
   document.getElementById("receiveAccountNumber").textContent =
     "Demo account number: " + customer.id;
-
+  
+document.getElementById("receiveAccountPhone").textContent =
+  "Registered phone: " + customer.phone;
+  
   result.textContent = "";
 
   this.reset();
