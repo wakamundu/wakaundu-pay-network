@@ -1585,7 +1585,8 @@ document.getElementById("memberLoginForm")
 
   currentRole = "member";
   currentCustomer = customer;
-
+saveLoginSession();
+  
   document.querySelectorAll(".panel").forEach(panel => {
     panel.style.display = "none";
   });
