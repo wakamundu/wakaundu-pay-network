@@ -1610,7 +1610,12 @@ document.querySelectorAll(".panel").forEach(panel => {
 });
 
 function openPanel(id) {
-
+const publicPanels = [
+  "admin-login",
+  "md-login",
+  "member-login",
+  "register"
+];
   const memberAllowed = [
     "send",
     "receive",
