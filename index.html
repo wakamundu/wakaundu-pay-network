@@ -1583,6 +1583,16 @@ function logoutUser() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+// CONNECT LOGOUT BUTTONS
+document.getElementById("ceoLogout")
+  .addEventListener("click", logoutUser);
+
+document.getElementById("mdLogout")
+  .addEventListener("click", logoutUser);
+
+document.getElementById("memberLogout")
+  .addEventListener("click", logoutUser);
+
 // MEMBER LOGIN — DEMO
 document.getElementById("memberLoginForm")
 .addEventListener("submit", function(event) {
