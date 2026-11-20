@@ -340,20 +340,30 @@
 
   <h3>Welcome to Wakaûndū Pay</h3>
   <p>Choose a service below.</p>
+  
+<div class="grid">
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;">
 
-  <div class="grid">
-    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%;">
-    <button data-open="international-banking">🏦 Banking & Financial Growth</button>
-    <button data-open="chama">👥 Chama Groups</button>
-    <button data-open="send">💸 Send / Receive Money</button>
-    <button data-open="airtime">📱 Buy Airtime</button>
-    <button data-open="bills">🧾 Pay Bills</button>
-    <button data-open="goods">🛍️ Buy Goods</button>
-    <button data-open="history">📋 Transactions</button>
-    <button data-open="customer-care">☎️ Customer Care</button>
+    <button class="action" data-open="international-banking" style="padding:10px 5px;font-size:12px;">🏦 Banking & Financial Growth</button>
+
+    <button class="action" data-open="chama" style="padding:10px 5px;font-size:12px;">👥 Chama Groups</button>
+
+    <button class="action" data-open="send" style="padding:10px 5px;font-size:12px;">💸 Send / Receive Money</button>
+
+    <button class="action" data-open="airtime" style="padding:10px 5px;font-size:12px;">📱 Buy Airtime</button>
+
+    <button class="action" data-open="bills" style="padding:10px 5px;font-size:12px;">🧾 Pay Bills</button>
+
+    <button class="action" data-open="goods" style="padding:10px 5px;font-size:12px;">🛍️ Buy Goods</button>
+
+    <button class="action" data-open="history" style="padding:10px 5px;font-size:12px;">📋 Transactions</button>
+
+    <button class="action" data-open="customer-care" style="padding:10px 5px;font-size:12px;">☎️ Customer Care</button>
+
   </div>
+</div>
 
-  <p id="message" aria-live="polite"></p>
+<p id="message" aria-live="polite"></p>
 
 </section>
 
