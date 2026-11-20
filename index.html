@@ -1152,6 +1152,43 @@ function saveLoginSession() {
 function clearLoginSession() {
   localStorage.removeItem("wakaunduLoginSession");
 }
+  function restoreLoginSession() {
+  try {
+    const session = JSON.parse(
+      localStorage.getItem("wakaunduLoginSession") || "null"
+    );
+
+    if (!session || !session.role) return;
+
+    if (session.role === "ceo") {
+      currentRole = "ceo";
+      currentCustomer = null;
+      showRoleDashboard("ceo-dashboard");
+
+    } else if (session.role === "member") {
+      const customer = customers.find(
+        item => item.id === session.customerId
+      );
+
+      if (!customer) return;
+
+      currentRole = "member";
+      currentCustomer = customer;
+      showRoleDashboard("member-dashboard");
+
+    } else if (session.role === "md") {
+      currentRole = "md";
+      currentCustomer = null;
+      showRoleDashboard("md-dashboard");
+    }
+
+    renderBalance();
+    renderHistory();
+
+  } catch (error) {
+    console.error("Session restoration failed:", error);
+  }
+}
 // ==========================================
 // WAKauNduPAY TRANSACTION RECORDING & HISTORY
 // ==========================================
