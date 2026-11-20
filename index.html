@@ -1152,7 +1152,7 @@ function saveLoginSession() {
 function clearLoginSession() {
   localStorage.removeItem("wakaunduLoginSession");
 }
-  function restoreLoginSession() {
+function restoreLoginSession() {
   try {
     const session = JSON.parse(
       localStorage.getItem("wakaunduLoginSession") || "null"
@@ -1170,16 +1170,36 @@ function clearLoginSession() {
         item => item.id === session.customerId
       );
 
-      if (!customer) return;
+      if (!customer || customer.status !== "ACTIVE") {
+        clearLoginSession();
+        return;
+      }
 
       currentRole = "member";
       currentCustomer = customer;
-      showRoleDashboard("member-dashboard");
+
+      document.querySelectorAll(".panel").forEach(panel => {
+        panel.style.display = "none";
+      });
+
+      document.getElementById("publicPortal").style.display = "none";
+      document.getElementById("memberDashboard").style.display = "block";
+      document.getElementById("memberDashboardContent").style.display = "block";
+
+      document.getElementById("receiveAccountName").textContent =
+        customer.name;
+
+      document.getElementById("receiveAccountNumber").textContent =
+        "Demo account number: " + customer.id;
 
     } else if (session.role === "md") {
       currentRole = "md";
       currentCustomer = null;
       showRoleDashboard("md-dashboard");
+
+    } else {
+      clearLoginSession();
+      return;
     }
 
     renderBalance();
@@ -1187,6 +1207,7 @@ function clearLoginSession() {
 
   } catch (error) {
     console.error("Session restoration failed:", error);
+    clearLoginSession();
   }
 }
 // ==========================================
