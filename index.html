@@ -1517,7 +1517,11 @@ document.getElementById("mdLoginForm")
   }
 
   currentRole = "md";
-  currentCustomer = null;
+currentCustomer = null;
+
+saveLoginSession();
+
+result.textContent = "";
 
   result.textContent = "";
   this.reset();
