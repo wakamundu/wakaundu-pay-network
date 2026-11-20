@@ -2607,6 +2607,85 @@ if (!currentRole) {
   renderHistory();
 }
 
+// SHARE MEMBER ACCOUNT DETAILS
+document.getElementById("shareAccountDetails")
+.addEventListener("click", async function() {
+  if (currentRole !== "member" || !currentCustomer) {
+    alert("Please log in to your member account.");
+    return;
+  }
+
+  const details =
+    "WakaunduPay Global Account Details\n" +
+    "Account Name: " + currentCustomer.name + "\n" +
+    "Account Number: " + currentCustomer.id + "\n" +
+    "Registered Phone: " + currentCustomer.phone + "\n" +
+    "Please use these details for a payment.";
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: "WakaunduPay Account Details", text: details });
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        document.getElementById("receiveMessage").textContent =
+          "Sharing was not completed. Please try again.";
+      }
+    }
+  } else {
+    document.getElementById("receiveMessage").textContent = details;
+  }
+});
+
+// PREPARE REQUEST MONEY MESSAGE
+document.getElementById("requestMoneyForm")
+.addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  if (currentRole !== "member" || !currentCustomer) {
+    document.getElementById("requestMoneyMessage").textContent =
+      "Please log in to your member account.";
+    return;
+  }
+
+  const recipient = document.getElementById("requestPhone").value.trim();
+  const amount = Number(document.getElementById("requestAmount").value);
+  const reason = document.getElementById("requestReason").value.trim();
+
+  if (!recipient || !Number.isFinite(amount) || amount <= 0 || !reason) {
+    document.getElementById("requestMoneyMessage").textContent =
+      "Please enter valid request details.";
+    return;
+  }
+
+  const message =
+    "WakaunduPay Global – Payment Request\n" +
+    "From: " + currentCustomer.name + "\n" +
+    "Account: " + currentCustomer.id + "\n" +
+    "Phone: " + currentCustomer.phone + "\n" +
+    "Requested from: " + recipient + "\n" +
+    "Amount: KSh " + amount.toLocaleString("en-KE") + "\n" +
+    "Reason: " + reason + "\n" +
+    "Please contact the requester to arrange payment.";
+
+  const result = document.getElementById("requestMoneyMessage");
+  result.textContent = "Payment request prepared. It has NOT been sent and no payment has been received.";
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "WakaunduPay Payment Request",
+        text: message
+      });
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        result.textContent += " Sharing could not be completed.";
+      }
+    }
+  } else {
+    result.textContent += "\n\n" + message;
+  }
+});
+
 })();
 </script>
   
