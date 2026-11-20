@@ -1525,36 +1525,38 @@ document.getElementById("mdLoginForm")
   showRoleDashboard("md-dashboard");
 });
 
-// LOGOUT FUNCTION
+// LOGOUT FUNCTION — CEO, MD AND MEMBER
 function logoutUser() {
+
+  // Clear saved login session FIRST
+  clearLoginSession();
+
+  // Clear active account
   currentRole = null;
   currentCustomer = null;
 
+  // Clear Chama session if these variables exist
+  currentChamaGroup = null;
+  currentChamaMember = null;
+
+  // Hide every dashboard and panel
   document.querySelectorAll(".panel").forEach(panel => {
     panel.style.display = "none";
   });
 
   document.getElementById("memberDashboard").style.display = "none";
   document.getElementById("memberDashboardContent").style.display = "none";
+
+  // Return to public login portal
   document.getElementById("publicPortal").style.display = "block";
+
+  // Clear login fields
+  document.getElementById("adminLoginForm").reset();
+  document.getElementById("mdLoginForm").reset();
+  document.getElementById("memberLoginForm").reset();
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
-document.getElementById("ceoLogout")
-.addEventListener("click", logoutUser);
-
-document.getElementById("mdLogout")
-.addEventListener("click", logoutUser);
-
-document.getElementById("memberLogout")
-.addEventListener("click", logoutUser);
-const publicPanels = [
-  "admin-login",
-  "md-login",
-  "member-login",
-  "register"
-];
 
 // MEMBER LOGIN — DEMO
 document.getElementById("memberLoginForm")
