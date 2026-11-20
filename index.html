@@ -613,7 +613,35 @@
 
   <button class="back" data-home>Back to Home</button>
 </section>
+<!-- REQUEST MONEY -->
+<section id="request-money" class="panel">
+  <h2>💰 Request Money</h2>
+  <p>Prepare a payment request using your WakaunduPay account.</p>
 
+  <form id="requestMoneyForm">
+    <label>Person's phone number</label>
+    <input id="requestPhone" type="tel"
+      required placeholder="+254712345678">
+
+    <label>Amount requested (KSh)</label>
+    <input id="requestAmount" type="number"
+      min="1" required placeholder="Enter amount">
+
+    <label>Reason for payment</label>
+    <textarea id="requestReason"
+      required placeholder="Why are you requesting payment?"></textarea>
+
+    <button class="action" type="submit">
+      Prepare Payment Request
+    </button>
+  </form>
+
+  <p id="requestMoneyMessage" class="result"></p>
+
+  <button type="button" class="back" data-open="receive">
+    Back to Receive Money
+  </button>
+</section>
 <!-- ACCOUNT SECURITY -->
 <section id="account-secure" class="panel">
   <h2>🔐 Account Security</h2>
