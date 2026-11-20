@@ -2433,9 +2433,12 @@ document.getElementById("callSupport").addEventListener("click", function() {
   message.textContent = "Connecting to Customer Care...";
   window.location.href = "tel:" + SUPPORT_PHONE;
 });
+restoreLoginSession();
 
-renderBalance();
-renderHistory();
+if (!currentRole) {
+  renderBalance();
+  renderHistory();
+}
 
 })();
 </script>
