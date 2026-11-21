@@ -2614,6 +2614,59 @@ document.querySelectorAll("[data-demo-form]").forEach(form => {
   });
 });
 
+/* MEMBER PIN RECOVERY */
+const resetPINButton = document.getElementById("resetMemberPIN");
+
+if (resetPINButton) {
+  resetPINButton.addEventListener("click", function() {
+    if (currentRole !== "member" || !currentCustomer) {
+      alert("Please log in as a member first.");
+      return;
+    }
+
+    const newPIN = prompt("Create your new 4-digit PIN:");
+
+    if (newPIN === null) return;
+
+    if (!/^\d{4}$/.test(newPIN)) {
+      alert("PIN must contain exactly 4 digits.");
+      return;
+    }
+
+    const confirmPIN = prompt("Confirm your new PIN:");
+
+    if (confirmPIN === null) return;
+
+    if (newPIN !== confirmPIN) {
+      alert("PINs do not match.");
+      return;
+    }
+
+    const index = customers.findIndex(
+      item => item.id === currentCustomer.id
+    );
+
+    if (index === -1) {
+      alert("Member account not found.");
+      return;
+    }
+
+    customers[index].pin = newPIN;
+
+    if (!save("wakaunduCustomers", customers)) {
+      alert("Could not save your new PIN.");
+      return;
+    }
+
+    currentCustomer = customers[index];
+    transactionPINAttempts = 0;
+    transactionPINLocked = false;
+    transactionPINVerified = true;
+
+    alert("PIN reset successfully. You can continue using WakaunduPay.");
+  });
+}
+
 /* CUSTOMER CARE CALLBACK REQUEST */
 document.getElementById("callbackForm")
 .addEventListener("submit", function(event) {
