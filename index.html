@@ -2551,7 +2551,7 @@ if (verifyButton) {
   });
 }
 
-/* DEMO SERVICE FORMS */
+/* DEMO SERVICE FORMS WITH MEMBER PIN */
 document.querySelectorAll("[data-demo-form]").forEach(form => {
   form.addEventListener("submit", function(event) {
     event.preventDefault();
@@ -2563,31 +2563,51 @@ document.querySelectorAll("[data-demo-form]").forEach(form => {
     const amount = amountInput ? amountInput.value : "";
     const result = this.parentElement.querySelector(".result");
 
+    if (currentRole === "member") {
+      if (!currentCustomer) {
+        alert("Please log in first.");
+        return;
+      }
+
+      if (transactionPINLocked) {
+        alert("Transactions blocked. Please reset your PIN.");
+        return;
+      }
+
+      if (!transactionPINVerified) {
+        const enteredPIN = prompt("Enter your 4-digit WakaunduPay PIN:");
+
+        if (enteredPIN === null) return;
+
+        if (enteredPIN !== String(currentCustomer.pin)) {
+          transactionPINAttempts++;
+
+          if (transactionPINAttempts >= 3) {
+            transactionPINLocked = true;
+            alert("Three incorrect attempts. Please reset your PIN.");
+          } else {
+            alert("Incorrect PIN. Attempts remaining: " +
+              (3 - transactionPINAttempts));
+          }
+          return;
+        }
+
+        transactionPINVerified = true;
+        transactionPINAttempts = 0;
+      }
+    }
+
     if (!addTransaction(service, amount)) {
       if (result) {
         result.textContent =
-          "Transaction not recorded. Check your available balance, amount or account access.";
+          "Transaction not recorded. Check your balance or account access.";
       }
       return;
     }
 
-    const action = service.toLowerCase();
-
-    if (action.includes("withdraw")) {
+    if (result) {
       result.textContent =
-        "Withdrawal recorded. Your available demo wallet balance has been reduced.";
-    } else if (action.includes("locked")) {
-      result.textContent =
-        "Locked savings recorded. Money has moved from available balance into locked savings.";
-    } else if (action.includes("saving")) {
-      result.textContent =
-        "Savings recorded. Money has moved from available balance into personal savings.";
-    } else if (action.includes("deposit")) {
-      result.textContent =
-        "Demo deposit recorded. Your available demo balance has increased. No real money was received.";
-    } else {
-      result.textContent =
-        service + " recorded in demo history. No real money was moved.";
+        service + " recorded in demo mode. No real money moved.";
     }
 
     this.reset();
