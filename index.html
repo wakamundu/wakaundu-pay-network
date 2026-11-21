@@ -1186,6 +1186,10 @@ let wallets = getSaved("wakaunduWallets", {});
 let currentRole = null;
 let currentCustomer = null;
 
+let transactionPINVerified = false;
+let transactionPINAttempts = 0;
+let transactionPINLocked = false;
+
 let chamaGroups = getSaved("wakaunduChamas", []);
 let chamaMembers = getSaved("wakaunduChamaMembers", []);
 let chamaContributions = getSaved("wakaunduChamaContributions", []);
