@@ -1716,7 +1716,11 @@ document.getElementById("mdLoginForm")
 /* LOGOUT FUNCTION */
 function logoutUser() {
   clearLoginSession();
-
+  
+transactionPINVerified = false;
+transactionPINAttempts = 0;
+transactionPINLocked = false;
+  
   currentRole = null;
   currentCustomer = null;
   currentChamaGroup = null;
