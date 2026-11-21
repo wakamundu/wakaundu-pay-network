@@ -1433,23 +1433,6 @@ function updateReceivingDetails(customer) {
     "Registered phone: " + customer.phone;
 }
 
-/* RECORD TRANSACTIONS — PIN PROTECTED */
-function addTransaction(service, amount, pin) {
-  const value = Number(amount);
-
-  if (!Number.isFinite(value) || value <= 0) {
-    alert("Enter a valid amount.");
-    return false;
-  }
-
-  if (currentRole !== "ceo" && currentRole !== "member") {
-    alert("Access denied.");
-    return false;
-  }
-// Verify member PIN before processing
-if (currentRole === "member" && !verifyTransactionPIN()) {
-  return false;
-}
   /* RECORD TRANSACTIONS — PIN PROTECTED */
 function addTransaction(service, amount) {
   const value = Number(amount);
