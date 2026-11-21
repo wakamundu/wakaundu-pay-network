@@ -68,7 +68,6 @@ It is not a secure remote banking administration system.
 
 <div class="card">
 <h2>Export Reports</h2>
-<button onclick="exportData('customers')">Export Customers CSV</button>
 <button onclick="exportData('transactions')">Export Transactions CSV</button>
 <button onclick="exportData('chama')">Export Chama CSV</button>
 <button onclick="exportData('callbacks')">Export Callbacks CSV</button>
@@ -121,6 +120,10 @@ makeTable(customers.map(c => ({
 }
 
 function exportData(type){
+  if(type === "customers"){
+  alert("Customer export is disabled to protect PINs and personal information.");
+  return;
+ }
  const keys={
  customers:"wakaunduCustomers",
  transactions:"wakaunduTransactions",
