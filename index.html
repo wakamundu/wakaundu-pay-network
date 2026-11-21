@@ -2551,39 +2551,6 @@ if (verifyButton) {
   });
 }
 
-if (currentRole === "member") {
-  if (!currentCustomer) {
-    alert("Please log in first.");
-    return;
-  }
-
-  if (transactionPINLocked) {
-    alert("Transactions blocked. Please reset your PIN.");
-    return;
-  }
-
-  const enteredPIN = prompt(
-    "Enter your 4-digit WakaunduPay PIN to confirm " + service + ":"
-  );
-
-  if (enteredPIN === null) return;
-
-  if (enteredPIN !== String(currentCustomer.pin)) {
-    transactionPINAttempts++;
-
-    if (transactionPINAttempts >= 3) {
-      transactionPINLocked = true;
-      alert("Three incorrect attempts. Please reset your PIN.");
-    } else {
-      alert("Incorrect PIN. Attempts remaining: " +
-        (3 - transactionPINAttempts));
-    }
-    return;
-  }
-
-  transactionPINAttempts = 0;
-}
-
 /* WAKauNduPAY MEMBER PIN SECURITY + BANKING TRANSACTIONS */
 
 function verifyTransactionPIN(service) {
