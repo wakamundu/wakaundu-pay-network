@@ -2551,68 +2551,39 @@ if (verifyButton) {
   });
 }
 
-/* DEMO SERVICE FORMS WITH MEMBER PIN */
-document.querySelectorAll("[data-demo-form]").forEach(form => {
-  form.addEventListener("submit", function(event) {
-    event.preventDefault();
+if (currentRole === "member") {
+  if (!currentCustomer) {
+    alert("Please log in first.");
+    return;
+  }
 
-    if (!this.reportValidity()) return;
+  if (transactionPINLocked) {
+    alert("Transactions blocked. Please reset your PIN.");
+    return;
+  }
 
-    const service = this.dataset.service;
-    const amountInput = this.querySelector('input[type="number"]');
-    const amount = amountInput ? amountInput.value : "";
-    const result = this.parentElement.querySelector(".result");
+  const enteredPIN = prompt(
+    "Enter your 4-digit WakaunduPay PIN to confirm " + service + ":"
+  );
 
-    if (currentRole === "member") {
-      if (!currentCustomer) {
-        alert("Please log in first.");
-        return;
-      }
+  if (enteredPIN === null) return;
 
-      if (transactionPINLocked) {
-        alert("Transactions blocked. Please reset your PIN.");
-        return;
-      }
+  if (enteredPIN !== String(currentCustomer.pin)) {
+    transactionPINAttempts++;
 
-      if (!transactionPINVerified) {
-        const enteredPIN = prompt("Enter your 4-digit WakaunduPay PIN:");
-
-        if (enteredPIN === null) return;
-
-        if (enteredPIN !== String(currentCustomer.pin)) {
-          transactionPINAttempts++;
-
-          if (transactionPINAttempts >= 3) {
-            transactionPINLocked = true;
-            alert("Three incorrect attempts. Please reset your PIN.");
-          } else {
-            alert("Incorrect PIN. Attempts remaining: " +
-              (3 - transactionPINAttempts));
-          }
-          return;
-        }
-
-        transactionPINVerified = true;
-        transactionPINAttempts = 0;
-      }
+    if (transactionPINAttempts >= 3) {
+      transactionPINLocked = true;
+      alert("Three incorrect attempts. Please reset your PIN.");
+    } else {
+      alert("Incorrect PIN. Attempts remaining: " +
+        (3 - transactionPINAttempts));
     }
+    return;
+  }
 
-    if (!addTransaction(service, amount)) {
-      if (result) {
-        result.textContent =
-          "Transaction not recorded. Check your balance or account access.";
-      }
-      return;
-    }
+  transactionPINAttempts = 0;
+}
 
-    if (result) {
-      result.textContent =
-        service + " recorded in demo mode. No real money moved.";
-    }
-
-    this.reset();
-  });
-});
 
 /* MEMBER PIN RECOVERY */
 const resetPINButton = document.getElementById("resetMemberPIN");
