@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -119,33 +120,84 @@ button {
 }
 
 /* GENERAL TWO-COLUMN SERVICE GRID */
-  
-.grid {
-    
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 9px;
+  gap: 14px;
   width: 100%;
-  margin: 12px auto;
+  margin: 18px auto;
   align-items: stretch;
 }
 
 .grid button {
   width: 100%;
   min-width: 0;
-  min-height: 48px;
-  padding: 9px 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 8px;
   text-align: center;
-  line-height: 1.25;
-  font-size: 12px;
-  border-radius: 10px;
+  line-height: 1.4;
   box-sizing: border-box;
+  min-height: 65px;
+}
+
+.panel {
+  display: none;
+  background: rgba(3, 16, 35, .94);
+  border: 1px solid rgba(198,154,54,.55);
+  border-radius: 15px;
+  padding: 18px;
+  margin: 15px auto;
+  color: #fff;
+}
+
+.panel h2, .panel h3 {
+  color: #f3c64e;
+}
+
+.result {
+  color: #f3c64e;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.service-card {
+  background: #123f69;
+  border: 1px solid #c69a36;
+  border-radius: 12px;
+  padding: 14px;
+  margin: 12px 0;
+}
+
+.balance {
+  padding: 12px;
+  border: 1px solid #d6ad45;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #075c61, #102d58);
+  box-shadow: 0 5px 15px rgba(0,0,0,.3);
+  color: white;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.balance h3 {
+  color: #fff;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #c69a36;
+  margin: 18px 0;
+}
+
+footer {
+  text-align: center;
+  padding: 25px 12px;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.8;
 }
 
 /* MEMBER DASHBOARD */
@@ -1132,59 +1184,6 @@ let wallets = getSaved("wakaunduWallets", {});
 
 let currentRole = null;
 let currentCustomer = null;
-  /* WAKauNduPAY MEMBER PIN SECURITY */
-let pinVerifiedUntil = 0;
-let pinFailedAttempts = 0;
-let pinLocked = false;
-
-const PIN_SESSION_TIME = 5 * 60 * 1000;
-const MAX_PIN_ATTEMPTS = 3;
-
-function clearPinSession() {
-  pinVerifiedUntil = 0;
-}
-
-function verifyTransactionPIN() {
-  if (currentRole !== "member" || !currentCustomer) {
-    return currentRole === "ceo";
-  }
-
-  if (pinLocked) {
-    alert("Your transactions are blocked. Reset your PIN to continue.");
-    return false;
-  }
-
-  if (Date.now() < pinVerifiedUntil) {
-    return true;
-  }
-
-  const enteredPIN = prompt("Enter your 4-digit WakaunduPay PIN:");
-
-  if (enteredPIN === null) return false;
-
-  if (!/^\d{4}$/.test(enteredPIN) ||
-      enteredPIN !== String(currentCustomer.pin)) {
-
-    pinFailedAttempts++;
-
-    if (pinFailedAttempts >= MAX_PIN_ATTEMPTS) {
-      pinLocked = true;
-      clearPinSession();
-      alert("Account transaction access blocked after 3 incorrect PIN attempts. Please reset your PIN.");
-    } else {
-      alert("Incorrect PIN. Attempts remaining: " +
-        (MAX_PIN_ATTEMPTS - pinFailedAttempts));
-    }
-
-    return false;
-  }
-
-  pinFailedAttempts = 0;
-  pinVerifiedUntil = Date.now() + PIN_SESSION_TIME;
-
-  alert("PIN verified. You can use financial services for 5 minutes.");
-  return true;
-}
 
 let chamaGroups = getSaved("wakaunduChamas", []);
 let chamaMembers = getSaved("wakaunduChamaMembers", []);
@@ -1433,21 +1432,13 @@ function updateReceivingDetails(customer) {
     "Registered phone: " + customer.phone;
 }
 
-  /* RECORD TRANSACTIONS — PIN PROTECTED */
+/* RECORD TRANSACTIONS */
 function addTransaction(service, amount) {
   const value = Number(amount);
 
-  if (!Number.isFinite(value) || value <= 0) {
-    alert("Enter a valid amount.");
-    return false;
-  }
+  if (!Number.isFinite(value) || value <= 0) return false;
 
   if (currentRole !== "ceo" && currentRole !== "member") {
-    alert("Access denied.");
-    return false;
-  }
-
-  if (currentRole === "member" && !verifyTransactionPIN()) {
     return false;
   }
 
@@ -1472,7 +1463,6 @@ function addTransaction(service, amount) {
 
   if ((isOutgoing || isSavings || isLocked) &&
       wallet.available < value) {
-    alert("Insufficient available balance.");
     return false;
   }
 
@@ -1530,9 +1520,66 @@ function addTransaction(service, amount) {
 
   renderBalance();
   renderHistory();
-  alert("Transaction recorded successfully.");
   return true;
-}  
+}
+
+/* DISPLAY TRANSACTION HISTORY */
+function renderHistory() {
+  const list = document.getElementById("transactionList");
+  if (!list) return;
+
+  list.replaceChildren();
+
+  let records = [];
+
+  if (currentRole === "member" && currentCustomer) {
+    records = transactions.filter(item =>
+      item.ownerPhone === currentCustomer.phone
+    );
+  } else if (currentRole === "ceo" || currentRole === "md") {
+    records = transactions;
+  } else {
+    list.textContent = "Please log in to view transaction history.";
+    return;
+  }
+
+  if (records.length === 0) {
+    list.textContent = "No transaction history available.";
+    return;
+  }
+
+  records.slice().reverse().forEach(item => {
+    const card = document.createElement("div");
+
+    card.style.cssText =
+      "background:#123f69;padding:14px;margin:10px 0;" +
+      "border:1px solid #c69a36;border-radius:10px;";
+
+    const heading = document.createElement("strong");
+    heading.textContent = item.service;
+
+    const owner = document.createElement("p");
+    owner.textContent = item.ownerName
+      ? "Member: " + item.ownerName
+      : "Management transaction";
+
+    const amount = document.createElement("p");
+    amount.textContent =
+      "Amount: KSh " +
+      Number(item.amount).toLocaleString("en-KE");
+
+    const date = document.createElement("small");
+    date.textContent =
+      "Date: " + new Date(item.date).toLocaleString("en-KE");
+
+    const status = document.createElement("p");
+    status.textContent = item.status || "DEMO RECORDED";
+
+    card.append(heading, owner, amount, date, status);
+    list.appendChild(card);
+  });
+}
+
 /* CEO AND MANAGING DIRECTOR DEMO LOGIN */
 const CEO_USERNAME = "ceo";
 const CEO_PASSWORD = "ChangeMe123!";
@@ -2492,10 +2539,10 @@ if (verifyButton) {
       "VERIFIED: " + certificate.chamaName +
       " | Chairperson: " + certificate.chairpersonName +
       " | Certificate: " + certificate.certificateNumber;
-     });
+  });
 }
- 
-/* TRANSACTION PIN POP-UP — 5-MINUTE VERIFIED SESSION */
+
+/* DEMO SERVICE FORMS */
 document.querySelectorAll("[data-demo-form]").forEach(form => {
   form.addEventListener("submit", function(event) {
     event.preventDefault();
@@ -2505,34 +2552,38 @@ document.querySelectorAll("[data-demo-form]").forEach(form => {
     const service = this.dataset.service;
     const amountInput = this.querySelector('input[type="number"]');
     const amount = amountInput ? amountInput.value : "";
+    const result = this.parentElement.querySelector(".result");
 
-    if (currentRole === "member" && !verifyTransactionPIN()) {
+    if (!addTransaction(service, amount)) {
+      if (result) {
+        result.textContent =
+          "Transaction not recorded. Check your available balance, amount or account access.";
+      }
       return;
     }
 
-    processTransaction(this, service, amount);
+    const action = service.toLowerCase();
+
+    if (action.includes("withdraw")) {
+      result.textContent =
+        "Withdrawal recorded. Your available demo wallet balance has been reduced.";
+    } else if (action.includes("locked")) {
+      result.textContent =
+        "Locked savings recorded. Money has moved from available balance into locked savings.";
+    } else if (action.includes("saving")) {
+      result.textContent =
+        "Savings recorded. Money has moved from available balance into personal savings.";
+    } else if (action.includes("deposit")) {
+      result.textContent =
+        "Demo deposit recorded. Your available demo balance has increased. No real money was received.";
+    } else {
+      result.textContent =
+        service + " recorded in demo history. No real money was moved.";
+    }
+
+    this.reset();
   });
 });
-
-function processTransaction(form, service, amount) {
-  const result = form.parentElement.querySelector(".result");
-
-  if (!addTransaction(service, amount)) {
-    if (result) {
-      result.textContent =
-        "Transaction rejected. Check your PIN, amount or available balance.";
-    }
-    return;
-  }
-
-  if (result) {
-    result.textContent =
-      service + " recorded in demo transaction history. No real money was moved.";
-  }
-
-  form.reset();
-}
-
 
 /* CUSTOMER CARE CALLBACK REQUEST */
 document.getElementById("callbackForm")
