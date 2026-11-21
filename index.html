@@ -1379,14 +1379,31 @@ function updateReceivingDetails(customer) {
     "Registered phone: " + customer.phone;
 }
 
-/* RECORD TRANSACTIONS */
-function addTransaction(service, amount) {
+/* RECORD TRANSACTIONS — PIN PROTECTED */
+function addTransaction(service, amount, pin) {
   const value = Number(amount);
 
-  if (!Number.isFinite(value) || value <= 0) return false;
+  if (!Number.isFinite(value) || value <= 0) {
+    alert("Enter a valid amount.");
+    return false;
+  }
 
   if (currentRole !== "ceo" && currentRole !== "member") {
+    alert("Access denied.");
     return false;
+  }
+
+  // Verify member PIN before processing
+  if (currentRole === "member") {
+    if (!currentCustomer || !/^\d{4}$/.test(String(pin || ""))) {
+      alert("Enter your 4-digit PIN.");
+      return false;
+    }
+
+    if (String(currentCustomer.pin) !== String(pin)) {
+      alert("Incorrect PIN. Transaction cancelled.");
+      return false;
+    }
   }
 
   const wallet = getWallet();
@@ -1410,6 +1427,7 @@ function addTransaction(service, amount) {
 
   if ((isOutgoing || isSavings || isLocked) &&
       wallet.available < value) {
+    alert("Insufficient available balance.");
     return false;
   }
 
@@ -1467,6 +1485,7 @@ function addTransaction(service, amount) {
 
   renderBalance();
   renderHistory();
+  alert("Transaction recorded successfully.");
   return true;
 }
 
