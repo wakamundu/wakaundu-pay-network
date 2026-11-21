@@ -2495,7 +2495,7 @@ if (verifyButton) {
      });
 }
  
-/* TRANSACTION PIN POP-UP */
+/* TRANSACTION PIN POP-UP — 5-MINUTE VERIFIED SESSION */
 document.querySelectorAll("[data-demo-form]").forEach(form => {
   form.addEventListener("submit", function(event) {
     event.preventDefault();
@@ -2506,28 +2506,18 @@ document.querySelectorAll("[data-demo-form]").forEach(form => {
     const amountInput = this.querySelector('input[type="number"]');
     const amount = amountInput ? amountInput.value : "";
 
-    if (currentRole === "member") {
-      const pin = prompt("Enter your registered 4-digit Member PIN:");
-
-      if (pin === null) return;
-
-      if (!/^\d{4}$/.test(pin)) {
-        alert("Please enter exactly 4 digits.");
-        return;
-      }
-
-      processTransaction(this, service, amount, pin);
+    if (currentRole === "member" && !verifyTransactionPIN()) {
       return;
     }
 
-    processTransaction(this, service, amount, "");
+    processTransaction(this, service, amount);
   });
 });
 
-function processTransaction(form, service, amount, pin) {
+function processTransaction(form, service, amount) {
   const result = form.parentElement.querySelector(".result");
 
-  if (!addTransaction(service, amount, pin)) {
+  if (!addTransaction(service, amount)) {
     if (result) {
       result.textContent =
         "Transaction rejected. Check your PIN, amount or available balance.";
@@ -2542,6 +2532,7 @@ function processTransaction(form, service, amount, pin) {
 
   form.reset();
 }
+
 
 /* CUSTOMER CARE CALLBACK REQUEST */
 document.getElementById("callbackForm")
