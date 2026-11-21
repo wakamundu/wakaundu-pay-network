@@ -2584,8 +2584,92 @@ if (currentRole === "member") {
   transactionPINAttempts = 0;
 }
 
+/* WAKauNduPAY MEMBER PIN SECURITY + BANKING TRANSACTIONS */
 
-/* MEMBER PIN RECOVERY */
+function verifyTransactionPIN(service) {
+  if (currentRole === "ceo") return true;
+
+  if (currentRole !== "member" || !currentCustomer) {
+    alert("Please log in as a member first.");
+    return false;
+  }
+
+  if (transactionPINLocked) {
+    alert("Transactions are locked. Please reset your PIN while logged in.");
+    return false;
+  }
+
+  const enteredPIN = prompt(
+    "Enter your 4-digit WakaunduPay PIN to confirm " + service + ":"
+  );
+
+  if (enteredPIN === null) return false;
+
+  if (enteredPIN !== String(currentCustomer.pin)) {
+    transactionPINAttempts++;
+
+    if (transactionPINAttempts >= 3) {
+      transactionPINLocked = true;
+      alert("Three incorrect attempts. Transactions are locked. Reset your PIN while logged in.");
+    } else {
+      alert("Incorrect PIN. Attempts remaining: " +
+        (3 - transactionPINAttempts));
+    }
+
+    return false;
+  }
+
+  transactionPINAttempts = 0;
+  return true;
+}
+
+
+/* BANKING FORMS — VERIFY PIN BEFORE RECORDING */
+
+document.querySelectorAll("form[data-demo-form]").forEach(form => {
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    if (!this.reportValidity()) return;
+
+    if (currentRole !== "member" && currentRole !== "ceo") {
+      alert("Please log in first.");
+      return;
+    }
+
+    const service = this.dataset.service || "Banking transaction";
+
+    if (!verifyTransactionPIN(service)) return;
+
+    const amountField = this.querySelector('input[type="number"]');
+    const amount = amountField ? Number(amountField.value) : NaN;
+    const result = this.parentElement.querySelector(".result");
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      if (result) result.textContent = "Enter a valid amount.";
+      return;
+    }
+
+    if (!addTransaction(service, amount)) {
+      if (result) {
+        result.textContent =
+          "Transaction failed. Check your available demo balance.";
+      }
+      return;
+    }
+
+    if (result) {
+      result.textContent =
+        service + " recorded in demo mode. No real money was moved.";
+    }
+
+    this.reset();
+  });
+});
+
+
+/* MEMBER PIN RECOVERY / RESET */
+
 const resetPINButton = document.getElementById("resetMemberPIN");
 
 if (resetPINButton) {
@@ -2625,16 +2709,16 @@ if (resetPINButton) {
     customers[index].pin = newPIN;
 
     if (!save("wakaunduCustomers", customers)) {
-      alert("Could not save your new PIN.");
+      alert("Could not save your new PIN. Please try again.");
       return;
     }
 
     currentCustomer = customers[index];
     transactionPINAttempts = 0;
     transactionPINLocked = false;
-    transactionPINVerified = true;
+    transactionPINVerified = false;
 
-    alert("PIN reset successfully. You can continue using WakaunduPay.");
+    alert("PIN reset successfully. Your next transaction will ask for your new PIN.");
   });
 }
 
