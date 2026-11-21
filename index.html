@@ -2508,22 +2508,56 @@ if (verifyButton) {
   });
 }
 
-/* DEMO SERVICE FORMS */
+/* DEMO SERVICE FORMS — MEMBER PIN REQUIRED */
+
 document.querySelectorAll("[data-demo-form]").forEach(form => {
+
+  // Create the PIN field automatically
+  if (!form.querySelector(".transaction-pin")) {
+    const pinLabel = document.createElement("label");
+    pinLabel.textContent = "Enter your 4-digit Member PIN";
+
+    const pinInput = document.createElement("input");
+    pinInput.type = "password";
+    pinInput.inputMode = "numeric";
+    pinInput.maxLength = 4;
+    pinInput.pattern = "[0-9]{4}";
+    pinInput.autocomplete = "off";
+    pinInput.placeholder = "Enter registered PIN";
+    pinInput.className = "transaction-pin";
+
+    const submitButton = form.querySelector(
+      'button[type="submit"], button:not([type])'
+    );
+
+    if (submitButton) {
+      form.insertBefore(pinLabel, submitButton);
+      form.insertBefore(pinInput, submitButton);
+    }
+  }
+
   form.addEventListener("submit", function(event) {
     event.preventDefault();
+
+    const pinInput = this.querySelector(".transaction-pin");
+
+    if (pinInput) {
+      pinInput.required = currentRole === "member";
+    }
 
     if (!this.reportValidity()) return;
 
     const service = this.dataset.service;
     const amountInput = this.querySelector('input[type="number"]');
     const amount = amountInput ? amountInput.value : "";
+    const pin = pinInput ? pinInput.value : "";
+
     const result = this.parentElement.querySelector(".result");
 
-    if (!addTransaction(service, amount)) {
+    if (!addTransaction(service, amount, pin)) {
       if (result) {
         result.textContent =
-          "Transaction not recorded. Check your available balance, amount or account access.";
+          "Transaction rejected. Check your PIN, amount, balance or account access.";
       }
       return;
     }
@@ -2531,20 +2565,17 @@ document.querySelectorAll("[data-demo-form]").forEach(form => {
     const action = service.toLowerCase();
 
     if (action.includes("withdraw")) {
-      result.textContent =
-        "Withdrawal recorded. Your available demo wallet balance has been reduced.";
+      result.textContent = "Demo withdrawal recorded.";
     } else if (action.includes("locked")) {
-      result.textContent =
-        "Locked savings recorded. Money has moved from available balance into locked savings.";
+      result.textContent = "Demo locked savings recorded.";
     } else if (action.includes("saving")) {
-      result.textContent =
-        "Savings recorded. Money has moved from available balance into personal savings.";
+      result.textContent = "Demo personal savings recorded.";
     } else if (action.includes("deposit")) {
       result.textContent =
-        "Demo deposit recorded. Your available demo balance has increased. No real money was received.";
+        "Demo deposit recorded. No real money was received.";
     } else {
       result.textContent =
-        service + " recorded in demo history. No real money was moved.";
+        service + " recorded in demo transaction history.";
     }
 
     this.reset();
