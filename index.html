@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,34 +15,30 @@
 <title>Wakaûndū Pay Network Africa</title>
 
 <style>
-@media print {
-  body * {
-    visibility: hidden !important;
-  }
-
-  #chamaCertificate,
-  #chamaCertificate * {
-    visibility: visible !important;
-  }
-
-  #chamaCertificate {
-    display: block !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 20px !important;
-    background: white !important;
-    color: black !important;
-    box-sizing: border-box !important;
-  }
-
-  button {
-    display: none !important;
-  }
+* {
+  box-sizing: border-box;
 }
-  .top-header {
+
+body {
+  margin: 0;
+  background-color: #071b2e;
+  background-image: url("https://raw.githubusercontent.com/wakamundu/wakaundu-pay-network/main/a0c093311f46bf884617217104de5f1f00d08c6ba0be818871d45ee22b6b69fd.png");
+  background-position: center top;
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+main {
+  width: 100%;
+  max-width: 850px;
+  margin: auto;
+  padding: 10px;
+}
+
+.top-header {
   background: linear-gradient(135deg, #071b2e, #123f69);
   color: #fff;
   text-align: center;
@@ -65,17 +62,64 @@
   color: #fff;
   font-size: 13px;
 }
-  body {
-  background-color: #071b2e;
-  background-image: url("https://raw.githubusercontent.com/wakamundu/wakaundu-pay-network/main/a0c093311f46bf884617217104de5f1f00d08c6ba0be818871d45ee22b6b69fd.png");
-  background-position: center top;
-  background-size: cover;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  color: #fff;
+
+/* GENERAL FORM ELEMENTS */
+label {
+  display: block;
+  margin: 13px 0 6px;
+  font-weight: bold;
+  color: #f3c64e;
 }
 
-/* WAKauNduPAY GLOBAL SERVICE GRID */
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #c69a36;
+  border-radius: 9px;
+  background: #fff;
+  color: #071b2e;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+textarea {
+  min-height: 85px;
+  resize: vertical;
+}
+
+button {
+  cursor: pointer;
+}
+
+.action, .back, .register-btn {
+  background: linear-gradient(135deg, #123f69, #071b2e);
+  color: #fff;
+  border: 1px solid #c69a36;
+  border-radius: 12px;
+  padding: 13px;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 6px 0;
+  box-shadow: 0 5px 14px rgba(0,0,0,.25);
+}
+
+.action:active, .back:active, .register-btn:active {
+  background: linear-gradient(135deg, #c69a36, #e6c46a);
+  color: #071b2e;
+  transform: scale(.97);
+}
+
+.back {
+  width: 100%;
+  margin-top: 18px;
+}
+
+.register-btn {
+  min-height: 65px;
+  width: 100%;
+}
+
+/* GENERAL TWO-COLUMN SERVICE GRID */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -96,6 +140,130 @@
   text-align: center;
   line-height: 1.4;
   box-sizing: border-box;
+  min-height: 65px;
+}
+
+.panel {
+  display: none;
+  background: rgba(3, 16, 35, .94);
+  border: 1px solid rgba(198,154,54,.55);
+  border-radius: 15px;
+  padding: 18px;
+  margin: 15px auto;
+  color: #fff;
+}
+
+.panel h2, .panel h3 {
+  color: #f3c64e;
+}
+
+.result {
+  color: #f3c64e;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.service-card {
+  background: #123f69;
+  border: 1px solid #c69a36;
+  border-radius: 12px;
+  padding: 14px;
+  margin: 12px 0;
+}
+
+.balance {
+  padding: 12px;
+  border: 1px solid #d6ad45;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #075c61, #102d58);
+  box-shadow: 0 5px 15px rgba(0,0,0,.3);
+  color: white;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.balance h3 {
+  color: #fff;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #c69a36;
+  margin: 18px 0;
+}
+
+footer {
+  text-align: center;
+  padding: 25px 12px;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* MEMBER DASHBOARD */
+#memberDashboardContent {
+  display: none;
+  min-height: 100vh;
+  padding: 16px 12px 30px;
+  color: #fff;
+  background:
+    linear-gradient(145deg, rgba(3,12,30,.94), rgba(5,32,65,.88)),
+    url("https://raw.githubusercontent.com/wakamundu/wakaundu-pay-network/main/16c4eab2273b6dde5dbd6138a415a3463c69d15611956b1307589f30f14a2dd2.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  border-radius: 15px;
+}
+
+#memberDashboardContent h3 {
+  color: #f3c64e;
+}
+
+#memberDashboardContent .grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+  margin: 14px 0;
+}
+
+#memberDashboardContent .grid button {
+  min-height: 65px;
+  padding: 10px 5px;
+  border: 1px solid #d6ad45;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #102d58, #071629);
+  color: #fff;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 1.35;
+  box-shadow: 0 5px 15px rgba(0,0,0,.3);
+}
+
+#memberDashboardContent .grid button:active {
+  transform: scale(.97);
+  background: #17477d;
+}
+
+#memberDashboardContent .balance {
+  padding: 10px 8px;
+  min-height: 75px;
+  border: 1px solid #d6ad45;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #075c61, #102d58);
+  box-shadow: 0 5px 15px rgba(0,0,0,.3);
+  color: white;
+}
+
+#memberDashboardContent .balance small {
+  font-size: 11px;
+}
+
+#memberDashboardContent .balance h3 {
+  font-size: 15px !important;
+  font-weight: 600;
+  margin: 5px 0;
+  color: #fff;
 }
 
 @media (max-width: 360px) {
@@ -103,34 +271,22 @@
     gap: 9px;
   }
 
-  .grid button {
-    padding: 13px 6px;
-    font-size: 12px;
+  #memberDashboardContent {
+    padding: 12px 8px 25px;
+  }
+
+  #memberDashboardContent .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  #memberDashboardContent .grid button {
+    padding: 9px 4px;
+    font-size: 11px;
   }
 }
 
-.grid button,
-.register-btn {
-  background: linear-gradient(135deg, #123f69, #071b2e);
-  color: #fff;
-  border: 1px solid #c69a36;
-  border-radius: 14px;
-  padding: 17px 10px;
-  font-weight: bold;
-  font-size: 14px;
-  min-height: 65px;
-  box-shadow: 0 5px 14px rgba(0,0,0,.35);
-  transition: all .2s ease;
-}
-
-.grid button:active,
-.register-btn:active {
-  background: linear-gradient(135deg, #c69a36, #e6c46a);
-  color: #071b2e;
-  transform: scale(.97);
-}
-
-/* CLICKABLE ARTWORK */
+/* CLICKABLE DASHBOARD ARTWORK */
 #dashboardArtwork {
   position: relative;
   width: 100%;
@@ -225,61 +381,43 @@
 #dashboardArtwork .art-growth,
 #dashboardArtwork .art-secure {
   display: none;
-} 
-  
-/* WAKAÛNDŪ PAY PREMIUM MEMBER DASHBOARD */
-#memberDashboardContent {
-  display: none;
-  min-height: 100vh;
-  padding: 20px 15px 35px;
-  color: #ffffff;
-  background:
-    linear-gradient(145deg, rgba(3,12,30,.94), rgba(5,32,65,.88)),
-    url("https://raw.githubusercontent.com/wakamundu/wakaundu-pay-network/main/16c4eab2273b6dde5dbd6138a415a3463c69d15611956b1307589f30f14a2dd2.png");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
 }
 
-#memberDashboardContent h3 {
-  color: #f3c64e;
-}
+/* PRINT CHAMA CERTIFICATE */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
 
-#memberDashboardContent .grid {
-  display: grid;
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
-  gap: 13px;
-}
+  #chama,
+  #chamaRegisterView,
+  #chamaCertificate {
+    display: block !important;
+  }
 
-#memberDashboardContent .grid button {
-  min-height: 85px;
-  padding: 14px 8px;
-  border: 1px solid #d6ad45;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #102d58, #071629);
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 14px;
-  box-shadow: 0 5px 15px rgba(0,0,0,.3);
-}
+  #chamaCertificate,
+  #chamaCertificate * {
+    visibility: visible !important;
+  }
 
-#memberDashboardContent .grid button:active {
-  transform: scale(.97);
-  background: #17477d;
-}
+  #chamaCertificate {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    background: white !important;
+    color: black !important;
+    box-sizing: border-box !important;
+  }
 
-#memberDashboardContent .balance {
-  padding: 20px;
-  border: 1px solid #d6ad45;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #075c61, #102d58);
-  box-shadow: 0 8px 22px rgba(0,0,0,.3);
-  color: white;
-}
+  #chamaCertificate h3 {
+    color: black !important;
+  }
 
-@media (max-width: 360px) {
-  #memberDashboardContent .grid {
-    grid-template-columns: 1fr;
+  button {
+    display: none !important;
   }
 }
 </style>
@@ -298,63 +436,59 @@
 
 <!-- PUBLIC ACCESS PORTAL -->
 <section id="publicPortal" style="text-align:center;padding:20px 10px;">
-
   <h2 style="color:#d6ad45;">SECURE PLATFORM ACCESS</h2>
   <p>Welcome to WakaunduPay Global</p>
-  
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
     <button class="register-btn" data-open="admin-login">
       🛡️ ADMIN LOGIN
     </button>
-    
+
     <button class="register-btn" data-open="md-login">
-  🏢 MANAGING DIRECTOR LOGIN
-</button>
-    
+      🏢 MANAGING DIRECTOR LOGIN
+    </button>
+
     <button class="register-btn" data-open="member-login">
       👤 MEMBER LOGIN/MEMBER REGISTRATION
     </button>
-
   </div>
-
 </section>
 
 <!-- MEMBER DASHBOARD CONTENT -->
 <section id="memberDashboardContent" style="display:none;">
 
-  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%;">
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;">
 
-    <!-- ACCOUNT BALANCE -->
     <div class="balance">
       <small>ACCOUNT BALANCE</small>
-      <h3 id="accountBalance" style="font-size:16px;font-weight:600;margin:4px 0;">KSh 0.00</h3>
+      <h3 id="accountBalance">KSh 0.00</h3>
     </div>
 
-    <!-- LOCKED SAVINGS -->
     <div class="balance">
       <small>LOCKED SAVINGS</small>
-      <h3 id="savingsBalance" style="font-size:16px;font-weight:600;margin:4px 0;">KSh 0.00</h3>
+      <h3 id="savingsBalance">KSh 0.00</h3>
     </div>
 
   </div>
 
   <h3>Welcome to Wakaûndū Pay</h3>
   <p>Choose a service below.</p>
-  
-<div class="grid">
-  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;">
-    <button class="action" data-open="international-banking" style="padding:10px 5px;font-size:12px;">🏦 Banking & Financial Growth</button>
-    <button class="action" data-open="chama" style="padding:10px 5px;font-size:12px;">👥 Chama Groups</button>
-    <button class="action" data-open="send" style="padding:10px 5px;font-size:12px;">💸 Send / Receive Money</button>
-    <button class="action" data-open="airtime" style="padding:10px 5px;font-size:12px;">📱 Buy Airtime</button>
-    <button class="action" data-open="bills" style="padding:10px 5px;font-size:12px;">🧾 Pay Bills</button>
-    <button class="action" data-open="goods" style="padding:10px 5px;font-size:12px;">🛍️ Buy Goods</button>
-    <button class="action" data-open="history" style="padding:10px 5px;font-size:12px;">📋 Transactions</button>
-    <button class="action" data-open="customer-care" style="padding:10px 5px;font-size:12px;">☎️ Customer Care</button>
-  </div>
-</div>
 
-<p id="message" aria-live="polite"></p>
+  <div class="grid">
+    <button class="action" data-open="international-banking">🏦 Banking & Financial Growth</button>
+    <button class="action" data-open="chama">👥 Chama Groups</button>
+    <button class="action" data-open="send">💸 Send / Receive Money</button>
+    <button class="action" data-open="airtime">📱 Buy Airtime</button>
+    <button class="action" data-open="bills">🧾 Pay Bills</button>
+    <button class="action" data-open="goods">🛍️ Buy Goods</button>
+    <button class="action" data-open="history">📋 Transactions</button>
+    <button class="action" data-open="customer-care">☎️ Customer Care</button>
+  </div>
+
+  <p id="message" aria-live="polite"></p>
+
+</section>
+<!-- END MEMBER DASHBOARD -->
 
 <!-- ADMIN LOGIN -->
 <section id="admin-login" class="panel">
@@ -362,18 +496,12 @@
 
   <form id="adminLoginForm">
     <label>Administrator Username</label>
-    <input id="adminUsername" required
-      autocomplete="username"
-      placeholder="Enter admin username">
+    <input id="adminUsername" required autocomplete="username" placeholder="Enter admin username">
 
     <label>Administrator Password</label>
-    <input id="adminPassword" type="password"
-      required autocomplete="current-password"
-      placeholder="Enter admin password">
+    <input id="adminPassword" type="password" required autocomplete="current-password" placeholder="Enter admin password">
 
-    <button class="action" type="submit">
-      Admin Login
-    </button>
+    <button class="action" type="submit">Admin Login</button>
   </form>
 
   <p id="adminLoginMessage" class="result"></p>
@@ -386,18 +514,12 @@
 
   <form id="mdLoginForm">
     <label>Managing Director Username</label>
-    <input id="mdUsername" required
-      autocomplete="username"
-      placeholder="Enter MD username">
+    <input id="mdUsername" required autocomplete="username" placeholder="Enter MD username">
 
     <label>Managing Director Password</label>
-    <input id="mdPassword" type="password"
-      required autocomplete="current-password"
-      placeholder="Enter MD password">
+    <input id="mdPassword" type="password" required autocomplete="current-password" placeholder="Enter MD password">
 
-    <button class="action" type="submit">
-      Managing Director Login
-    </button>
+    <button class="action" type="submit">Managing Director Login</button>
   </form>
 
   <p id="mdLoginMessage" class="result"></p>
@@ -406,51 +528,33 @@
 
 <!-- CEO ADMIN DASHBOARD -->
 <section id="ceo-dashboard" class="panel">
-
   <h2 style="color:#d6ad45;">🛡️ CEO ADMIN DASHBOARD</h2>
-
   <p>Welcome to WakaunduPay Global Administration.</p>
 
   <div class="balance">
-  <h3>CHIEF EXECUTIVE OFFICER</h3>
-  <p>Full Platform Leadership and Oversight</p>
-  <p>Role: CEO / ADMIN</p>
-
-  <hr>
-
-  <p>CEO AVAILABLE BALANCE</p>
-  <h2 id="ceoAvailableBalance">KSh 0.00</h2>
-
-  <p>CEO PERSONAL SAVINGS</p>
-  <h2 id="ceoSavingsBalance">KSh 0.00</h2>
-
-  <small>Separate CEO demo wallet</small>
-</div>
+    <h3>CHIEF EXECUTIVE OFFICER</h3>
+    <p>Full Platform Leadership and Oversight</p>
+    <p>Role: CEO / ADMIN</p>
+    <hr>
+    <p>CEO AVAILABLE BALANCE</p>
+    <h2 id="ceoAvailableBalance">KSh 0.00</h2>
+    <p>CEO PERSONAL SAVINGS</p>
+    <h2 id="ceoSavingsBalance">KSh 0.00</h2>
+    <small>Separate CEO demo wallet</small>
+  </div>
 
   <h3>Platform Management</h3>
 
   <div class="grid">
-    <button data-open="chama">
-      👥 Chama Management
-    </button>
-
-    <button data-open="history">
-      📋 Transaction Oversight
-    </button>
-
-    <button data-open="international-banking">
-      🏦 Banking Services
-    </button>
-
-    <button data-open="customer-care">
-      ☎️ Customer Care
-    </button>
+    <button data-open="chama">👥 Chama Management</button>
+    <button data-open="history">📋 Transaction Oversight</button>
+    <button data-open="international-banking">🏦 Banking Services</button>
+    <button data-open="customer-care">☎️ Customer Care</button>
   </div>
 
   <hr>
 
   <h3>Executive Responsibilities</h3>
-
   <ul>
     <li>Full platform administration</li>
     <li>Appointment and management of administrators</li>
@@ -460,9 +564,7 @@
   </ul>
 
   <p><strong>CEO authority:</strong> Full administrative control.</p>
-
   <button class="back" data-home>Back to Home</button>
-
 </section>
 
 <!-- MEMBER LOGIN -->
@@ -471,107 +573,78 @@
 
   <form id="memberLoginForm">
     <label>Registered Phone Number</label>
-    <input id="loginPhone" type="tel"
-      required autocomplete="username"
-      placeholder="Enter registered phone number">
+    <input id="loginPhone" type="tel" required autocomplete="username" placeholder="Enter registered phone number">
 
     <label>Member PIN</label>
-    <input id="loginPIN" type="password"
-      inputmode="numeric" maxlength="4"
-      pattern="[0-9]{4}" required
-      autocomplete="current-password"
-      placeholder="Enter 4-digit PIN">
+    <input id="loginPIN" type="password" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" required autocomplete="current-password" placeholder="Enter 4-digit PIN">
 
-    <button class="action" type="submit">
-      Member Login
-    </button>
+    <button class="action" type="submit">Member Login</button>
   </form>
 
   <p id="memberLoginMessage" class="result"></p>
-<p>
-  New to WakaunduPay?
-  <button type="button" class="action"
-    data-open="register">
-    Register Here
-  </button>
-</p>
 
-<button type="button" class="back" data-home>
-  Back to Home
-</button>
+  <p>
+    New to WakaunduPay?
+    <button type="button" class="action" data-open="register">Register Here</button>
+  </p>
+
+  <button type="button" class="back" data-home>Back to Home</button>
 </section>
 
 <!-- REGISTRATION -->
 <section id="register" class="panel">
-<h2>Create Your Account</h2>
-<form id="registrationForm">
-<label>Full Name</label>
-<input id="customerName" required placeholder="Enter full name">
- <label>Phone Number</label>
-<input
-  id="customerPhone"
-  type="tel"
-  required
-  placeholder="Enter phone number, e.g. 0710320770"
->
- <label>Identity Document Type</label>
-<select id="customerIdType" required>
-  <option value="">Select document type</option>
-  <option value="National ID">National ID</option>
-  <option value="Passport">Passport</option>
-</select>
+  <h2>Create Your Account</h2>
 
-<label>National ID / Passport Number</label>
-<input
-  id="customerIdNumber"
-  type="text"
-  required
-  placeholder="Enter ID or passport number"
->
-<label>Create 4-digit PIN</label>
-<input
-  id="customerPIN"
-  type="password"
-  inputmode="numeric"
-  maxlength="4"
-  pattern="[0-9]{4}"
-  required
-  placeholder="Create your PIN"
->
+  <form id="registrationForm">
+    <label>Full Name</label>
+    <input id="customerName" required placeholder="Enter full name">
 
-<label>Confirm 4-digit PIN</label>
-<input
-  id="confirmPIN"
-  type="password"
-  inputmode="numeric"
-  maxlength="4"
-  pattern="[0-9]{4}"
-  required
-  placeholder="Confirm your PIN"
->
-<button class="action" type="submit">Register Account</button>
-</form>
-<p class="result" id="registrationMessage"></p>
-<small>Demo registration only. Do not enter financial PINs or passwords.</small>
-<button class="back" data-home>Back to Home</button>
+    <label>Phone Number</label>
+    <input id="customerPhone" type="tel" required placeholder="Enter phone number, e.g. 0710320770">
+
+    <label>Identity Document Type</label>
+    <select id="customerIdType" required>
+      <option value="">Select document type</option>
+      <option value="National ID">National ID</option>
+      <option value="Passport">Passport</option>
+    </select>
+
+    <label>National ID / Passport Number</label>
+    <input id="customerIdNumber" type="text" required placeholder="Enter ID or passport number">
+
+    <label>Create 4-digit PIN</label>
+    <input id="customerPIN" type="password" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" required placeholder="Create your PIN">
+
+    <label>Confirm 4-digit PIN</label>
+    <input id="confirmPIN" type="password" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" required placeholder="Confirm your PIN">
+
+    <button class="action" type="submit">Register Account</button>
+  </form>
+
+  <p class="result" id="registrationMessage"></p>
+  <small>Demo registration only. Do not enter financial PINs or passwords.</small>
+  <button class="back" data-home>Back to Home</button>
 </section>
 
 <!-- SEND MONEY -->
 <section id="send" class="panel">
-<h2>💸 Send Money</h2>
-  <button type="button" class="action" data-open="receive">
-  💰 Switch to Receive Money
-</button>
-<hr>
-<form data-demo-form data-service="Send Money">
-<label>Recipient phone number</label>
-<input required type="tel" placeholder="+254712345678">
-<label>Amount (KSh)</label>
-<input required type="number" min="1" placeholder="Enter amount">
-<button class="action" type="submit">Continue</button>
-</form>
-<p class="result"></p>
-<button class="back" data-home>Back to Home</button>
+  <h2>💸 Send Money</h2>
+
+  <button type="button" class="action" data-open="receive">💰 Switch to Receive Money</button>
+  <hr>
+
+  <form data-demo-form data-service="Send Money">
+    <label>Recipient phone number</label>
+    <input required type="tel" placeholder="+254712345678">
+
+    <label>Amount (KSh)</label>
+    <input required type="number" min="1" placeholder="Enter amount">
+
+    <button class="action" type="submit">Continue</button>
+  </form>
+
+  <p class="result"></p>
+  <button class="back" data-home>Back to Home</button>
 </section>
 
 <!-- RECEIVE MONEY -->
@@ -584,23 +657,12 @@
     <p>WakaunduPay Account</p>
     <p id="receiveAccountName">Customer Account</p>
     <p id="receiveAccountNumber">Account number: Pending registration</p>
+    <p id="receiveAccountPhone">Registered phone: Pending</p>
+
+    <button type="button" class="action" id="shareAccountDetails">📤 Share Account Details</button>
+    <button type="button" class="action" data-open="request-money">💰 Request Money</button>
   </div>
-<div class="service-card">
-  <h3>Account Receiving Details</h3>
-  <p>WakaunduPay Account</p>
-  <p id="receiveAccountName">Customer Account</p>
-  <p id="receiveAccountNumber">Account number: Pending registration</p>
-  <p id="receiveAccountPhone">Registered phone: Pending</p>
 
-  <button type="button" class="action" id="shareAccountDetails">
-    📤 Share Account Details
-  </button>
-
-  <button type="button" class="action" data-open="request-money">
-    💰 Request Money
-  </button>
-</div>
-  
   <div class="service-card">
     <h3>Available Receiving Channels</h3>
     <p>📱 M-Pesa</p>
@@ -608,12 +670,10 @@
     <p>🌍 Global Transfers</p>
   </div>
 
-  <p id="receiveMessage">
-    Demo mode: Live incoming payments are not yet connected.
-  </p>
-
+  <p id="receiveMessage">Demo mode: Live incoming payments are not yet connected.</p>
   <button class="back" data-home>Back to Home</button>
 </section>
+
 <!-- REQUEST MONEY -->
 <section id="request-money" class="panel">
   <h2>💰 Request Money</h2>
@@ -621,28 +681,21 @@
 
   <form id="requestMoneyForm">
     <label>Person's phone number</label>
-    <input id="requestPhone" type="tel"
-      required placeholder="+254712345678">
+    <input id="requestPhone" type="tel" required placeholder="+254712345678">
 
     <label>Amount requested (KSh)</label>
-    <input id="requestAmount" type="number"
-      min="1" required placeholder="Enter amount">
+    <input id="requestAmount" type="number" min="1" required placeholder="Enter amount">
 
     <label>Reason for payment</label>
-    <textarea id="requestReason"
-      required placeholder="Why are you requesting payment?"></textarea>
+    <textarea id="requestReason" required placeholder="Why are you requesting payment?"></textarea>
 
-    <button class="action" type="submit">
-      Prepare Payment Request
-    </button>
+    <button class="action" type="submit">Prepare Payment Request</button>
   </form>
 
   <p id="requestMoneyMessage" class="result"></p>
-
-  <button type="button" class="back" data-open="receive">
-    Back to Receive Money
-  </button>
+  <button type="button" class="back" data-open="receive">Back to Receive Money</button>
 </section>
+
 <!-- ACCOUNT SECURITY -->
 <section id="account-secure" class="panel">
   <h2>🔐 Account Security</h2>
@@ -667,93 +720,109 @@
 
 <!-- AIRTIME -->
 <section id="airtime" class="panel">
-<h2>📱 Buy Airtime</h2>
-<form data-demo-form data-service="Buy Airtime">
-<label>Network</label>
-<select required>
-<option value="">Choose network</option>
-<option>Safaricom</option>
-<option>Airtel</option>
-<option>Telkom</option>
-</select>
-<label>Phone number</label>
-<input required type="tel" placeholder="Phone number">
-<label>Amount (KSh)</label>
-<input required type="number" min="1" placeholder="Amount">
-<button class="action" type="submit">Continue</button>
-</form>
-<p class="result"></p>
-<button class="back" data-home>Back to Home</button>
+  <h2>📱 Buy Airtime</h2>
+
+  <form data-demo-form data-service="Buy Airtime">
+    <label>Network</label>
+    <select required>
+      <option value="">Choose network</option>
+      <option>Safaricom</option>
+      <option>Airtel</option>
+      <option>Telkom</option>
+    </select>
+
+    <label>Phone number</label>
+    <input required type="tel" placeholder="Phone number">
+
+    <label>Amount (KSh)</label>
+    <input required type="number" min="1" placeholder="Amount">
+
+    <button class="action" type="submit">Continue</button>
+  </form>
+
+  <p class="result"></p>
+  <button class="back" data-home>Back to Home</button>
 </section>
 
 <!-- BILLS -->
 <section id="bills" class="panel">
-<h2>🧾 Pay Bills</h2>
-<form data-demo-form data-service="Bill Payment">
-<label>Bill type</label>
-<select required>
-<option value="">Select bill</option>
-<option>Electricity</option>
-<option>Water</option>
-<option>Internet</option>
-<option>TV Subscription</option>
-</select>
-<label>Account or reference number</label>
-<input required placeholder="Enter reference">
-<label>Amount (KSh)</label>
-<input required type="number" min="1" placeholder="Amount">
-<button class="action" type="submit">Continue</button>
-</form>
-<p class="result"></p>
-<button class="back" data-home>Back to Home</button>
+  <h2>🧾 Pay Bills</h2>
+
+  <form data-demo-form data-service="Bill Payment">
+    <label>Bill type</label>
+    <select required>
+      <option value="">Select bill</option>
+      <option>Electricity</option>
+      <option>Water</option>
+      <option>Internet</option>
+      <option>TV Subscription</option>
+    </select>
+
+    <label>Account or reference number</label>
+    <input required placeholder="Enter reference">
+
+    <label>Amount (KSh)</label>
+    <input required type="number" min="1" placeholder="Amount">
+
+    <button class="action" type="submit">Continue</button>
+  </form>
+
+  <p class="result"></p>
+  <button class="back" data-home>Back to Home</button>
 </section>
 
 <!-- GOODS -->
 <section id="goods" class="panel">
-<h2>🛍️ Merchant Payments</h2>
-<form data-demo-form data-service="Merchant Payment">
-<label>Merchant Till or Paybill number</label>
-<input required placeholder="Merchant number">
-<label>Amount (KSh)</label>
-<input required type="number" min="1" placeholder="Amount">
-<button class="action" type="submit">Continue</button>
-</form>
-<p class="result"></p>
-<button class="back" data-home>Back to Home</button>
+  <h2>🛍️ Merchant Payments</h2>
+
+  <form data-demo-form data-service="Merchant Payment">
+    <label>Merchant Till or Paybill number</label>
+    <input required placeholder="Merchant number">
+
+    <label>Amount (KSh)</label>
+    <input required type="number" min="1" placeholder="Amount">
+
+    <button class="action" type="submit">Continue</button>
+  </form>
+
+  <p class="result"></p>
+  <button class="back" data-home>Back to Home</button>
 </section>
 
 <!-- WITHDRAW -->
 <section id="withdraw" class="panel">
-<h2>🏧 Withdraw Money</h2>
-<form data-demo-form data-service="Withdrawal">
-<label>Agent or mobile money number</label>
-<input required placeholder="Enter number">
-<label>Amount (KSh)</label>
-<input required type="number" min="1" placeholder="Amount">
-<button class="action" type="submit">Continue</button>
-</form>
-<p class="result"></p>
-<button class="back" data-home>Back to Home</button>
+  <h2>🏧 Withdraw Money</h2>
+
+  <form data-demo-form data-service="Withdrawal">
+    <label>Agent or mobile money number</label>
+    <input required placeholder="Enter number">
+
+    <label>Amount (KSh)</label>
+    <input required type="number" min="1" placeholder="Amount">
+
+    <button class="action" type="submit">Continue</button>
+  </form>
+
+  <p class="result"></p>
+  <button class="back" data-home>Back to Home</button>
 </section>
 
 <!-- WAKauNdu CHAMA GROUPS -->
 <section id="chama" class="panel">
-<h2>👥 Wakaundu Chama Groups</h2>
+  <h2>👥 Wakaundu Chama Groups</h2>
 
-  <!-- CHAMA DIRECTORY -->
   <div id="chamaMainMenu" class="chama-view">
     <h3>Registered Chama Groups</h3>
     <div id="registeredChamaList">
       <p>Loading registered Chamas...</p>
     </div>
-    <button type="button" class="action" data-chama-view="register">
-      + Register New Chama
-    </button>
+    <button type="button" class="action" data-chama-view="register">+ Register New Chama</button>
   </div>
 
   <!-- REGISTER A CHAMA -->
   <div id="chamaRegisterView" class="chama-view" hidden>
     <h3>Register New Chama</h3>
+
     <form id="chamaRegistrationForm">
       <label>Chama Group Name</label>
       <input id="chamaName" required>
@@ -789,14 +858,10 @@
       <p>Certificate No: <strong id="certNumber"></strong></p>
       <p>Certificate Code: <strong id="certCode"></strong></p>
       <p>Issue Date: <strong id="certDate"></strong></p>
-      <button type="button" class="action" id="certificatePrint">
-        Print Certificate
-      </button>
+      <button type="button" class="action" id="certificatePrint">Print Certificate</button>
     </div>
 
-    <button type="button" class="back" data-chama-home>
-      Back to Chama List
-    </button>
+    <button type="button" class="back" data-chama-home>Back to Chama List</button>
   </div>
 
   <!-- SELECTED GROUP ACCESS -->
@@ -804,17 +869,9 @@
     <h3 id="selectedChamaName">Chama Group</h3>
     <p>Choose how to access this Chama.</p>
 
-    <button type="button" class="action" id="chamaMemberLoginButton">
-      Existing Member Login
-    </button>
-
-    <button type="button" class="action" id="chamaNewMemberButton">
-      Register as New Member
-    </button>
-
-    <button type="button" class="back" data-chama-home>
-      Back to Chama List
-    </button>
+    <button type="button" class="action" id="chamaMemberLoginButton">Existing Member Login</button>
+    <button type="button" class="action" id="chamaNewMemberButton">Register as New Member</button>
+    <button type="button" class="back" data-chama-home>Back to Chama List</button>
   </div>
 
   <!-- EXISTING MEMBER LOGIN -->
@@ -827,17 +884,13 @@
       <input id="chamaLoginPhone" type="tel" required>
 
       <label>WakaunduPay PIN</label>
-      <input id="chamaLoginPIN" type="password"
-        inputmode="numeric" maxlength="4" required>
+      <input id="chamaLoginPIN" type="password" inputmode="numeric" maxlength="4" required>
 
       <button class="action" type="submit">Login to Chama</button>
     </form>
 
     <p id="chamaLoginMessage" class="result"></p>
-
-    <button type="button" class="back" data-chama-home>
-      Back to Chama List
-    </button>
+    <button type="button" class="back" data-chama-home>Back to Chama List</button>
   </div>
 
   <!-- NEW MEMBER REGISTRATION -->
@@ -872,16 +925,11 @@
         <option value="Secretary">Secretary</option>
       </select>
 
-      <button class="action" type="submit">
-        Submit Membership Request
-      </button>
+      <button class="action" type="submit">Submit Membership Request</button>
     </form>
 
     <p id="chamaMemberMessage" class="result"></p>
-
-    <button type="button" class="back" data-chama-home>
-      Back to Chama List
-    </button>
+    <button type="button" class="back" data-chama-home>Back to Chama List</button>
   </div>
 
   <!-- CHAMA DASHBOARD -->
@@ -902,12 +950,9 @@
       </select>
 
       <label>Contribution Amount (KSh)</label>
-      <input id="contributionAmount"
-        type="number" min="1" required>
+      <input id="contributionAmount" type="number" min="1" required>
 
-      <button class="action" type="submit">
-        Record Contribution
-      </button>
+      <button class="action" type="submit">Record Contribution</button>
     </form>
 
     <p id="chamaContributionMessage" class="result"></p>
@@ -917,133 +962,195 @@
       <p>No contributions recorded yet.</p>
     </div>
 
-    <button type="button" class="back" id="chamaLogoutButton">
-      Logout of Chama
-    </button>
+    <button type="button" class="back" id="chamaLogoutButton">Logout of Chama</button>
   </div>
 
   <p>
     <small>
       Demonstration only. Live membership, identity verification,
-      approvals and financial contributions require secure backend
-      processing.
+      approvals and financial contributions require secure backend processing.
     </small>
   </p>
 
   <button type="button" class="back" data-home>Back to Home</button>
 </section>
 
-<!-- PERSONAL SAVINGS -->
+<!-- PERSONAL AND LOCKED SAVINGS -->
 <section id="personal" class="panel">
-<h2>🏦 Personal Savings</h2>
-<form data-demo-form data-service="Personal Savings">
-<label>Savings amount (KSh)</label>
-<input required type="number" min="1" placeholder="Enter amount">
-<button class="action" type="submit">Continue</button>
-</form>
-<p class="result"></p>
-<button class="back" data-home>Back to Home</button>
+  <h2>🏦 Personal & Locked Savings</h2>
+
+  <div class="service-card">
+    <h3>Personal Savings</h3>
+    <p>Move funds from your available balance into personal savings.</p>
+
+    <form data-demo-form data-service="Personal Savings">
+      <label>Savings amount (KSh)</label>
+      <input required type="number" min="1" placeholder="Enter amount">
+      <button class="action" type="submit">Save Money</button>
+    </form>
+
+    <p class="result"></p>
+  </div>
+
+  <div class="service-card">
+    <h3>Locked Savings</h3>
+    <p>Move funds from your available balance into your locked savings balance.</p>
+
+    <form data-demo-form data-service="Locked Savings">
+      <label>Amount to lock (KSh)</label>
+      <input required type="number" min="1" placeholder="Enter amount">
+      <button class="action" type="submit">Lock Savings</button>
+    </form>
+
+    <p class="result"></p>
+  </div>
+
+  <button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- DEPOSITS AND WITHDRAWALS -->
+<section id="deposits" class="panel">
+  <h2>💵 Deposits & Withdrawals</h2>
+
+  <div class="service-card">
+    <h3>Deposit Funds</h3>
+    <form data-demo-form data-service="Deposit">
+      <label>Deposit amount (KSh)</label>
+      <input required type="number" min="1" placeholder="Enter deposit amount">
+      <label>Deposit channel</label>
+      <select required>
+        <option value="">Select channel</option>
+        <option>M-Pesa</option>
+        <option>Bank Transfer</option>
+        <option>Agent</option>
+        <option>Other</option>
+      </select>
+      <button class="action" type="submit">Record Demo Deposit</button>
+    </form>
+    <p class="result"></p>
+  </div>
+
+  <div class="service-card">
+    <h3>Withdraw Funds</h3>
+    <button class="action" data-open="withdraw">Go to Withdraw Money</button>
+  </div>
+
+  <small>Deposits are demo records only. No external payment is received.</small>
+  <button class="back" data-home>Back to Home</button>
+</section>
+
+<!-- ACCOUNT BALANCES AND STATEMENTS -->
+<section id="account-balances" class="panel">
+  <h2>🏦 Account Balances & Statements</h2>
+
+  <div class="service-card">
+    <p>Available Balance</p>
+    <h3 id="statementAvailableBalance">KSh 0.00</h3>
+
+    <hr>
+
+    <p>Personal Savings</p>
+    <h3 id="statementSavingsBalance">KSh 0.00</h3>
+
+    <hr>
+
+    <p>Locked Savings</p>
+    <h3 id="statementLockedBalance">KSh 0.00</h3>
+  </div>
+
+  <p>View your recorded transactions in your transaction history.</p>
+  <button class="action" data-open="history">📋 View Transaction History</button>
+  <button class="back" data-home>Back to Home</button>
 </section>
 
 <!-- GLOBAL TRANSFER -->
 <section id="global-transfer" class="panel">
-<h2>🌍 Wakaûndū Global Transfers</h2>
-<form data-demo-form data-service="Global Transfer">
-<label>Recipient name</label>
-<input required placeholder="Recipient name">
-<label>Recipient phone number</label>
-<input required type="tel" placeholder="International number">
-<label>Destination country</label>
-<select required>
-<option value="">Select country</option>
-<option>Kenya</option>
-<option>Uganda</option>
-<option>Tanzania</option>
-<option>Rwanda</option>
-<option>South Africa</option>
-<option>United States</option>
-<option>United Kingdom</option>
-<option>Other</option>
-</select>
-<label>Amount (KSh)</label>
-<input required type="number" min="1" placeholder="Amount">
-<button class="action" type="submit">Continue</button>
-</form>
-<p class="result"></p>
-<small>Live international transfers require licensed partners.</small>
-<button class="back" data-home>Back to Home</button>
+  <h2>🌍 Wakaûndū Global Transfers</h2>
+
+  <form data-demo-form data-service="Global Transfer">
+    <label>Recipient name</label>
+    <input required placeholder="Recipient name">
+
+    <label>Recipient phone number</label>
+    <input required type="tel" placeholder="International number">
+
+    <label>Destination country</label>
+    <select required>
+      <option value="">Select country</option>
+      <option>Kenya</option>
+      <option>Uganda</option>
+      <option>Tanzania</option>
+      <option>Rwanda</option>
+      <option>South Africa</option>
+      <option>United States</option>
+      <option>United Kingdom</option>
+      <option>Other</option>
+    </select>
+
+    <label>Amount (KSh)</label>
+    <input required type="number" min="1" placeholder="Amount">
+
+    <button class="action" type="submit">Continue</button>
+  </form>
+
+  <p class="result"></p>
+  <small>Live international transfers require licensed partners.</small>
+  <button class="back" data-home>Back to Home</button>
 </section>
 
 <!-- WAKauNduPay BANKING SERVICES -->
 <section id="international-banking" class="panel">
+  <h2>🏦 WakaunduPay Banking Services</h2>
+  <p>Wakaundu Worldwide • One Banking Network</p>
 
-<h2>🏦 WakaunduPay Banking Services</h2>
-<p>Wakaundu Worldwide • One Banking Network</p>
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%;">
+    <button class="action" data-open="personal">💰 Personal & Locked Savings</button>
+    <button class="action" data-open="deposits">💵 Deposits & Withdrawals</button>
+    <button class="action" data-open="global-transfer">🌍 Global Transfers</button>
+    <button class="action" data-open="account-balances">🏦 Account Balances & Statements</button>
+  </div>
 
-<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%;">
-
-<button class="action" data-open="personal">
-💰 Personal & Locked Savings
-</button>
-
-<button class="action" data-open="deposits">
-💵 Deposits & Withdrawals
-</button>
-
-<button class="action" data-open="global-transfer">
-🌍 Global Transfers
-</button>
-
-<button class="action" data-open="account-balances">
-🏦 Account Balances & Statements
-</button>
-
-</div>
-
-<p>Banking services are currently in demonstration mode and subject to licensing and banking partnerships.</p>
-
-<button class="back" data-home style="width:100%;">
-Back to Home
-</button>
-
-</section>
-
+  <p>Banking services are currently in demonstration mode and subject to licensing and banking partnerships.</p>
+  <button class="back" data-home style="width:100%;">Back to Home</button>
 </section>
 
 <!-- TRANSACTION HISTORY -->
 <section id="history" class="panel">
-<h2>📋 Transaction History</h2>
-<div id="transactionList">No demo transactions yet.</div>
-<button class="back" data-home>Back to Home</button>
+  <h2>📋 Transaction History</h2>
+  <div id="transactionList">No demo transactions yet.</div>
+  <button class="back" data-home>Back to Home</button>
 </section>
 
 <!-- CUSTOMER CARE -->
 <section id="customer-care" class="panel">
-<h2>☎️ Wakaûndū International Customer Care</h2>
-<p>Global support for our customers.</p>
+  <h2>☎️ Wakaûndū International Customer Care</h2>
+  <p>Global support for our customers.</p>
 
-<button class="action" id="callSupport">Call Customer Care</button>
-<p class="result" id="supportMessage"></p>
+  <button class="action" id="callSupport">Call Customer Care</button>
+  <p class="result" id="supportMessage"></p>
 
-<hr>
+  <hr>
 
-<h3>Request a Callback</h3>
-<form id="callbackForm">
-<label>International phone number</label>
-<input id="callbackPhone" type="tel" required placeholder="+254712345678">
-<label>How can we help you?</label>
-<textarea id="callbackReason" required placeholder="Describe your request"></textarea>
-<button class="action" type="submit">Request Free Callback</button>
-</form>
-<p class="result" id="callbackMessage"></p>
-<small>Callback requests are saved on this device only until an admin service is connected.</small>
-<button class="back" data-home>Back to Home</button>
+  <h3>Request a Callback</h3>
+  <form id="callbackForm">
+    <label>International phone number</label>
+    <input id="callbackPhone" type="tel" required placeholder="+254712345678">
+
+    <label>How can we help you?</label>
+    <textarea id="callbackReason" required placeholder="Describe your request"></textarea>
+
+    <button class="action" type="submit">Request Free Callback</button>
+  </form>
+
+  <p class="result" id="callbackMessage"></p>
+  <small>Callback requests are saved on this device only until an admin service is connected.</small>
+  <button class="back" data-home>Back to Home</button>
 </section>
 
 <footer>
-<strong>Wakaûndū Pay Network Africa</strong><br>
-Wakaûndū International<br>
-Development demonstration — not connected to financial institutions.
+  <strong>Wakaûndū Pay Network Africa</strong><br>
+  Wakaûndū International<br>
+  Development demonstration — not connected to financial institutions.
 </footer>
 
 </main>
@@ -1073,9 +1180,21 @@ function save(key, value) {
 
 let customers = getSaved("wakaunduCustomers", []);
 let transactions = getSaved("wakaunduTransactions", []);
-// Separate demo wallets for CEO and every member
 let wallets = getSaved("wakaunduWallets", {});
 
+let currentRole = null;
+let currentCustomer = null;
+
+let chamaGroups = getSaved("wakaunduChamas", []);
+let chamaMembers = getSaved("wakaunduChamaMembers", []);
+let chamaContributions = getSaved("wakaunduChamaContributions", []);
+let chamaCertificates = getSaved("wakaunduChamaCertificates", []);
+
+let selectedChamaGroup = null;
+let currentChamaGroup = null;
+let currentChamaMember = null;
+
+/* SEPARATE CEO AND MEMBER DEMO WALLETS */
 function getWallet() {
   let walletId;
 
@@ -1090,15 +1209,29 @@ function getWallet() {
   if (!wallets[walletId]) {
     wallets[walletId] = {
       available: 10000,
-      savings: 0
+      savings: 0,
+      locked: 0
     };
-    save("wakaunduWallets", wallets);
   }
 
+  // Support wallets created by earlier versions
+  if (typeof wallets[walletId].available !== "number") {
+    wallets[walletId].available = 0;
+  }
+
+  if (typeof wallets[walletId].savings !== "number") {
+    wallets[walletId].savings = 0;
+  }
+
+  if (typeof wallets[walletId].locked !== "number") {
+    wallets[walletId].locked = 0;
+  }
+
+  save("wakaunduWallets", wallets);
   return wallets[walletId];
 }
 
-// CUSTOMER REGISTRATION — DEMO
+/* CUSTOMER REGISTRATION */
 document.getElementById("registrationForm")
 .addEventListener("submit", function(event) {
   event.preventDefault();
@@ -1136,11 +1269,11 @@ document.getElementById("registrationForm")
 
   const customer = {
     id: "WP" + Date.now(),
-    name: name,
-    phone: phone,
-    idType: idType,
-    idNumber: idNumber,
-    pin: pin,
+    name,
+    phone,
+    idType,
+    idNumber,
+    pin,
     status: "ACTIVE",
     created: new Date().toISOString()
   };
@@ -1159,9 +1292,10 @@ document.getElementById("registrationForm")
 
   this.reset();
 });
+
+/* BALANCE DISPLAY */
 function renderBalance() {
   const wallet = getWallet();
-
   if (!wallet) return;
 
   const formatMoney = amount =>
@@ -1172,36 +1306,46 @@ function renderBalance() {
 
   const balanceElement = document.getElementById("accountBalance");
   const savingsElement = document.getElementById("savingsBalance");
+
   const ceoAvailable = document.getElementById("ceoAvailableBalance");
   const ceoSavings = document.getElementById("ceoSavingsBalance");
+
+  const statementAvailable = document.getElementById("statementAvailableBalance");
+  const statementSavings = document.getElementById("statementSavingsBalance");
+  const statementLocked = document.getElementById("statementLockedBalance");
 
   if (balanceElement) {
     balanceElement.textContent = formatMoney(wallet.available);
   }
 
   if (savingsElement) {
-    savingsElement.textContent = formatMoney(wallet.savings);
+    savingsElement.textContent = formatMoney(wallet.locked);
   }
 
-  if (currentRole === "ceo") {
-    if (ceoAvailable) {
-      ceoAvailable.textContent = formatMoney(wallet.available);
-    }
+  if (ceoAvailable && currentRole === "ceo") {
+    ceoAvailable.textContent = formatMoney(wallet.available);
+  }
 
-    if (ceoSavings) {
-      ceoSavings.textContent = formatMoney(wallet.savings);
-    }
+  if (ceoSavings && currentRole === "ceo") {
+    ceoSavings.textContent = formatMoney(wallet.savings + wallet.locked);
+  }
+
+  if (statementAvailable) {
+    statementAvailable.textContent = formatMoney(wallet.available);
+  }
+
+  if (statementSavings) {
+    statementSavings.textContent = formatMoney(wallet.savings);
+  }
+
+  if (statementLocked) {
+    statementLocked.textContent = formatMoney(wallet.locked);
   }
 
   save("wakaunduWallets", wallets);
 }
 
-let currentRole = null;
-let currentCustomer = null;
-// ==========================================
-// WAKauNduPAY PERSISTENT LOGIN SESSION
-// ==========================================
-
+/* PERSISTENT LOGIN SESSION */
 function saveLoginSession() {
   const session = {
     role: currentRole,
@@ -1211,10 +1355,7 @@ function saveLoginSession() {
   };
 
   try {
-    localStorage.setItem(
-      "wakaunduLoginSession",
-      JSON.stringify(session)
-    );
+    localStorage.setItem("wakaunduLoginSession", JSON.stringify(session));
   } catch (error) {
     console.error("Could not save login session:", error);
   }
@@ -1223,6 +1364,8 @@ function saveLoginSession() {
 function clearLoginSession() {
   localStorage.removeItem("wakaunduLoginSession");
 }
+
+/* RESTORE LOGIN SESSION */
 function restoreLoginSession() {
   try {
     const session = JSON.parse(
@@ -1237,8 +1380,8 @@ function restoreLoginSession() {
       showRoleDashboard("ceo-dashboard");
 
     } else if (session.role === "member") {
-      const customer = customers.find(
-        item => item.id === session.customerId
+      const customer = customers.find(item =>
+        item.id === session.customerId
       );
 
       if (!customer || customer.status !== "ACTIVE") {
@@ -1256,11 +1399,7 @@ function restoreLoginSession() {
       document.getElementById("publicPortal").style.display = "none";
       document.getElementById("memberDashboardContent").style.display = "block";
 
-      document.getElementById("receiveAccountName").textContent =
-        customer.name;
-
-      document.getElementById("receiveAccountNumber").textContent =
-        "Demo account number: " + customer.id;
+      updateReceivingDetails(customer);
 
     } else if (session.role === "md") {
       currentRole = "md";
@@ -1280,16 +1419,24 @@ function restoreLoginSession() {
     clearLoginSession();
   }
 }
-// ==========================================
-// WAKauNduPAY TRANSACTION RECORDING & HISTORY
-// ==========================================
 
+/* UPDATE RECEIVING DETAILS */
+function updateReceivingDetails(customer) {
+  document.getElementById("receiveAccountName").textContent =
+    customer.name;
+
+  document.getElementById("receiveAccountNumber").textContent =
+    "Demo account number: " + customer.id;
+
+  document.getElementById("receiveAccountPhone").textContent =
+    "Registered phone: " + customer.phone;
+}
+
+/* RECORD TRANSACTIONS */
 function addTransaction(service, amount) {
   const value = Number(amount);
 
-  if (!Number.isFinite(value) || value <= 0) {
-    return false;
-  }
+  if (!Number.isFinite(value) || value <= 0) return false;
 
   if (currentRole !== "ceo" && currentRole !== "member") {
     return false;
@@ -1297,11 +1444,6 @@ function addTransaction(service, amount) {
 
   const wallet = getWallet();
   if (!wallet) return false;
-
-  // Support existing wallets
-  if (typeof wallet.locked !== "number") {
-    wallet.locked = 0;
-  }
 
   const action = String(service).toLowerCase();
 
@@ -1319,7 +1461,6 @@ function addTransaction(service, amount) {
     action.includes("airtime") ||
     action.includes("credit");
 
-  // Check sufficient funds before outgoing transactions
   if ((isOutgoing || isSavings || isLocked) &&
       wallet.available < value) {
     return false;
@@ -1329,45 +1470,28 @@ function addTransaction(service, amount) {
   const oldSavings = wallet.savings;
   const oldLocked = wallet.locked;
 
-  // DEPOSIT: Increase available balance
   if (isDeposit) {
     wallet.available += value;
-  }
-
-  // LOCKED SAVINGS
-  else if (isLocked) {
+  } else if (isLocked) {
     wallet.available -= value;
     wallet.locked += value;
-  }
-
-  // PERSONAL SAVINGS
-  else if (isSavings) {
+  } else if (isSavings) {
     wallet.available -= value;
     wallet.savings += value;
-  }
-
-  // SEND MONEY, TRANSFERS, BILLS, GOODS,
-  // AIRTIME AND WITHDRAWALS
-  else if (isOutgoing) {
+  } else if (isOutgoing) {
     wallet.available -= value;
-  }
-
-  else {
+  } else {
     return false;
   }
 
   const transaction = {
     id: "TX" + Date.now(),
-    service: service,
+    service,
     amount: value,
     ownerRole: currentRole,
-    ownerId: currentRole === "ceo"
-      ? "CEO"
-      : currentCustomer.id,
-    ownerPhone: currentRole === "member"
-      ? currentCustomer.phone : "",
-    ownerName: currentRole === "ceo"
-      ? "CEO" : currentCustomer.name,
+    ownerId: currentRole === "ceo" ? "CEO" : currentCustomer.id,
+    ownerPhone: currentRole === "member" ? currentCustomer.phone : "",
+    ownerName: currentRole === "ceo" ? "CEO" : currentCustomer.name,
     date: new Date().toISOString(),
     status: "DEMO RECORDED",
     balanceAfter: wallet.available,
@@ -1377,8 +1501,6 @@ function addTransaction(service, amount) {
 
   transactions.push(transaction);
 
-  // Save wallet and transaction together as far as
-  // browser localStorage permits.
   if (!save("wakaunduWallets", wallets)) {
     wallet.available = oldAvailable;
     wallet.savings = oldSavings;
@@ -1398,15 +1520,12 @@ function addTransaction(service, amount) {
 
   renderBalance();
   renderHistory();
-
   return true;
 }
 
-
-// DISPLAY TRANSACTION HISTORY
+/* DISPLAY TRANSACTION HISTORY */
 function renderHistory() {
   const list = document.getElementById("transactionList");
-
   if (!list) return;
 
   list.replaceChildren();
@@ -1417,10 +1536,7 @@ function renderHistory() {
     records = transactions.filter(item =>
       item.ownerPhone === currentCustomer.phone
     );
-  } else if (
-    currentRole === "ceo" ||
-    currentRole === "md"
-  ) {
+  } else if (currentRole === "ceo" || currentRole === "md") {
     records = transactions;
   } else {
     list.textContent = "Please log in to view transaction history.";
@@ -1464,26 +1580,20 @@ function renderHistory() {
   });
 }
 
-// ==========================================
-// WAKauNduPAY CEO / MD AUTHENTICATION — DEMO
-// ==========================================
-
+/* CEO AND MANAGING DIRECTOR DEMO LOGIN */
 const CEO_USERNAME = "ceo";
 const CEO_PASSWORD = "ChangeMe123!";
 
 const MD_USERNAME = "managingdirector";
 const MD_PASSWORD = "ChangeMD123!";
 
-// Create the Managing Director Dashboard
+/* CREATE MANAGING DIRECTOR DASHBOARD */
 const mdDashboard = document.createElement("section");
 mdDashboard.id = "md-dashboard";
 mdDashboard.className = "panel";
 
 mdDashboard.innerHTML = `
-  <h2 style="color:#d6ad45;">
-    🏢 MANAGING DIRECTOR DASHBOARD
-  </h2>
-
+  <h2 style="color:#d6ad45;">🏢 MANAGING DIRECTOR DASHBOARD</h2>
   <p>Welcome to WakaunduPay Global Operations.</p>
 
   <div class="balance">
@@ -1511,15 +1621,13 @@ mdDashboard.innerHTML = `
     <li>Operates under CEO oversight.</li>
   </ul>
 
-  <button type="button" class="back" id="mdLogout">
-    Logout
-  </button>
+  <button type="button" class="back" id="mdLogout">Logout</button>
 `;
 
 document.getElementById("ceo-dashboard")
 .insertAdjacentElement("afterend", mdDashboard);
 
-// Add CEO logout button
+/* CEO LOGOUT BUTTON */
 const ceoLogout = document.createElement("button");
 ceoLogout.type = "button";
 ceoLogout.className = "back";
@@ -1527,16 +1635,15 @@ ceoLogout.id = "ceoLogout";
 ceoLogout.textContent = "Logout";
 document.getElementById("ceo-dashboard").appendChild(ceoLogout);
 
-// Add Member logout button
+/* MEMBER LOGOUT BUTTON */
 const memberLogout = document.createElement("button");
 memberLogout.type = "button";
 memberLogout.className = "back";
 memberLogout.id = "memberLogout";
 memberLogout.textContent = "Logout";
-document.getElementById("memberDashboardContent")
-.appendChild(memberLogout);
+document.getElementById("memberDashboardContent").appendChild(memberLogout);
 
-// Display a role dashboard
+/* DISPLAY ROLE DASHBOARD */
 function showRoleDashboard(dashboardId) {
   document.querySelectorAll(".panel").forEach(panel => {
     panel.style.display = "none";
@@ -1545,105 +1652,79 @@ function showRoleDashboard(dashboardId) {
   document.getElementById("publicPortal").style.display = "none";
   document.getElementById("memberDashboardContent").style.display = "none";
 
-  document.getElementById(dashboardId).style.display = "block";
+  const dashboard = document.getElementById(dashboardId);
+  if (dashboard) dashboard.style.display = "block";
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// CEO / ADMIN LOGIN
+/* CEO ADMIN LOGIN */
 document.getElementById("adminLoginForm")
 .addEventListener("submit", function(event) {
   event.preventDefault();
 
-  const username =
-    document.getElementById("adminUsername").value.trim();
+  const username = document.getElementById("adminUsername").value.trim();
+  const password = document.getElementById("adminPassword").value;
+  const result = document.getElementById("adminLoginMessage");
 
-  const password =
-    document.getElementById("adminPassword").value;
-
-  const result =
-    document.getElementById("adminLoginMessage");
-
-  if (
-    username !== CEO_USERNAME ||
-    password !== CEO_PASSWORD
-  ) {
+  if (username !== CEO_USERNAME || password !== CEO_PASSWORD) {
     result.textContent = "Incorrect CEO/Admin username or password.";
     return;
   }
 
   currentRole = "ceo";
   currentCustomer = null;
+
   renderBalance();
-saveLoginSession();
-  
+  saveLoginSession();
+
   result.textContent = "";
   this.reset();
 
   showRoleDashboard("ceo-dashboard");
 });
 
-// MANAGING DIRECTOR LOGIN
+/* MANAGING DIRECTOR LOGIN */
 document.getElementById("mdLoginForm")
 .addEventListener("submit", function(event) {
   event.preventDefault();
 
-  const username =
-    document.getElementById("mdUsername").value.trim();
+  const username = document.getElementById("mdUsername").value.trim();
+  const password = document.getElementById("mdPassword").value;
+  const result = document.getElementById("mdLoginMessage");
 
-  const password =
-    document.getElementById("mdPassword").value;
-
-  const result =
-    document.getElementById("mdLoginMessage");
-
-  if (
-    username !== MD_USERNAME ||
-    password !== MD_PASSWORD
-  ) {
-    result.textContent =
-      "Incorrect Managing Director username or password.";
+  if (username !== MD_USERNAME || password !== MD_PASSWORD) {
+    result.textContent = "Incorrect Managing Director username or password.";
     return;
   }
 
   currentRole = "md";
-currentCustomer = null;
+  currentCustomer = null;
 
-saveLoginSession();
-
-result.textContent = "";
-
+  saveLoginSession();
   result.textContent = "";
   this.reset();
 
   showRoleDashboard("md-dashboard");
 });
 
-// LOGOUT FUNCTION — CEO, MD AND MEMBER
+/* LOGOUT FUNCTION */
 function logoutUser() {
-
-  // Clear saved login session FIRST
   clearLoginSession();
 
-  // Clear active account
   currentRole = null;
   currentCustomer = null;
-
-  // Clear Chama session if these variables exist
   currentChamaGroup = null;
   currentChamaMember = null;
+  selectedChamaGroup = null;
 
-  // Hide every dashboard and panel
   document.querySelectorAll(".panel").forEach(panel => {
     panel.style.display = "none";
   });
 
   document.getElementById("memberDashboardContent").style.display = "none";
-
-  // Return to public login portal
   document.getElementById("publicPortal").style.display = "block";
 
-  // Clear login fields
   document.getElementById("adminLoginForm").reset();
   document.getElementById("mdLoginForm").reset();
   document.getElementById("memberLoginForm").reset();
@@ -1651,17 +1732,11 @@ function logoutUser() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// CONNECT LOGOUT BUTTONS
-document.getElementById("ceoLogout")
-  .addEventListener("click", logoutUser);
+document.getElementById("ceoLogout").addEventListener("click", logoutUser);
+document.getElementById("mdLogout").addEventListener("click", logoutUser);
+document.getElementById("memberLogout").addEventListener("click", logoutUser);
 
-document.getElementById("mdLogout")
-  .addEventListener("click", logoutUser);
-
-document.getElementById("memberLogout")
-  .addEventListener("click", logoutUser);
-
-// MEMBER LOGIN — DEMO
+/* MEMBER LOGIN */
 document.getElementById("memberLoginForm")
 .addEventListener("submit", function(event) {
   event.preventDefault();
@@ -1684,8 +1759,9 @@ document.getElementById("memberLoginForm")
 
   currentRole = "member";
   currentCustomer = customer;
-saveLoginSession();
-  
+
+  saveLoginSession();
+
   document.querySelectorAll(".panel").forEach(panel => {
     panel.style.display = "none";
   });
@@ -1693,35 +1769,29 @@ saveLoginSession();
   document.getElementById("publicPortal").style.display = "none";
   document.getElementById("memberDashboardContent").style.display = "block";
 
-  document.getElementById("receiveAccountName").textContent =
-    customer.name;
+  updateReceivingDetails(customer);
 
-  document.getElementById("receiveAccountNumber").textContent =
-    "Demo account number: " + customer.id;
-  
-document.getElementById("receiveAccountPhone").textContent =
-  "Registered phone: " + customer.phone;
-  
   result.textContent = "";
-
   this.reset();
 
   renderBalance();
-
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
+/* HIDE PANELS AT START */
 document.querySelectorAll(".panel").forEach(panel => {
   panel.style.display = "none";
 });
 
+/* OPEN SERVICE PANEL */
 function openPanel(id) {
-const publicPanels = [
-  "admin-login",
-  "md-login",
-  "member-login",
-  "register"
-];
+  const publicPanels = [
+    "admin-login",
+    "md-login",
+    "member-login",
+    "register"
+  ];
+
   const memberAllowed = [
     "send",
     "receive",
@@ -1734,6 +1804,8 @@ const publicPanels = [
     "withdraw",
     "chama",
     "personal",
+    "deposits",
+    "account-balances",
     "global-transfer",
     "international-banking",
     "history",
@@ -1746,23 +1818,22 @@ const publicPanels = [
     "international-banking",
     "customer-care",
     "personal",
+    "deposits",
+    "account-balances",
     "global-transfer",
     "withdraw"
   ];
 
-  // Public access before login
   if (!currentRole && !publicPanels.includes(id)) {
     alert("Please log in to access WakaunduPay services.");
     return;
   }
 
-  // Member access restrictions
   if (currentRole === "member" && !memberAllowed.includes(id)) {
     alert("This section is not available to member accounts.");
     return;
   }
 
-  // Managing Director access restrictions
   if (currentRole === "md" && !mdAllowed.includes(id)) {
     alert("This section requires CEO/Admin authorization.");
     return;
@@ -1779,29 +1850,31 @@ const publicPanels = [
     item.style.display = "none";
   });
 
-  if (currentRole === "member") {
-    document.getElementById("memberDashboardContent").style.display = "none";
+  document.getElementById("publicPortal").style.display = "none";
+  document.getElementById("memberDashboardContent").style.display = "none";
+
+  panel.style.display = "block";
+
+  if (id === "chama") {
+    showChamaView("chamaMainMenu");
   }
-panel.style.display = "block";
 
-if (id === "chama") {
-  showChamaView("chamaMainMenu");
-}
+  if (id === "history") {
+    renderHistory();
+  }
 
-if (id === "history") {
-  renderHistory();
-}
+  if (id === "account-balances") {
+    renderBalance();
+  }
+
   panel.scrollIntoView({
     behavior: "smooth",
     block: "start"
   });
 }
-// ==========================================
-// WAKauNduPAY NAVIGATION CONTROLS
-// ==========================================
 
+/* NAVIGATION CONTROLS */
 document.addEventListener("click", function(event) {
-
   const openButton = event.target.closest("[data-open]");
 
   if (openButton) {
@@ -1812,7 +1885,6 @@ document.addEventListener("click", function(event) {
   const homeButton = event.target.closest("[data-home]");
 
   if (homeButton) {
-
     document.querySelectorAll(".panel").forEach(panel => {
       panel.style.display = "none";
     });
@@ -1824,8 +1896,8 @@ document.addEventListener("click", function(event) {
       document.getElementById("md-dashboard").style.display = "block";
 
     } else if (currentRole === "member") {
-      document.getElementById("memberDashboard").style.display = "block";
       document.getElementById("memberDashboardContent").style.display = "block";
+      renderBalance();
 
     } else {
       document.getElementById("publicPortal").style.display = "block";
@@ -1833,33 +1905,19 @@ document.addEventListener("click", function(event) {
 
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
-
 });
 
-// CHAMA GROUP DEMO RECORDS
-let chamaGroups = getSaved("wakaunduChamas", []);
-let chamaMembers = getSaved("wakaunduChamaMembers", []);
-let chamaContributions = getSaved("wakaunduChamaContributions", []);
-let chamaCertificates = getSaved("wakaunduChamaCertificates", []);
+/* CHAMA HELPER FUNCTIONS */
 function sameText(a, b) {
   return String(a).trim().toLowerCase() ===
          String(b).trim().toLowerCase();
 }
 
-
-// ==========================================
-// CHAMA GROUP MANAGEMENT — CONNECTED DEMO
-// ==========================================
-
-let selectedChamaGroup = null;
-let currentChamaGroup = null;
-let currentChamaMember = null;
-
 function normalizeChamaPhone(phone) {
   return String(phone || "").replace(/[\s()-]/g, "");
 }
 
-// Restore older chairperson records where possible
+/* RESTORE OLDER CHAIRPERSON RECORDS WHERE POSSIBLE */
 chamaMembers = chamaMembers.map(member => {
   if (!member.status && member.role === "Chairperson") {
     const account = customers.find(customer =>
@@ -1882,7 +1940,7 @@ chamaMembers = chamaMembers.map(member => {
 
 save("wakaunduChamaMembers", chamaMembers);
 
-// Switch between Chama screens
+/* SWITCH BETWEEN CHAMA SCREENS */
 function showChamaView(viewId) {
   document.querySelectorAll("#chama .chama-view").forEach(view => {
     view.hidden = view.id !== viewId;
@@ -1893,7 +1951,7 @@ function showChamaView(viewId) {
   }
 }
 
-// Display registered Chama groups
+/* DISPLAY REGISTERED CHAMA GROUPS */
 function renderChamaDirectory() {
   const list = document.getElementById("registeredChamaList");
   if (!list) return;
@@ -1920,7 +1978,7 @@ function renderChamaDirectory() {
   });
 }
 
-// Open selected Chama
+/* CHAMA NAVIGATION */
 document.addEventListener("click", function(event) {
   const groupButton = event.target.closest("[data-chama-group-id]");
 
@@ -1959,10 +2017,7 @@ document.addEventListener("click", function(event) {
   }
 });
 
-// ==========================================
-// 1. REGISTER A CHAMA
-// ==========================================
-
+/* REGISTER A CHAMA */
 document.getElementById("chamaRegistrationForm")
 .addEventListener("submit", function(event) {
   event.preventDefault();
@@ -1979,7 +2034,6 @@ document.getElementById("chamaRegistrationForm")
   const idNumber = document.getElementById("chairpersonIdNumber").value.trim();
   const result = document.getElementById("chamaRegistrationMessage");
 
-  // Chairperson must already have a WakaunduPay account
   const account = customers.find(customer =>
     customer.phone === phone &&
     customer.status === "ACTIVE"
@@ -2078,16 +2132,14 @@ document.getElementById("chamaRegistrationForm")
   this.reset();
 });
 
-// ==========================================
-// 2. OPEN MEMBER LOGIN OR REGISTRATION
-// ==========================================
-
+/* OPEN CHAMA MEMBER LOGIN */
 document.getElementById("chamaMemberLoginButton")
 .addEventListener("click", function() {
   document.getElementById("chamaLoginMessage").textContent = "";
   showChamaView("chamaLoginView");
 });
 
+/* OPEN NEW CHAMA MEMBER REGISTRATION */
 document.getElementById("chamaNewMemberButton")
 .addEventListener("click", function() {
   if (!selectedChamaGroup) return;
@@ -2102,10 +2154,7 @@ document.getElementById("chamaNewMemberButton")
   showChamaView("chamaMemberView");
 });
 
-// ==========================================
-// 3. SUBMIT NEW MEMBERSHIP REQUEST
-// ==========================================
-
+/* SUBMIT NEW MEMBERSHIP REQUEST */
 document.getElementById("chamaMemberForm")
 .addEventListener("submit", function(event) {
   event.preventDefault();
@@ -2185,10 +2234,7 @@ document.getElementById("chamaMemberForm")
     selectedChamaGroup.name;
 });
 
-// ==========================================
-// 4. EXISTING MEMBER LOGIN
-// ==========================================
-
+/* EXISTING CHAMA MEMBER LOGIN */
 document.getElementById("chamaLoginForm")
 .addEventListener("submit", function(event) {
   event.preventDefault();
@@ -2244,9 +2290,7 @@ document.getElementById("chamaLoginForm")
   showChamaView("chamaDashboardView");
 });
 
-// ==========================================
-// 5. APPROVE MEMBERS — CHAIRPERSON ONLY
-// ==========================================
+/* APPROVE MEMBERS — CHAIRPERSON ONLY */
 function approveChamaMember(memberId) {
   if (!currentChamaGroup || !currentChamaMember ||
       currentChamaMember.role !== "Chairperson") {
@@ -2284,10 +2328,8 @@ function approveChamaMember(memberId) {
   renderChamaDashboard();
   alert(member.name + " has been approved as " + member.role + ".");
 }
-// ==========================================
-// 6. DISPLAY MEMBERS AND PENDING REQUESTS
-// ==========================================
 
+/* DISPLAY CHAMA MEMBERS AND PENDING REQUESTS */
 function renderChamaDashboard() {
   if (!currentChamaGroup || !currentChamaMember) return;
 
@@ -2300,6 +2342,7 @@ function renderChamaDashboard() {
 
   groupMembers.forEach(member => {
     const card = document.createElement("div");
+
     card.style.cssText =
       "background:#123f69;padding:12px;margin:8px 0;" +
       "border:1px solid #c69a36;border-radius:10px;";
@@ -2325,7 +2368,6 @@ function renderChamaDashboard() {
     container.appendChild(card);
   });
 
-  // Populate contribution member list
   const select = document.getElementById("contributionMember");
   select.replaceChildren();
 
@@ -2342,7 +2384,6 @@ function renderChamaDashboard() {
     select.appendChild(option);
   });
 
-  // Only Chairperson and Treasurer can record contributions
   const canRecord =
     currentChamaMember.role === "Chairperson" ||
     currentChamaMember.role === "Treasurer";
@@ -2353,10 +2394,7 @@ function renderChamaDashboard() {
   renderChamaContributionHistory();
 }
 
-// ==========================================
-// 7. RECORD GROUP CONTRIBUTIONS
-// ==========================================
-
+/* RECORD GROUP CONTRIBUTIONS */
 document.getElementById("chamaContributionForm")
 .addEventListener("submit", function(event) {
   event.preventDefault();
@@ -2418,10 +2456,7 @@ document.getElementById("chamaContributionForm")
   renderChamaDashboard();
 });
 
-// ==========================================
-// 8. CONTRIBUTION HISTORY
-// ==========================================
-
+/* CONTRIBUTION HISTORY */
 function renderChamaContributionHistory() {
   const history = document.getElementById("chamaContributionHistory");
   history.replaceChildren();
@@ -2437,6 +2472,7 @@ function renderChamaContributionHistory() {
 
   records.slice().reverse().forEach(item => {
     const entry = document.createElement("div");
+
     entry.style.cssText =
       "background:#123f69;padding:12px;margin:8px 0;" +
       "border:1px solid #c69a36;border-radius:10px;";
@@ -2447,18 +2483,14 @@ function renderChamaContributionHistory() {
       Number(item.amount).toLocaleString("en-KE");
 
     const date = document.createElement("small");
-    date.textContent =
-      new Date(item.date).toLocaleString("en-KE");
+    date.textContent = new Date(item.date).toLocaleString("en-KE");
 
     entry.append(details, date);
     history.appendChild(entry);
   });
 }
 
-// ==========================================
-// 9. LOGOUT OF CHAMA
-// ==========================================
-
+/* LOGOUT OF CHAMA */
 document.getElementById("chamaLogoutButton")
 .addEventListener("click", function() {
   currentChamaGroup = null;
@@ -2468,16 +2500,16 @@ document.getElementById("chamaLogoutButton")
   showChamaView("chamaMainMenu");
 });
 
-// PRINT CHAMA CERTIFICATE
+/* PRINT CHAMA CERTIFICATE */
 document.getElementById("certificatePrint")
 .addEventListener("click", function() {
   window.print();
 });
 
-// Initial Chama directory
+/* INITIAL CHAMA DIRECTORY */
 renderChamaDirectory();
 
-// VERIFY CHAMA CERTIFICATE — SAFE CONNECTION
+/* VERIFY CHAMA CERTIFICATE — SAFE CONNECTION */
 const verifyButton = document.getElementById("verifyCertificateButton");
 
 if (verifyButton) {
@@ -2509,6 +2541,8 @@ if (verifyButton) {
       " | Certificate: " + certificate.certificateNumber;
   });
 }
+
+/* DEMO SERVICE FORMS */
 document.querySelectorAll("[data-demo-form]").forEach(form => {
   form.addEventListener("submit", function(event) {
     event.preventDefault();
@@ -2533,9 +2567,15 @@ document.querySelectorAll("[data-demo-form]").forEach(form => {
     if (action.includes("withdraw")) {
       result.textContent =
         "Withdrawal recorded. Your available demo wallet balance has been reduced.";
+    } else if (action.includes("locked")) {
+      result.textContent =
+        "Locked savings recorded. Money has moved from available balance into locked savings.";
     } else if (action.includes("saving")) {
       result.textContent =
         "Savings recorded. Money has moved from available balance into personal savings.";
+    } else if (action.includes("deposit")) {
+      result.textContent =
+        "Demo deposit recorded. Your available demo balance has increased. No real money was received.";
     } else {
       result.textContent =
         service + " recorded in demo history. No real money was moved.";
@@ -2544,31 +2584,36 @@ document.querySelectorAll("[data-demo-form]").forEach(form => {
     this.reset();
   });
 });
-document.getElementById("callbackForm").addEventListener("submit", function(event) {
+
+/* CUSTOMER CARE CALLBACK REQUEST */
+document.getElementById("callbackForm")
+.addEventListener("submit", function(event) {
   event.preventDefault();
 
   const phone = document.getElementById("callbackPhone").value.trim();
   const reason = document.getElementById("callbackReason").value.trim();
   const result = document.getElementById("callbackMessage");
 
-  if(!/^\+[1-9]\d{7,14}$/.test(phone)) {
-    result.textContent = "Enter a valid international number, including country code.";
+  if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
+    result.textContent =
+      "Enter a valid international number, including country code.";
     return;
   }
 
-  if(!reason) {
+  if (!reason) {
     result.textContent = "Please tell us how we can help.";
     return;
   }
 
   const requests = getSaved("wakaunduCallbacks", []);
+
   requests.push({
-    phone:phone,
-    reason:reason,
-    date:new Date().toISOString()
+    phone,
+    reason,
+    date: new Date().toISOString()
   });
 
-  if(!save("wakaunduCallbacks", requests)) {
+  if (!save("wakaunduCallbacks", requests)) {
     result.textContent = "Unable to save this request on this device.";
     return;
   }
@@ -2579,10 +2624,12 @@ document.getElementById("callbackForm").addEventListener("submit", function(even
   this.reset();
 });
 
-document.getElementById("callSupport").addEventListener("click", function() {
+/* CALL CUSTOMER CARE */
+document.getElementById("callSupport")
+.addEventListener("click", function() {
   const message = document.getElementById("supportMessage");
 
-  if(!SUPPORT_PHONE) {
+  if (!SUPPORT_PHONE) {
     message.textContent =
       "Customer Care phone number has not yet been configured. Please contact the administrator.";
     return;
@@ -2591,14 +2638,8 @@ document.getElementById("callSupport").addEventListener("click", function() {
   message.textContent = "Connecting to Customer Care...";
   window.location.href = "tel:" + SUPPORT_PHONE;
 });
-restoreLoginSession();
 
-if (!currentRole) {
-  renderBalance();
-  renderHistory();
-}
-
-// SHARE MEMBER ACCOUNT DETAILS
+/* SHARE MEMBER ACCOUNT DETAILS */
 document.getElementById("shareAccountDetails")
 .addEventListener("click", async function() {
   if (currentRole !== "member" || !currentCustomer) {
@@ -2615,7 +2656,10 @@ document.getElementById("shareAccountDetails")
 
   if (navigator.share) {
     try {
-      await navigator.share({ title: "WakaunduPay Account Details", text: details });
+      await navigator.share({
+        title: "WakaunduPay Account Details",
+        text: details
+      });
     } catch (error) {
       if (error.name !== "AbortError") {
         document.getElementById("receiveMessage").textContent =
@@ -2627,7 +2671,7 @@ document.getElementById("shareAccountDetails")
   }
 });
 
-// PREPARE REQUEST MONEY MESSAGE
+/* PREPARE REQUEST MONEY MESSAGE */
 document.getElementById("requestMoneyForm")
 .addEventListener("submit", async function(event) {
   event.preventDefault();
@@ -2659,7 +2703,9 @@ document.getElementById("requestMoneyForm")
     "Please contact the requester to arrange payment.";
 
   const result = document.getElementById("requestMoneyMessage");
-  result.textContent = "Payment request prepared. It has NOT been sent and no payment has been received.";
+
+  result.textContent =
+    "Payment request prepared. It has NOT been sent and no payment has been received.";
 
   if (navigator.share) {
     try {
@@ -2677,9 +2723,17 @@ document.getElementById("requestMoneyForm")
   }
 });
 
+/* RESTORE LOGIN AFTER ALL FUNCTIONS ARE READY */
+restoreLoginSession();
+
+if (!currentRole) {
+  renderBalance();
+  renderHistory();
+}
+
 })();
 </script>
-  
+
 <script>
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -2688,6 +2742,7 @@ if ("serviceWorker" in navigator) {
       .catch(error => console.error(error));
   });
 }
-</script> 
+</script>
+
 </body>
 </html>
