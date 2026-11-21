@@ -1132,6 +1132,59 @@ let wallets = getSaved("wakaunduWallets", {});
 
 let currentRole = null;
 let currentCustomer = null;
+  /* WAKauNduPAY MEMBER PIN SECURITY */
+let pinVerifiedUntil = 0;
+let pinFailedAttempts = 0;
+let pinLocked = false;
+
+const PIN_SESSION_TIME = 5 * 60 * 1000;
+const MAX_PIN_ATTEMPTS = 3;
+
+function clearPinSession() {
+  pinVerifiedUntil = 0;
+}
+
+function verifyTransactionPIN() {
+  if (currentRole !== "member" || !currentCustomer) {
+    return currentRole === "ceo";
+  }
+
+  if (pinLocked) {
+    alert("Your transactions are blocked. Reset your PIN to continue.");
+    return false;
+  }
+
+  if (Date.now() < pinVerifiedUntil) {
+    return true;
+  }
+
+  const enteredPIN = prompt("Enter your 4-digit WakaunduPay PIN:");
+
+  if (enteredPIN === null) return false;
+
+  if (!/^\d{4}$/.test(enteredPIN) ||
+      enteredPIN !== String(currentCustomer.pin)) {
+
+    pinFailedAttempts++;
+
+    if (pinFailedAttempts >= MAX_PIN_ATTEMPTS) {
+      pinLocked = true;
+      clearPinSession();
+      alert("Account transaction access blocked after 3 incorrect PIN attempts. Please reset your PIN.");
+    } else {
+      alert("Incorrect PIN. Attempts remaining: " +
+        (MAX_PIN_ATTEMPTS - pinFailedAttempts));
+    }
+
+    return false;
+  }
+
+  pinFailedAttempts = 0;
+  pinVerifiedUntil = Date.now() + PIN_SESSION_TIME;
+
+  alert("PIN verified. You can use financial services for 5 minutes.");
+  return true;
+}
 
 let chamaGroups = getSaved("wakaunduChamas", []);
 let chamaMembers = getSaved("wakaunduChamaMembers", []);
