@@ -2505,82 +2505,56 @@ if (verifyButton) {
       "VERIFIED: " + certificate.chamaName +
       " | Chairperson: " + certificate.chairpersonName +
       " | Certificate: " + certificate.certificateNumber;
-  });
-}
-
-/* DEMO SERVICE FORMS — MEMBER PIN REQUIRED */
+  })
+    
+/* TRANSACTION PIN POP-UP */
 
 document.querySelectorAll("[data-demo-form]").forEach(form => {
-
-  // Create the PIN field automatically
-  if (!form.querySelector(".transaction-pin")) {
-    const pinLabel = document.createElement("label");
-    pinLabel.textContent = "Enter your 4-digit Member PIN";
-
-    const pinInput = document.createElement("input");
-    pinInput.type = "password";
-    pinInput.inputMode = "numeric";
-    pinInput.maxLength = 4;
-    pinInput.pattern = "[0-9]{4}";
-    pinInput.autocomplete = "off";
-    pinInput.placeholder = "Enter registered PIN";
-    pinInput.className = "transaction-pin";
-
-    const submitButton = form.querySelector(
-      'button[type="submit"], button:not([type])'
-    );
-
-    if (submitButton) {
-      form.insertBefore(pinLabel, submitButton);
-      form.insertBefore(pinInput, submitButton);
-    }
-  }
-
   form.addEventListener("submit", function(event) {
     event.preventDefault();
-
-    const pinInput = this.querySelector(".transaction-pin");
-
-    if (pinInput) {
-      pinInput.required = currentRole === "member";
-    }
 
     if (!this.reportValidity()) return;
 
     const service = this.dataset.service;
     const amountInput = this.querySelector('input[type="number"]');
     const amount = amountInput ? amountInput.value : "";
-    const pin = pinInput ? pinInput.value : "";
 
-    const result = this.parentElement.querySelector(".result");
+    if (currentRole === "member") {
+      const pin = prompt("Enter your registered 4-digit Member PIN:");
 
-    if (!addTransaction(service, amount, pin)) {
-      if (result) {
-        result.textContent =
-          "Transaction rejected. Check your PIN, amount, balance or account access.";
+      if (pin === null) return;
+
+      if (!/^\d{4}$/.test(pin)) {
+        alert("Please enter exactly 4 digits.");
+        return;
       }
+
+      processTransaction(this, service, amount, pin);
       return;
     }
 
-    const action = service.toLowerCase();
-
-    if (action.includes("withdraw")) {
-      result.textContent = "Demo withdrawal recorded.";
-    } else if (action.includes("locked")) {
-      result.textContent = "Demo locked savings recorded.";
-    } else if (action.includes("saving")) {
-      result.textContent = "Demo personal savings recorded.";
-    } else if (action.includes("deposit")) {
-      result.textContent =
-        "Demo deposit recorded. No real money was received.";
-    } else {
-      result.textContent =
-        service + " recorded in demo transaction history.";
-    }
-
-    this.reset();
+    processTransaction(this, service, amount, "");
   });
 });
+
+function processTransaction(form, service, amount, pin) {
+  const result = form.parentElement.querySelector(".result");
+
+  if (!addTransaction(service, amount, pin)) {
+    if (result) {
+      result.textContent =
+        "Transaction rejected. Check your PIN, amount or available balance.";
+    }
+    return;
+  }
+
+  if (result) {
+    result.textContent =
+      service + " recorded in demo transaction history. No real money was moved.";
+  }
+
+  form.reset();
+}
 
 /* CUSTOMER CARE CALLBACK REQUEST */
 document.getElementById("callbackForm")
