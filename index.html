@@ -1450,64 +1450,106 @@ function addTransaction(service, amount, pin) {
 if (currentRole === "member" && !verifyTransactionPIN()) {
   return false;
 }
-    
-/* DISPLAY TRANSACTION HISTORY */
-function renderHistory() {
-  const list = document.getElementById("transactionList");
-  if (!list) return;
+  /* RECORD TRANSACTIONS — PIN PROTECTED */
+function addTransaction(service, amount) {
+  const value = Number(amount);
 
-  list.replaceChildren();
+  if (!Number.isFinite(value) || value <= 0) {
+    alert("Enter a valid amount.");
+    return false;
+  }
 
-  let records = [];
+  if (currentRole !== "ceo" && currentRole !== "member") {
+    alert("Access denied.");
+    return false;
+  }
 
-  if (currentRole === "member" && currentCustomer) {
-    records = transactions.filter(item =>
-      item.ownerPhone === currentCustomer.phone
-    );
-  } else if (currentRole === "ceo" || currentRole === "md") {
-    records = transactions;
+  if (currentRole === "member" && !verifyTransactionPIN()) {
+    return false;
+  }
+
+  const wallet = getWallet();
+  if (!wallet) return false;
+
+  const action = String(service).toLowerCase();
+
+  const isDeposit = action.includes("deposit");
+  const isLocked = action.includes("locked");
+  const isSavings = !isLocked && action.includes("saving");
+
+  const isOutgoing =
+    action.includes("send") ||
+    action.includes("transfer") ||
+    action.includes("withdraw") ||
+    action.includes("bill") ||
+    action.includes("merchant") ||
+    action.includes("goods") ||
+    action.includes("airtime") ||
+    action.includes("credit");
+
+  if ((isOutgoing || isSavings || isLocked) &&
+      wallet.available < value) {
+    alert("Insufficient available balance.");
+    return false;
+  }
+
+  const oldAvailable = wallet.available;
+  const oldSavings = wallet.savings;
+  const oldLocked = wallet.locked;
+
+  if (isDeposit) {
+    wallet.available += value;
+  } else if (isLocked) {
+    wallet.available -= value;
+    wallet.locked += value;
+  } else if (isSavings) {
+    wallet.available -= value;
+    wallet.savings += value;
+  } else if (isOutgoing) {
+    wallet.available -= value;
   } else {
-    list.textContent = "Please log in to view transaction history.";
-    return;
+    return false;
   }
 
-  if (records.length === 0) {
-    list.textContent = "No transaction history available.";
-    return;
+  const transaction = {
+    id: "TX" + Date.now(),
+    service,
+    amount: value,
+    ownerRole: currentRole,
+    ownerId: currentRole === "ceo" ? "CEO" : currentCustomer.id,
+    ownerPhone: currentRole === "member" ? currentCustomer.phone : "",
+    ownerName: currentRole === "ceo" ? "CEO" : currentCustomer.name,
+    date: new Date().toISOString(),
+    status: "DEMO RECORDED",
+    balanceAfter: wallet.available,
+    savingsAfter: wallet.savings,
+    lockedAfter: wallet.locked
+  };
+
+  transactions.push(transaction);
+
+  if (!save("wakaunduWallets", wallets)) {
+    wallet.available = oldAvailable;
+    wallet.savings = oldSavings;
+    wallet.locked = oldLocked;
+    transactions.pop();
+    return false;
   }
 
-  records.slice().reverse().forEach(item => {
-    const card = document.createElement("div");
+  if (!save("wakaunduTransactions", transactions)) {
+    wallet.available = oldAvailable;
+    wallet.savings = oldSavings;
+    wallet.locked = oldLocked;
+    transactions.pop();
+    save("wakaunduWallets", wallets);
+    return false;
+  }
 
-    card.style.cssText =
-      "background:#123f69;padding:14px;margin:10px 0;" +
-      "border:1px solid #c69a36;border-radius:10px;";
-
-    const heading = document.createElement("strong");
-    heading.textContent = item.service;
-
-    const owner = document.createElement("p");
-    owner.textContent = item.ownerName
-      ? "Member: " + item.ownerName
-      : "Management transaction";
-
-    const amount = document.createElement("p");
-    amount.textContent =
-      "Amount: KSh " +
-      Number(item.amount).toLocaleString("en-KE");
-
-    const date = document.createElement("small");
-    date.textContent =
-      "Date: " + new Date(item.date).toLocaleString("en-KE");
-
-    const status = document.createElement("p");
-    status.textContent = item.status || "DEMO RECORDED";
-
-    card.append(heading, owner, amount, date, status);
-    list.appendChild(card);
-  });
-}
-
+  renderBalance();
+  renderHistory();
+  alert("Transaction recorded successfully.");
+  return true;
+}  
 /* CEO AND MANAGING DIRECTOR DEMO LOGIN */
 const CEO_USERNAME = "ceo";
 const CEO_PASSWORD = "ChangeMe123!";
