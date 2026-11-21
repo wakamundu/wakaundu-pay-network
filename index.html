@@ -456,7 +456,7 @@ footer {
 <!-- MEMBER DASHBOARD CONTENT -->
 <section id="memberDashboardContent" style="display:none;">
 
-  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;">
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;">
 
     <div class="balance">
       <small>ACCOUNT BALANCE</small>
@@ -467,14 +467,14 @@ footer {
       <small>LOCKED SAVINGS</small>
       <h3 id="savingsBalance">KSh 0.00</h3>
     </div>
-
+<button type="button" class="action" id="resetMemberPIN">
+  🔐 Recover / Reset PIN
+</button>
   </div>
 
   <h3>Welcome to Wakaûndū Pay</h3>
   <p>Choose a service below.</p>
-<button type="button" class="action" id="resetMemberPIN">
-  🔐 Recover / Reset PIN
-</button>
+
   <div class="grid">
     <button class="action" data-open="international-banking">🏦 Banking & Financial Growth</button>
     <button class="action" data-open="chama">👥 Chama Groups</button>
