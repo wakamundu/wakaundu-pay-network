@@ -919,13 +919,6 @@ footer {
       <label>National ID / Passport Number</label>
       <input id="chamaMemberIdNumber" required>
 
-      <label>Requested Role</label>
-      <select id="chamaMemberRole" required>
-        <option value="Member">Member</option>
-        <option value="Treasurer">Treasurer</option>
-        <option value="Secretary">Secretary</option>
-      </select>
-
       <button class="action" type="submit">Submit Membership Request</button>
     </form>
 
@@ -2176,7 +2169,6 @@ document.getElementById("chamaMemberForm")
   );
   const idType = document.getElementById("chamaMemberIdType").value;
   const idNumber = document.getElementById("chamaMemberIdNumber").value.trim();
-  const requestedRole = document.getElementById("chamaMemberRole").value;
   const result = document.getElementById("chamaMemberMessage");
 
   const account = customers.find(customer =>
@@ -2222,7 +2214,6 @@ document.getElementById("chamaMemberForm")
     idType: account.idType,
     idNumber: account.idNumber,
     role: "Member",
-    requestedRole,
     status: "PENDING",
     created: new Date().toISOString()
   };
@@ -2321,7 +2312,6 @@ function approveChamaMember(memberId) {
   const previousRole = member.role;
 
   member.status = "ACTIVE";
-  member.role = member.requestedRole || "Member";
   member.approvedBy = currentChamaMember.name;
   member.approvedAt = new Date().toISOString();
 
