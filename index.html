@@ -2244,6 +2244,7 @@ document.getElementById("chamaLoginForm")
   const phone = normalizeChamaPhone(
     document.getElementById("chamaLoginPhone").value
   );
+
   const pin = document.getElementById("chamaLoginPIN").value;
   const result = document.getElementById("chamaLoginMessage");
 
@@ -2254,7 +2255,8 @@ document.getElementById("chamaLoginForm")
   );
 
   if (!account) {
-    result.textContent = "Incorrect WakaunduPay phone number or PIN.";
+    result.textContent =
+      "Incorrect WakaunduPay phone number or PIN.";
     return;
   }
 
@@ -2275,9 +2277,21 @@ document.getElementById("chamaLoginForm")
     return;
   }
 
+  // Establish the normal WakaunduPay member session
+  currentRole = "member";
+  currentCustomer = account;
+
+  // Establish the Chama session
   currentChamaGroup = selectedChamaGroup;
   currentChamaMember = member;
-  currentCustomer = account;
+
+  // Save the member and Chama session
+  saveLoginSession();
+
+  // Refresh member account information
+  updateReceivingDetails(account);
+  renderBalance();
+  renderHistory();
 
   document.getElementById("chamaDashboardName").textContent =
     currentChamaGroup.name;
@@ -2286,9 +2300,82 @@ document.getElementById("chamaLoginForm")
     "Welcome " + member.name + " | Role: " + member.role;
 
   renderChamaDashboard();
+
   this.reset();
   showChamaView("chamaDashboardView");
 });
+
+/* EXISTING CHAMA MEMBER LOGIN */
+document.getElementById("chamaLoginForm")
+.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  if (!this.reportValidity() || !selectedChamaGroup) return;
+
+  const phone = normalizeChamaPhone(
+    document.getElementById("chamaLoginPhone").value
+  );
+
+  const pin = document.getElementById("chamaLoginPIN").value;
+  const result = document.getElementById("chamaLoginMessage");
+
+  const account = customers.find(customer =>
+    customer.phone === phone &&
+    customer.pin === pin &&
+    customer.status === "ACTIVE"
+  );
+
+  if (!account) {
+    result.textContent =
+      "Incorrect WakaunduPay phone number or PIN.";
+    return;
+  }
+
+  const member = chamaMembers.find(item =>
+    item.groupId === selectedChamaGroup.id &&
+    item.phone === account.phone
+  );
+
+  if (!member) {
+    result.textContent =
+      "You are not registered in this Chama. Submit a membership request first.";
+    return;
+  }
+
+  if (member.status !== "ACTIVE") {
+    result.textContent =
+      "Your membership is PENDING. Please wait for Chairperson approval.";
+    return;
+  }
+
+  // Establish the normal WakaunduPay member session
+  currentRole = "member";
+  currentCustomer = account;
+
+  // Establish the Chama session
+  currentChamaGroup = selectedChamaGroup;
+  currentChamaMember = member;
+
+  // Save the member and Chama session
+  saveLoginSession();
+
+  // Refresh member account information
+  updateReceivingDetails(account);
+  renderBalance();
+  renderHistory();
+
+  document.getElementById("chamaDashboardName").textContent =
+    currentChamaGroup.name;
+
+  document.getElementById("chamaLoggedInMember").textContent =
+    "Welcome " + member.name + " | Role: " + member.role;
+
+  renderChamaDashboard();
+
+  this.reset();
+  showChamaView("chamaDashboardView");
+});
+
 
 /* APPROVE MEMBERS — CHAIRPERSON ONLY */
 function approveChamaMember(memberId) {
