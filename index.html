@@ -1873,22 +1873,18 @@ document.getElementById("memberLogout").addEventListener("click", logoutUser);
 
 /* MEMBER LOGIN */
 document.getElementById("memberLoginForm")
-  .addEventListener("submit", async function(event) {
+.addEventListener("submit", function(event) {
   event.preventDefault();
 
-  const rawPhone = document.getElementById("loginPhone").value.trim();
+  const rawPhone =
+    document.getElementById("loginPhone").value.trim();
+
   const phone = rawPhone.replace(/[\s()-]/g, "");
   const pin = document.getElementById("loginPIN").value;
-  const result = document.getElementById("memberLoginMessage");
-const photoFile = document.getElementById("customerPhoto").files[0];
-let profilePhoto = "";
 
-try {
-  profilePhoto = await createProfilePhoto(photoFile);
-} catch (error) {
-  result.textContent = error.message;
-  return;
-}
+  const result =
+    document.getElementById("memberLoginMessage");
+
   const customer = customers.find(item =>
     item.phone === phone &&
     item.pin === pin &&
@@ -1899,11 +1895,11 @@ try {
     result.textContent = "Incorrect phone number or PIN.";
     return;
   }
-currentRole = "member";
-currentCustomer = customer;
 
-saveLoginSession();
-updateLoggedInDisplay();
+  currentRole = "member";
+  currentCustomer = customer;
+
+  saveLoginSession();
 
   document.querySelectorAll(".panel").forEach(panel => {
     panel.style.display = "none";
@@ -1912,12 +1908,14 @@ updateLoggedInDisplay();
   document.getElementById("publicPortal").style.display = "none";
   document.getElementById("memberDashboardContent").style.display = "block";
 
+  updateLoggedInDisplay();
   updateReceivingDetails(customer);
 
   result.textContent = "";
   this.reset();
 
   renderBalance();
+
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
