@@ -1290,9 +1290,10 @@ function getWallet() {
   return wallets[walletId];
 }
 
+
 /* CUSTOMER REGISTRATION */
 document.getElementById("registrationForm")
-.addEventListener("submit", function(event) {
+.addEventListener("submit", async function(event) {
   event.preventDefault();
 
   if (!this.reportValidity()) return;
@@ -1305,6 +1306,16 @@ document.getElementById("registrationForm")
   const pin = document.getElementById("customerPIN").value;
   const confirmPIN = document.getElementById("confirmPIN").value;
   const result = document.getElementById("registrationMessage");
+  const photoFile = document.getElementById("customerPhoto").files[0];
+
+  let profilePhoto = "";
+
+  try {
+    profilePhoto = await createProfilePhoto(photoFile);
+  } catch (error) {
+    result.textContent = error.message;
+    return;
+  }
 
   if (!/^(0[17]\d{8}|\+[1-9]\d{7,14})$/.test(phone)) {
     result.textContent = "Enter a valid phone number.";
@@ -1333,6 +1344,7 @@ document.getElementById("registrationForm")
     idType,
     idNumber,
     pin,
+    profilePhoto,
     status: "ACTIVE",
     created: new Date().toISOString()
   };
@@ -1351,6 +1363,7 @@ document.getElementById("registrationForm")
 
   this.reset();
 });
+
 /* DISPLAY WHO IS CURRENTLY LOGGED IN */
 function updateLoggedInDisplay() {
   const displays = [
