@@ -609,46 +609,6 @@ footer {
   <button type="button" class="back" data-home>Back to Home</button>
 </section>
 
-async function createProfilePhoto(file) {
-  if (!file) return "";
-
-  if (!file.type.startsWith("image/")) {
-    throw new Error("Please select an image.");
-  }
-
-  if (file.size > 3 * 1024 * 1024) {
-    throw new Error("Photo must be 3 MB or smaller.");
-  }
-
-  const data = await new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(new Error("Photo could not be read."));
-    reader.readAsDataURL(file);
-  });
-
-  const img = await new Promise((resolve, reject) => {
-    const image = new Image();
-    image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error("Invalid photo."));
-    image.src = data;
-  });
-
-  const canvas = document.createElement("canvas");
-  canvas.width = 256;
-  canvas.height = 256;
-
-  const side = Math.min(img.width, img.height);
-  const x = (img.width - side) / 2;
-  const y = (img.height - side) / 2;
-
-  canvas.getContext("2d").drawImage(
-    img, x, y, side, side, 0, 0, 256, 256
-  );
-
-  return canvas.toDataURL("image/jpeg", 0.78);
-}
-
 <!-- REGISTRATION -->
 <section id="register" class="panel">
   <h2>Create Your Account</h2>
@@ -1290,6 +1250,45 @@ function getWallet() {
   return wallets[walletId];
 }
 
+async function createProfilePhoto(file) {
+  if (!file) return "";
+
+  if (!file.type.startsWith("image/")) {
+    throw new Error("Please select an image.");
+  }
+
+  if (file.size > 3 * 1024 * 1024) {
+    throw new Error("Photo must be 3 MB or smaller.");
+  }
+
+  const data = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error("Photo could not be read."));
+    reader.readAsDataURL(file);
+  });
+
+  const img = await new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error("Invalid photo."));
+    image.src = data;
+  });
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 256;
+  canvas.height = 256;
+
+  const side = Math.min(img.width, img.height);
+  const x = (img.width - side) / 2;
+  const y = (img.height - side) / 2;
+
+  canvas.getContext("2d").drawImage(
+    img, x, y, side, side, 0, 0, 256, 256
+  );
+
+  return canvas.toDataURL("image/jpeg", 0.78);
+}
 
 /* CUSTOMER REGISTRATION */
 document.getElementById("registrationForm")
