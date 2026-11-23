@@ -1778,11 +1778,64 @@ function showRoleDashboard(dashboardId) {
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
+
 function updateLoggedInDisplay() {
-  const displays = [
-    document.getElementById("ceoLoggedInDisplay"),
-    document.getElementById("mdLoggedInDisplay")
-  ];
+  const ceoDisplay = document.getElementById("ceoLoggedInDisplay");
+  const mdDisplay = document.getElementById("mdLoggedInDisplay");
+  const memberDisplay = document.getElementById("loggedInDisplay");
+
+  if (ceoDisplay) {
+    ceoDisplay.textContent =
+      currentRole === "ceo"
+        ? "Logged in as: CEO / Administrator"
+        : "Not logged in";
+  }
+
+  if (mdDisplay) {
+    mdDisplay.textContent =
+      currentRole === "md"
+        ? "Logged in as: Managing Director"
+        : "Not logged in";
+  }
+
+  if (!memberDisplay) return;
+
+  memberDisplay.replaceChildren();
+
+  if (currentRole !== "member" || !currentCustomer) {
+    memberDisplay.textContent = "Not logged in";
+    return;
+  }
+
+  memberDisplay.style.cssText =
+    "display:flex;align-items:center;gap:12px;" +
+    "background:#071b2e;color:#d6ad45;padding:12px;" +
+    "border-radius:10px;margin-bottom:12px;";
+
+  const photo = document.createElement("img");
+  photo.alt = "Member profile photo";
+  photo.src = currentCustomer.profilePhoto ||
+    "data:image/svg+xml," +
+    encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="58" height="58"><circle cx="29" cy="29" r="29" fill="#123f69"/><text x="29" y="38" text-anchor="middle" font-size="26" fill="#d6ad45">?</text></svg>'
+    );
+
+  photo.style.cssText =
+    "width:58px;height:58px;min-width:58px;" +
+    "border-radius:50%;object-fit:cover;" +
+    "border:2px solid #c69a36;";
+
+  const details = document.createElement("div");
+  const name = document.createElement("strong");
+  name.textContent = currentCustomer.name || "Member";
+
+  const phone = document.createElement("small");
+  phone.textContent = "Phone: " +
+    (currentCustomer.phone || "Not available");
+
+  details.append(name, document.createElement("br"), phone);
+  memberDisplay.append(photo, details);
+}
 
   let identity = "Not logged in";
 
