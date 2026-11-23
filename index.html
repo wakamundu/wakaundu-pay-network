@@ -1297,7 +1297,36 @@ document.getElementById("registrationForm")
 
   this.reset();
 });
+/* DISPLAY WHO IS CURRENTLY LOGGED IN */
+function updateLoggedInDisplay() {
+  const displays = [
+    document.getElementById("ceoLoggedInDisplay"),
+    document.getElementById("mdLoggedInDisplay"),
+    document.getElementById("loggedInDisplay")
+  ];
 
+  let identity = "Not logged in";
+
+  if (currentRole === "ceo") {
+    identity = "Logged in as: CEO / Administrator";
+
+  } else if (currentRole === "md") {
+    identity = "Logged in as: Managing Director";
+
+  } else if (currentRole === "member" && currentCustomer) {
+    identity =
+      "Logged in as: " +
+      (currentCustomer.name || "Member") +
+      " | Phone: " +
+      (currentCustomer.phone || "Not available");
+  }
+
+  displays.forEach(display => {
+    if (display) {
+      display.textContent = identity;
+    }
+  });
+}
 /* BALANCE DISPLAY */
 function renderBalance() {
   const wallet = getWallet();
