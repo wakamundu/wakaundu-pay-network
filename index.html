@@ -455,8 +455,16 @@ footer {
 
 <!-- MEMBER DASHBOARD CONTENT -->
 <section id="memberDashboardContent" style="display:none;">
-<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;">
-  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;">
+
+  <!-- WHO IS LOGGED IN -->
+  <div id="loggedInDisplay"
+       style="background:#071b2e;color:#d6ad45;padding:12px;
+       border-radius:10px;margin-bottom:12px;font-weight:bold;">
+    Not logged in
+  </div>
+
+  <!-- TWO BALANCE CARDS -->
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;">
 
     <div class="balance">
       <small>ACCOUNT BALANCE</small>
@@ -469,9 +477,11 @@ footer {
     </div>
 
   </div>
-<button type="button" class="action" id="resetMemberPIN">
-  🔐 Recover / Reset PIN
-</button>
+
+  <button type="button" class="action" id="resetMemberPIN">
+    🔐 Recover / Reset PIN
+  </button>
+
   <h3>Welcome to Wakaûndū Pay</h3>
   <p>Choose a service below.</p>
 
@@ -489,7 +499,7 @@ footer {
   <p id="message" aria-live="polite"></p>
 
 </section>
-<!-- END MEMBER DASHBOARD -->
+<!-- END MEMBER DASHBOARD CONTENT -->
 
 <!-- ADMIN LOGIN -->
 <section id="admin-login" class="panel">
@@ -1381,6 +1391,7 @@ function renderBalance() {
 
 /* PERSISTENT LOGIN SESSION */
 function saveLoginSession() {
+  updateLoggedInDisplay();
   const session = {
     role: currentRole,
     customerId: currentCustomer ? currentCustomer.id : null,
