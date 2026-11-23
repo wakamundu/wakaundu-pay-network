@@ -1851,22 +1851,6 @@ function updateLoggedInDisplay() {
   memberDisplay.append(photo, details);
 }
 
-  let identity = "Not logged in";
-
-  if (currentRole === "ceo") {
-    identity = "Logged in as: CEO / Administrator";
-  } else if (currentRole === "md") {
-    identity = "Logged in as: Managing Director";
-  } else if (currentRole === "member" && currentCustomer) {
-    identity = "Logged in as: " +
-      (currentCustomer.name || "Member") +
-      " • " + (currentCustomer.phone || "");
-  }
-
-  displays.forEach(display => {
-    if (display) display.textContent = identity;
-  });
-}
 /* CEO ADMIN LOGIN */
 document.getElementById("adminLoginForm")
 .addEventListener("submit", function(event) {
