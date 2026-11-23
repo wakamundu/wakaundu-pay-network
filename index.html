@@ -1673,7 +1673,28 @@ function showRoleDashboard(dashboardId) {
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
+function updateLoggedInDisplay() {
+  const displays = [
+    document.getElementById("ceoLoggedInDisplay"),
+    document.getElementById("mdLoggedInDisplay")
+  ];
 
+  let identity = "Not logged in";
+
+  if (currentRole === "ceo") {
+    identity = "Logged in as: CEO / Administrator";
+  } else if (currentRole === "md") {
+    identity = "Logged in as: Managing Director";
+  } else if (currentRole === "member" && currentCustomer) {
+    identity = "Logged in as: " +
+      (currentCustomer.name || "Member") +
+      " • " + (currentCustomer.phone || "");
+  }
+
+  displays.forEach(display => {
+    if (display) display.textContent = identity;
+  });
+}
 /* CEO ADMIN LOGIN */
 document.getElementById("adminLoginForm")
 .addEventListener("submit", function(event) {
