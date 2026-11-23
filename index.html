@@ -1445,8 +1445,9 @@ function restoreLoginSession() {
       return;
     }
 
-    renderBalance();
-    renderHistory();
+    updateLoggedInDisplay();
+renderBalance();
+renderHistory();
 
   } catch (error) {
     console.error("Session restoration failed:", error);
@@ -1744,12 +1745,12 @@ document.getElementById("adminLoginForm")
     result.textContent = "Incorrect CEO/Admin username or password.";
     return;
   }
+currentRole = "ceo";
+currentCustomer = null;
 
-  currentRole = "ceo";
-  currentCustomer = null;
-
-  renderBalance();
-  saveLoginSession();
+renderBalance();
+saveLoginSession();
+updateLoggedInDisplay();
 
   result.textContent = "";
   this.reset();
@@ -1770,11 +1771,12 @@ document.getElementById("mdLoginForm")
     result.textContent = "Incorrect Managing Director username or password.";
     return;
   }
+currentRole = "md";
+currentCustomer = null;
 
-  currentRole = "md";
-  currentCustomer = null;
-
-  saveLoginSession();
+saveLoginSession();
+updateLoggedInDisplay();
+  
   result.textContent = "";
   this.reset();
 
@@ -1790,10 +1792,11 @@ transactionPINAttempts = 0;
 transactionPINLocked = false;
   
   currentRole = null;
-  currentCustomer = null;
-  currentChamaGroup = null;
-  currentChamaMember = null;
-  selectedChamaGroup = null;
+currentCustomer = null;
+
+updateLoggedInDisplay();
+
+currentChamaGroup = null;
 
   document.querySelectorAll(".panel").forEach(panel => {
     panel.style.display = "none";
@@ -1833,11 +1836,11 @@ document.getElementById("memberLoginForm")
     result.textContent = "Incorrect phone number or PIN.";
     return;
   }
+currentRole = "member";
+currentCustomer = customer;
 
-  currentRole = "member";
-  currentCustomer = customer;
-
-  saveLoginSession();
+saveLoginSession();
+updateLoggedInDisplay();
 
   document.querySelectorAll(".panel").forEach(panel => {
     panel.style.display = "none";
