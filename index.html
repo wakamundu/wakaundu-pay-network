@@ -3058,6 +3058,75 @@ if (resetPINButton) {
   });
 }
 
+/* FORGOTTEN MEMBER LOGIN PIN REQUEST */
+
+const forgotPINForm =
+  document.getElementById("forgotPINForm");
+
+if (forgotPINForm) {
+  forgotPINForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const phone = document
+      .getElementById("forgotPINPhone")
+      .value.trim()
+      .replace(/[\s()-]/g, "");
+
+    const message =
+      document.getElementById("forgotPINMessage");
+
+    if (!phone) {
+      message.textContent = "Enter your registered phone number.";
+      return;
+    }
+
+    const member = customers.find(item =>
+      String(item.phone || "")
+        .replace(/[\s()-]/g, "") === phone &&
+      String(item.status || "ACTIVE").toUpperCase() === "ACTIVE"
+    );
+
+    if (!member) {
+      message.textContent =
+        "No active member account was found for those details.";
+      return;
+    }
+
+    const requests = getSaved("wakaunduPINResetRequests", []);
+
+    const existingRequest = requests.find(item =>
+      item.memberId === member.id &&
+      item.status === "PENDING"
+    );
+
+    if (existingRequest) {
+      message.textContent =
+        "Your PIN reset request is already awaiting CEO review.";
+      return;
+    }
+
+    requests.push({
+      id: "PIN" + Date.now(),
+      memberId: member.id,
+      memberName: member.name,
+      phone: member.phone,
+      status: "PENDING",
+      requestedAt: new Date().toISOString()
+    });
+
+    if (!save("wakaunduPINResetRequests", requests)) {
+      message.textContent =
+        "Could not save your request. Please try again.";
+      return;
+    }
+
+    message.textContent =
+      "Your PIN reset request has been recorded and is awaiting CEO review.";
+
+    forgotPINForm.reset();
+  });
+}
+
 /* CUSTOMER CARE CALLBACK REQUEST */
 document.getElementById("callbackForm")
 .addEventListener("submit", function(event) {
