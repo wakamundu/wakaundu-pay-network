@@ -3134,7 +3134,116 @@ if (forgotPINForm) {
     forgotPINForm.reset();
   });
 }
+/* CEO FORGOTTEN PIN REQUEST MANAGEMENT */
 
+function renderCEOPINResetRequests() {
+  const container =
+    document.getElementById("ceoPINResetRequests");
+
+  if (!container) return;
+
+  if (currentRole !== "ceo") {
+    container.textContent = "CEO access required.";
+    return;
+  }
+
+  const requests =
+    getSaved("wakaunduPINResetRequests", []);
+
+  const pending = requests.filter(item =>
+    item.status === "PENDING"
+  );
+
+  container.replaceChildren();
+
+  if (pending.length === 0) {
+    container.textContent = "No pending PIN reset requests.";
+    return;
+  }
+
+  pending.forEach(request => {
+    const card = document.createElement("div");
+    card.className = "service-card";
+
+    const details = document.createElement("p");
+    details.textContent =
+      "Member: " + request.memberName +
+      " | Phone: " + request.phone +
+      " | Requested: " +
+      new Date(request.requestedAt).toLocaleString();
+
+    const approve = document.createElement("button");
+    approve.type = "button";
+    approve.textContent = "Approve PIN Reset";
+
+    const reject = document.createElement("button");
+    reject.type = "button";
+    reject.textContent = "Reject Request";
+
+    approve.addEventListener("click", function() {
+      updatePINResetRequest(request.id, "APPROVED");
+    });
+
+    reject.addEventListener("click", function() {
+      updatePINResetRequest(request.id, "REJECTED");
+    });
+
+    card.append(details, approve, reject);
+    container.appendChild(card);
+  });
+}
+
+function updatePINResetRequest(requestId, newStatus) {
+  if (currentRole !== "ceo") {
+    alert("CEO authorization required.");
+    return;
+  }
+
+  const requests =
+    getSaved("wakaunduPINResetRequests", []);
+
+  const request = requests.find(item =>
+    item.id === requestId &&
+    item.status === "PENDING"
+  );
+
+  if (!request) {
+    alert("This request is no longer pending.");
+    renderCEOPINResetRequests();
+    return;
+  }
+
+  const member = customers.find(item =>
+    item.id === request.memberId
+  );
+
+  if (!member || member.status !== "ACTIVE") {
+    alert("Member account is not active. Request cannot be approved.");
+    return;
+  }
+
+  if (!confirm(
+    newStatus === "APPROVED"
+      ? "Approve the PIN reset request for " + member.name + "?"
+      : "Reject this PIN reset request?"
+  )) return;
+
+  request.status = newStatus;
+  request.reviewedAt = new Date().toISOString();
+
+  if (!save("wakaunduPINResetRequests", requests)) {
+    alert("Could not save the decision.");
+    return;
+  }
+
+  alert(
+    newStatus === "APPROVED"
+      ? "Request approved. The member may now continue the PIN recovery process."
+      : "PIN reset request rejected."
+  );
+
+  renderCEOPINResetRequests();
+}
 /* CUSTOMER CARE CALLBACK REQUEST */
 document.getElementById("callbackForm")
 .addEventListener("submit", function(event) {
