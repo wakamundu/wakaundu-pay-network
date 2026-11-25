@@ -568,7 +568,31 @@ footer {
     <button data-open="international-banking">🏦 Banking Services</button>
     <button data-open="customer-care">☎️ Customer Care</button>
   </div>
+<h3>👥 Member Account Management</h3>
 
+<div class="service-card">
+  <label for="adminMemberSelect">Select registered member</label>
+  <select id="adminMemberSelect">
+    <option value="">Loading members...</option>
+  </select>
+
+  <p id="adminMemberStatus">
+    Select a member to view their account status.
+  </p>
+
+  <button type="button" id="deactivateMemberBtn">
+    🔒 Deactivate Member
+  </button>
+
+  <button type="button" id="deleteDeactivatedMemberBtn">
+    🗑️ Delete Deactivated Account
+  </button>
+
+  <p style="font-size:12px;color:#b8b8b8;">
+    Deletion is restricted to deactivated accounts that have no outstanding
+    balances or unresolved obligations. Financial and Chama history must be preserved.
+  </p>
+</div>
   <hr>
 
   <h3>Executive Responsibilities</h3>
