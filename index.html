@@ -3085,8 +3085,9 @@ if (resetPINButton) {
     alert("PIN reset successfully. Your next transaction will ask for your new PIN.");
   });
 }
-
 /* FORGOTTEN MEMBER LOGIN PIN REQUEST */
+
+let pendingPINResetMember = null;
 
 const forgotPINForm =
   document.getElementById("forgotPINForm");
@@ -3095,18 +3096,17 @@ if (forgotPINForm) {
   forgotPINForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    const phone = document
-      .getElementById("forgotPINPhone")
-      .value.trim()
-      .replace(/[\s()-]/g, "");
+    const phone = document.getElementById("forgotPINPhone")
+      .value.trim().replace(/[\s()-]/g, "");
 
     const message =
       document.getElementById("forgotPINMessage");
 
-    if (!phone) {
-      message.textContent = "Enter your registered phone number.";
-      return;
-    }
+    const resetForm =
+      document.getElementById("approvedPINResetForm");
+
+    pendingPINResetMember = null;
+    resetForm.style.display = "none";
 
     const member = customers.find(item =>
       String(item.phone || "")
@@ -3116,20 +3116,33 @@ if (forgotPINForm) {
 
     if (!member) {
       message.textContent =
-        "No active member account was found for those details.";
+        "No active member account was found for that phone number.";
       return;
     }
 
-    const requests = getSaved("wakaunduPINResetRequests", []);
+    const requests =
+      getSaved("wakaunduPINResetRequests", []);
 
     const existingRequest = requests.find(item =>
       item.memberId === member.id &&
-      item.status === "PENDING"
+      ["PENDING", "APPROVED"].includes(
+        String(item.status || "").toUpperCase()
+      )
     );
 
-    if (existingRequest) {
+    if (existingRequest &&
+        existingRequest.status === "PENDING") {
       message.textContent =
-        "Your PIN reset request is already awaiting CEO review.";
+        "Your request is awaiting CEO approval.";
+      return;
+    }
+
+    if (existingRequest &&
+        existingRequest.status === "APPROVED") {
+      pendingPINResetMember = member;
+      resetForm.style.display = "block";
+      message.textContent =
+        "Your request is approved. Create your new login PIN below.";
       return;
     }
 
@@ -3149,9 +3162,7 @@ if (forgotPINForm) {
     }
 
     message.textContent =
-      "Your PIN reset request has been recorded and is awaiting CEO review.";
-
-    forgotPINForm.reset();
+      "Your PIN reset request has been sent for CEO approval.";
   });
 }
 /* CEO FORGOTTEN PIN REQUEST MANAGEMENT */
