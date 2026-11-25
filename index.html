@@ -3439,80 +3439,71 @@ if (deactivateMemberBtn) {
     renderAdminMemberOptions();
   });
 }
+function updateAdminMemberStatus() {
+  if (!adminMemberSelect || !adminMemberStatus) return;
 
-/* DELETE DEACTIVATED MEMBER LOGIN */
-if (deleteDeactivatedMemberBtn) {
-  deleteDeactivatedMemberBtn.addEventListener("click", function() {
-    if (currentRole !== "ceo") {
-      alert("CEO / Administrator access required.");
-      return;
-    }
+  const member = customers.find(item =>
+    item.id === adminMemberSelect.value
+  );
 
-    const member = customers.find(item =>
-      item.id === adminMemberSelect.value
-    );
+  if (!member) {
+    adminMemberStatus.textContent =
+      "Select a member to view account status.";
 
-    if (!member || member.status !== "DEACTIVATED") {
-      alert("Only deactivated accounts can be deleted.");
-      return;
-    }
+    if (deactivateMemberBtn) deactivateMemberBtn.disabled = true;
+    if (deleteDeactivatedMemberBtn) deleteDeactivatedMemberBtn.disabled = true;
+    return;
+  }
 
-    const wallet = wallets["MEMBER_" + member.id];
+  const wallet = wallets["MEMBER_" + member.id] || {};
 
-    if (wallet && (
-      Number(wallet.available || 0) !== 0 ||
-      Number(wallet.savings || 0) !== 0 ||
-      Number(wallet.locked || 0) !== 0
-    )) {
-      alert("Deletion blocked: this account has a wallet balance. Resolve it first.");
-      return;
-    }
+  const available = Number(wallet.available || 0);
+  const savings = Number(wallet.savings || 0);
+  const locked = Number(wallet.locked || 0);
 
-    const chamaObligation = chamaMembers.some(item =>
-      item.customerId === member.id &&
-      ["ACTIVE", "PENDING"].includes(
-        String(item.status || "").toUpperCase()
-      )
-    );
+  const hasBalance =
+    available !== 0 || savings !== 0 || locked !== 0;
 
-    if (chamaObligation) {
-      alert("Deletion blocked: this member has an active or pending Chama membership.");
-      return;
-    }
+  const hasChamaObligation = chamaMembers.some(item =>
+    item.customerId === member.id &&
+    ["ACTIVE", "PENDING"].includes(
+      String(item.status || "").toUpperCase()
+    )
+  );
 
-    const pendingTransaction = transactions.some(item =>
-      item.ownerId === member.id &&
-      ["PENDING", "PROCESSING", "UNRESOLVED"].includes(
-        String(item.status || "").toUpperCase()
-      )
-    );
+  const hasPendingTransaction = transactions.some(item =>
+    item.ownerId === member.id &&
+    ["PENDING", "PROCESSING", "UNRESOLVED"].includes(
+      String(item.status || "").toUpperCase()
+    )
+  );
 
-    if (pendingTransaction) {
-      alert("Deletion blocked: this member has an unresolved transaction.");
-      return;
-    }
+  const canDelete =
+    currentRole === "ceo" &&
+    member.status === "DEACTIVATED" &&
+    !hasBalance &&
+    !hasChamaObligation &&
+    !hasPendingTransaction;
 
-    if (!confirm(
-      "Disable this account's login and clear its PIN, identity number and profile photo? Financial and Chama history will be preserved."
-    )) return;
+  adminMemberStatus.textContent =
+    "Member: " + member.name +
+    " | Phone: " + member.phone +
+    " | Status: " + member.status +
+    " | Available: KSh " + available.toFixed(2) +
+    " | Savings: KSh " + savings.toFixed(2) +
+    " | Locked: KSh " + locked.toFixed(2) +
+    (hasBalance ? " | Outstanding balance" : " | Zero wallet balance") +
+    (hasChamaObligation ? " | Chama obligation" : "") +
+    (hasPendingTransaction ? " | Pending transaction" : "");
 
-    const oldMember = { ...member };
+  if (deactivateMemberBtn) {
+    deactivateMemberBtn.disabled =
+      currentRole !== "ceo" || member.status !== "ACTIVE";
+  }
 
-    member.status = "DELETED";
-    member.deletedAt = new Date().toISOString();
-    member.pin = "";
-    member.idNumber = "";
-    member.profilePhoto = "";
-
-    if (!save("wakaunduCustomers", customers)) {
-      Object.assign(member, oldMember);
-      alert("Could not save the change. No deletion was completed.");
-      return;
-    }
-
-    alert("Account login deleted. Historical records are preserved.");
-    renderAdminMemberOptions();
-  });
+  if (deleteDeactivatedMemberBtn) {
+    deleteDeactivatedMemberBtn.disabled = !canDelete;
+  }
 }
 
 /* RESTORE LOGIN AFTER ALL FUNCTIONS ARE READY */
