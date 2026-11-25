@@ -1359,10 +1359,14 @@ document.getElementById("registrationForm")
     return;
   }
 
-  if (customers.some(customer => customer.phone === phone)) {
-    result.textContent = "This phone number is already registered.";
-    return;
-  }
+  if (customers.some(customer =>
+  customer.phone === phone &&
+  customer.status !== "DELETED"
+)) {
+  result.textContent =
+    "This phone number belongs to an existing account. Contact Admin if it is deactivated.";
+  return;
+}
 
   if (!/^\d{4}$/.test(pin)) {
     result.textContent = "PIN must contain exactly 4 digits.";
