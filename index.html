@@ -1250,7 +1250,18 @@ let chamaCertificates = getSaved("wakaunduChamaCertificates", []);
 let selectedChamaGroup = null;
 let currentChamaGroup = null;
 let currentChamaMember = null;
+/* ACTIVITY TRACKING FOR DORMANCY REVIEW */
+function recordMemberActivity(customer) {
+  if (!customer) return;
+  customer.lastActivity = new Date().toISOString();
+  save("wakaunduCustomers", customers);
+}
 
+function recordChamaActivity(group) {
+  if (!group) return;
+  group.lastActivity = new Date().toISOString();
+  save("wakaunduChamas", chamaGroups);
+}
 /* SEPARATE CEO AND MEMBER DEMO WALLETS */
 function getWallet() {
   let walletId;
