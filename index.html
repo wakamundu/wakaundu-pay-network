@@ -570,7 +570,31 @@ footer {
   </div>
 <h3>👥 Chama & Account Management</h3>
 <h4>WakaunduPay Member Account Controls</h4>
+<div class="service-card">
+  <h4>Chama Group Controls</h4>
 
+  <label for="adminChamaSelect">Select registered Chama</label>
+  <select id="adminChamaSelect">
+    <option value="">Select a Chama</option>
+  </select>
+
+  <p id="adminChamaStatus">
+    Select a Chama to review its status.
+  </p>
+
+  <button type="button" id="deactivateChamaBtn" disabled>
+    🔒 Deactivate Chama
+  </button>
+
+  <button type="button" id="deleteChamaBtn" disabled>
+    🗑️ Delete Chama
+  </button>
+
+  <p style="font-size:12px;color:#b8b8b8;">
+    Chama closure and deletion require financial and membership checks.
+    Historical contributions and records must be preserved.
+  </p>
+</div>
 <div class="service-card">
   <label for="adminMemberSelect">Select registered member</label>
   <select id="adminMemberSelect">
