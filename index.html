@@ -3165,6 +3165,81 @@ if (forgotPINForm) {
       "Your PIN reset request has been sent for CEO approval.";
   });
 }
+  /* SAVE NEW MEMBER LOGIN PIN */
+
+const saveNewLoginPINButton =
+  document.getElementById("saveNewLoginPIN");
+
+if (saveNewLoginPINButton) {
+  saveNewLoginPINButton.addEventListener("click", function() {
+
+    const newPIN =
+      document.getElementById("newLoginPIN").value.trim();
+
+    const confirmPIN =
+      document.getElementById("confirmNewLoginPIN").value.trim();
+
+    const result =
+      document.getElementById("newLoginPINMessage");
+
+    if (!pendingPINResetMember) {
+      result.textContent =
+        "Please submit your registered phone number first.";
+      return;
+    }
+
+    if (!/^[0-9]{4}$/.test(newPIN)) {
+      result.textContent =
+        "Enter a valid 4-digit PIN.";
+      return;
+    }
+
+    if (newPIN !== confirmPIN) {
+      result.textContent = "The PINs do not match.";
+      return;
+    }
+
+    const requests =
+      getSaved("wakaunduPINResetRequests", []);
+
+    const request = requests.find(item =>
+      item.memberId === pendingPINResetMember.id &&
+      item.status === "APPROVED"
+    );
+
+    if (!request) {
+      result.textContent =
+        "CEO approval is required before changing your PIN.";
+      return;
+    }
+
+    pendingPINResetMember.pin = newPIN;
+
+    if (!save("wakaunduCustomers", customers)) {
+      result.textContent =
+        "Could not save your new PIN. Please try again.";
+      return;
+    }
+
+    request.status = "COMPLETED";
+    request.completedAt = new Date().toISOString();
+
+    if (!save("wakaunduPINResetRequests", requests)) {
+      result.textContent =
+        "Your PIN was updated, but the request status could not be saved. Contact support.";
+      return;
+    }
+
+    document.getElementById("newLoginPIN").value = "";
+    document.getElementById("confirmNewLoginPIN").value = "";
+
+    document.getElementById("approvedPINResetForm").style.display = "none";
+
+    result.textContent = "Your new login PIN has been saved successfully.";
+
+    pendingPINResetMember = null;
+  });
+}
 /* CEO FORGOTTEN PIN REQUEST MANAGEMENT */
 
 function renderCEOPINResetRequests() {
