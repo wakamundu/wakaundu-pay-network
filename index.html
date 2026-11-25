@@ -3134,6 +3134,183 @@ document.getElementById("requestMoneyForm")
   }
 });
 
+/* CEO MEMBER ACCOUNT MANAGEMENT */
+const adminMemberSelect = document.getElementById("adminMemberSelect");
+const adminMemberStatus = document.getElementById("adminMemberStatus");
+const deactivateMemberBtn = document.getElementById("deactivateMemberBtn");
+const deleteDeactivatedMemberBtn =
+  document.getElementById("deleteDeactivatedMemberBtn");
+
+function updateAdminMemberStatus() {
+  if (!adminMemberSelect || !adminMemberStatus) return;
+
+  const member = customers.find(item =>
+    item.id === adminMemberSelect.value
+  );
+
+  if (!member) {
+    adminMemberStatus.textContent =
+      "Select a member to view account status.";
+
+    if (deactivateMemberBtn) deactivateMemberBtn.disabled = true;
+    if (deleteDeactivatedMemberBtn) deleteDeactivatedMemberBtn.disabled = true;
+    return;
+  }
+
+  adminMemberStatus.textContent =
+    "Member: " + member.name +
+    " | Phone: " + member.phone +
+    " | Status: " + member.status;
+
+  if (deactivateMemberBtn) {
+    deactivateMemberBtn.disabled =
+      currentRole !== "ceo" || member.status !== "ACTIVE";
+  }
+
+  if (deleteDeactivatedMemberBtn) {
+    deleteDeactivatedMemberBtn.disabled =
+      currentRole !== "ceo" || member.status !== "DEACTIVATED";
+  }
+}
+
+function renderAdminMemberOptions() {
+  if (!adminMemberSelect) return;
+
+  adminMemberSelect.replaceChildren();
+
+  const firstOption = document.createElement("option");
+  firstOption.value = "";
+  firstOption.textContent = "Select a registered member";
+  adminMemberSelect.appendChild(firstOption);
+
+  customers.forEach(customer => {
+    const option = document.createElement("option");
+    option.value = customer.id;
+    option.textContent =
+      (customer.name || "Member") + " — " +
+      (customer.phone || "") + " (" +
+      (customer.status || "ACTIVE") + ")";
+    adminMemberSelect.appendChild(option);
+  });
+
+  updateAdminMemberStatus();
+}
+
+if (adminMemberSelect) {
+  adminMemberSelect.addEventListener("change", updateAdminMemberStatus);
+  renderAdminMemberOptions();
+}
+
+/* DEACTIVATE MEMBER */
+if (deactivateMemberBtn) {
+  deactivateMemberBtn.addEventListener("click", function() {
+    if (currentRole !== "ceo") {
+      alert("CEO / Administrator access required.");
+      return;
+    }
+
+    const member = customers.find(item =>
+      item.id === adminMemberSelect.value
+    );
+
+    if (!member || member.status !== "ACTIVE") return;
+
+    if (!confirm(
+      "Deactivate " + member.name +
+      "? Their login will be blocked, but their records will be preserved."
+    )) return;
+
+    const oldStatus = member.status;
+    member.status = "DEACTIVATED";
+    member.deactivatedAt = new Date().toISOString();
+
+    if (!save("wakaunduCustomers", customers)) {
+      member.status = oldStatus;
+      delete member.deactivatedAt;
+      alert("Could not save the change.");
+      return;
+    }
+
+    alert("Member account deactivated.");
+    renderAdminMemberOptions();
+  });
+}
+
+/* DELETE DEACTIVATED MEMBER LOGIN */
+if (deleteDeactivatedMemberBtn) {
+  deleteDeactivatedMemberBtn.addEventListener("click", function() {
+    if (currentRole !== "ceo") {
+      alert("CEO / Administrator access required.");
+      return;
+    }
+
+    const member = customers.find(item =>
+      item.id === adminMemberSelect.value
+    );
+
+    if (!member || member.status !== "DEACTIVATED") {
+      alert("Only deactivated accounts can be deleted.");
+      return;
+    }
+
+    const wallet = wallets["MEMBER_" + member.id];
+
+    if (wallet && (
+      Number(wallet.available || 0) !== 0 ||
+      Number(wallet.savings || 0) !== 0 ||
+      Number(wallet.locked || 0) !== 0
+    )) {
+      alert("Deletion blocked: this account has a wallet balance. Resolve it first.");
+      return;
+    }
+
+    const chamaObligation = chamaMembers.some(item =>
+      item.customerId === member.id &&
+      ["ACTIVE", "PENDING"].includes(
+        String(item.status || "").toUpperCase()
+      )
+    );
+
+    if (chamaObligation) {
+      alert("Deletion blocked: this member has an active or pending Chama membership.");
+      return;
+    }
+
+    const pendingTransaction = transactions.some(item =>
+      item.ownerId === member.id &&
+      ["PENDING", "PROCESSING", "UNRESOLVED"].includes(
+        String(item.status || "").toUpperCase()
+      )
+    );
+
+    if (pendingTransaction) {
+      alert("Deletion blocked: this member has an unresolved transaction.");
+      return;
+    }
+
+    if (!confirm(
+      "Disable this account's login and clear its PIN, identity number and profile photo? Financial and Chama history will be preserved."
+    )) return;
+
+    const oldMember = { ...member };
+
+    member.status = "DELETED";
+    member.deletedAt = new Date().toISOString();
+    member.pin = "";
+    member.idNumber = "";
+    member.profilePhoto = "";
+
+    if (!save("wakaunduCustomers", customers)) {
+      Object.assign(member, oldMember);
+      alert("Could not save the change. No deletion was completed.");
+      return;
+    }
+
+    alert("Account login deleted. Historical records are preserved.");
+    renderAdminMemberOptions();
+  });
+}
+
 /* RESTORE LOGIN AFTER ALL FUNCTIONS ARE READY */
 restoreLoginSession();
 
