@@ -3169,7 +3169,72 @@ document.getElementById("requestMoneyForm")
     result.textContent += "\n\n" + message;
   }
 });
+/* CEO CHAMA MANAGEMENT SELECTOR */
+const adminChamaSelect =
+  document.getElementById("adminChamaSelect");
 
+const adminChamaStatus =
+  document.getElementById("adminChamaStatus");
+
+const deactivateChamaBtn =
+  document.getElementById("deactivateChamaBtn");
+
+const deleteChamaBtn =
+  document.getElementById("deleteChamaBtn");
+
+function renderAdminChamaOptions() {
+  if (!adminChamaSelect) return;
+
+  adminChamaSelect.replaceChildren();
+
+  const firstOption = document.createElement("option");
+  firstOption.value = "";
+  firstOption.textContent = "Select a registered Chama";
+  adminChamaSelect.appendChild(firstOption);
+
+  chamaGroups.forEach(group => {
+    const option = document.createElement("option");
+    option.value = group.id;
+    option.textContent =
+      group.name + " (" + (group.status || "ACTIVE") + ")";
+    adminChamaSelect.appendChild(option);
+  });
+
+  updateAdminChamaStatus();
+}
+
+function updateAdminChamaStatus() {
+  const group = chamaGroups.find(item =>
+    item.id === adminChamaSelect.value
+  );
+
+  if (!group) {
+    adminChamaStatus.textContent =
+      "Select a Chama to review its status.";
+
+    deactivateChamaBtn.disabled = true;
+    deleteChamaBtn.disabled = true;
+    return;
+  }
+
+  adminChamaStatus.textContent =
+    "Chama: " + group.name +
+    " | Status: " + group.status;
+
+  deactivateChamaBtn.disabled =
+    currentRole !== "ceo" || group.status !== "ACTIVE";
+
+  deleteChamaBtn.disabled = true;
+}
+
+if (adminChamaSelect) {
+  adminChamaSelect.addEventListener(
+    "change",
+    updateAdminChamaStatus
+  );
+
+  renderAdminChamaOptions();
+}
 /* CEO MEMBER ACCOUNT MANAGEMENT */
 const adminMemberSelect = document.getElementById("adminMemberSelect");
 const adminMemberStatus = document.getElementById("adminMemberStatus");
