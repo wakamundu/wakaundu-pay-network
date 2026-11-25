@@ -659,7 +659,31 @@ footer {
 
   <button type="button" class="back" data-home>Back to Home</button>
 </section>
+<!-- FORGOT LOGIN PIN -->
+<section id="forgot-pin" class="panel">
+  <h2>🔐 Recover WakaunduPay Login PIN</h2>
 
+  <p>Enter your registered phone number to request a PIN reset.</p>
+
+  <form id="forgotPINForm">
+    <label>Registered Phone Number</label>
+    <input
+      id="forgotPINPhone"
+      type="tel"
+      required
+      placeholder="Enter your registered phone number">
+
+    <button type="submit" class="action">
+      Submit PIN Reset Request
+    </button>
+  </form>
+
+  <p id="forgotPINMessage" class="result"></p>
+
+  <button type="button" class="back" data-open="member-login">
+    Back to Member Login
+  </button>
+</section>
 <!-- REGISTRATION -->
 <section id="register" class="panel">
   <h2>Create Your Account</h2>
