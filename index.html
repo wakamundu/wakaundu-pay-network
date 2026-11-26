@@ -2807,6 +2807,12 @@ document.getElementById("chamaContributionForm")
   event.preventDefault();
 
   if (!this.reportValidity() || !currentChamaGroup) return;
+  if (!currentCustomer || currentRole !== "member") {
+  alert("Please log in as a WakaunduPay member.");
+  return;
+}
+
+if (!verifyTransactionPIN("Chama Contribution")) return;
 
   const result = document.getElementById("chamaContributionMessage");
   const memberId = document.getElementById("contributionMember").value;
