@@ -585,23 +585,25 @@ footer {
   <p><strong>CEO authority:</strong> Full administrative control.</p>
   <button class="back" data-home>Back to Home</button>
 </section>
-<!-- CEO MANAGEMENT NAVIGATION PAGE -->
+<!-- WAKAUṄDŪPAY CENTRAL MANAGEMENT -->
 <section id="ceo-management" class="panel">
-  <h2 style="color:#d6ad45;">⚙️ CEO MANAGEMENT</h2>
-
-  <p>WakaunduPay Global — Platform Administration</p>
+  <h2 style="color:#d6ad45;">⚙️ CENTRAL MANAGEMENT</h2>
+  <p>WakaunduPay Global — Unified Platform Administration</p>
 
   <div class="grid">
-    <button type="button" data-open="ceo-chama-controls">
-      👥 Chama Management
+    <button type="button" class="action"
+      data-open="management-members">
+      👥 Members & Chama Management
     </button>
 
-    <button type="button" data-open="ceo-member-controls">
-      👤 Member Accounts
+    <button type="button" class="action"
+      data-open="management-finance">
+      🏦 Finance & Operations
     </button>
 
-    <button type="button" data-open="ceo-pin-controls">
-      🔐 PIN Reset Approvals
+    <button type="button" class="action"
+      data-open="management-admin">
+      🛡️ Administration & Oversight
     </button>
   </div>
 
@@ -609,6 +611,268 @@ footer {
     ← Back to CEO Dashboard
   </button>
 </section>
+  
+<!-- MANAGEMENT SECTION 1: MEMBERS AND CHAMA -->
+<section id="management-members" class="panel">
+  <h2 style="color:#d6ad45;">👥 MEMBERS & CHAMA MANAGEMENT</h2>
+  <p>Manage member accounts, Chama groups and member security.</p>
+
+  <div class="grid">
+    <button type="button" class="action"
+      data-open="ceo-member-controls">
+      👤 Member Accounts
+    </button>
+
+    <button type="button" class="action"
+      data-open="ceo-chama-controls">
+      👥 Chama Management
+    </button>
+
+    <button type="button" class="action"
+      data-open="ceo-pin-controls">
+      🔐 PIN Reset Approvals
+    </button>
+  </div>
+
+  <button type="button" data-open="ceo-management" class="back">
+    ← Back to Management
+  </button>
+</section>
+
+<!-- MANAGEMENT SECTION 2: FINANCE AND OPERATIONS -->
+<section id="management-finance" class="panel">
+  <h2 style="color:#d6ad45;">🏦 FINANCE & OPERATIONS</h2>
+  <p>Monitor financial activity and banking services.</p>
+
+  <div class="grid">
+    <button type="button" class="action"
+      data-open="history">
+      📋 Transaction Oversight
+    </button>
+
+    <button type="button" class="action"
+      data-open="international-banking">
+      🌍 Banking & Wallet Services
+    </button>
+  </div>
+
+  <button type="button" data-open="ceo-management" class="back">
+    ← Back to Management
+  </button>
+</section>
+
+<!-- MANAGEMENT SECTION 3: ADMINISTRATION AND OVERSIGHT -->
+<section id="management-admin" class="panel">
+  <h2 style="color:#d6ad45;">🛡️ ADMINISTRATION & OVERSIGHT</h2>
+  <p>Customer care, reports and platform oversight.</p>
+
+  <div class="grid">
+    <button type="button" class="action"
+      data-open="customer-care">
+      ☎️ Customer Care
+    </button>
+
+    <button type="button" class="action"
+      onclick="loadCentralAdminReports()">
+      📊 Refresh Reports
+    </button>
+
+    <button type="button" class="action"
+      onclick="exportCentralReport('transactions')">
+      📥 Export Transactions
+    </button>
+
+    <button type="button" class="action"
+      onclick="exportCentralReport('chama')">
+      📥 Export Chama Records
+    </button>
+
+    <button type="button" class="action"
+      onclick="exportCentralReport('callbacks')">
+      📥 Export Callback Records
+    </button>
+  </div>
+
+  <div class="service-card">
+    <h3>Platform Overview</h3>
+    <p>Registered Members: <strong id="centralCustomersCount">0</strong></p>
+    <p>Transactions: <strong id="centralTransactionsCount">0</strong></p>
+    <p>Chama Groups: <strong id="centralChamaCount">0</strong></p>
+    <p>Customer Care Requests: <strong id="centralCallbacksCount">0</strong></p>
+    <p id="centralReportStatus" class="result">
+      Reports have not yet been refreshed.
+    </p>
+  </div>
+
+  <div class="service-card">
+    <h3>Registered Members</h3>
+    <div id="centralCustomersTable">No records loaded.</div>
+  </div>
+
+  <div class="service-card">
+    <h3>Transaction Records</h3>
+    <div id="centralTransactionsTable">No records loaded.</div>
+  </div>
+
+  <div class="service-card">
+    <h3>Chama Records</h3>
+    <div id="centralChamaTable">No records loaded.</div>
+  </div>
+
+  <div class="service-card">
+    <h3>Customer Care Requests</h3>
+    <div id="centralCallbacksTable">No records loaded.</div>
+  </div>
+
+  <p style="font-size:12px;color:#d6ad45;">
+    DEMO REPORTING: These reports read records stored in this browser.
+    They are not yet shared across devices or a secure remote financial
+    administration system.
+  </p>
+
+  <button type="button" data-open="ceo-management" class="back">
+    ← Back to Management
+  </button>
+</section>
+
+<script>
+/* CENTRAL MANAGEMENT REPORTING */
+
+function centralReportData(key) {
+  try {
+    const data = JSON.parse(localStorage.getItem(key));
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function centralReportSafe(value) {
+  return String(value ?? "").replace(/[&<>"']/g, function(character) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[character];
+  });
+}
+
+function centralReportTable(data) {
+  if (!data.length) return "<p>No records found.</p>";
+
+  const columns = [...new Set(
+    data.flatMap(item => Object.keys(item))
+  )];
+
+  return "<div style='overflow-x:auto'><table style='width:100%;border-collapse:collapse;font-size:12px;'>" +
+    "<tr>" +
+    columns.map(column =>
+      "<th style='padding:7px;border-bottom:1px solid #c69a36;'>" +
+      centralReportSafe(column) + "</th>"
+    ).join("") +
+    "</tr>" +
+    data.map(item =>
+      "<tr>" +
+      columns.map(column =>
+        "<td style='padding:7px;border-bottom:1px solid #345;'>" +
+        centralReportSafe(item[column]) + "</td>"
+      ).join("") +
+      "</tr>"
+    ).join("") +
+    "</table></div>";
+}
+
+function loadCentralAdminReports() {
+  const customers = centralReportData("wakaunduCustomers");
+  const transactions = centralReportData("wakaunduTransactions");
+  const chamas = centralReportData("wakaunduChamas");
+  const callbacks = centralReportData("wakaunduCallbacks");
+
+  document.getElementById("centralCustomersCount").textContent = customers.length;
+  document.getElementById("centralTransactionsCount").textContent = transactions.length;
+  document.getElementById("centralChamaCount").textContent = chamas.length;
+  document.getElementById("centralCallbacksCount").textContent = callbacks.length;
+
+  document.getElementById("centralCustomersTable").innerHTML =
+    centralReportTable(customers.map(customer => ({
+      "Member Name": customer.name || customer.customerName || "",
+      "Phone": customer.phone || customer.customerPhone || "",
+      "Registration Date": customer.registrationDate || customer.createdAt || customer.date || "Not recorded"
+    })));
+
+  document.getElementById("centralTransactionsTable").innerHTML =
+    centralReportTable(transactions);
+
+  document.getElementById("centralChamaTable").innerHTML =
+    centralReportTable(chamas);
+
+  document.getElementById("centralCallbacksTable").innerHTML =
+    centralReportTable(callbacks);
+
+  document.getElementById("centralReportStatus").textContent =
+    "Reports refreshed from this browser's demo records.";
+}
+
+function exportCentralReport(type) {
+  const keys = {
+    transactions: "wakaunduTransactions",
+    chama: "wakaunduChamas",
+    callbacks: "wakaunduCallbacks"
+  };
+
+  if (!keys[type]) {
+    alert("This report type is not available.");
+    return;
+  }
+
+  const data = centralReportData(keys[type]);
+
+  if (!data.length) {
+    alert("No records available to export.");
+    return;
+  }
+
+  const columns = [...new Set(
+    data.flatMap(item => Object.keys(item))
+  )];
+
+  function csvCell(value) {
+    let text = String(value ?? "");
+
+    // Protect spreadsheet users from formula injection.
+    if (/^[\s]*[=+\-@]/.test(text)) {
+      text = "'" + text;
+    }
+
+    return '"' + text.replace(/"/g, '""') + '"';
+  }
+
+  const csv = [
+    columns.map(csvCell).join(","),
+    ...data.map(item =>
+      columns.map(column => csvCell(item[column])).join(",")
+    )
+  ].join("\n");
+
+  const blob = new Blob(["\uFEFF" + csv], {
+    type: "text/csv;charset=utf-8;"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "wakaundupay-" + type + "-report.csv";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+</script>
+
   <!-- CEO CHAMA MANAGEMENT -->
 <section id="ceo-chama-controls" class="panel">
   <h2 style="color:#d6ad45;">👥 CHAMA MANAGEMENT</h2>
