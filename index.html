@@ -141,7 +141,37 @@ button {
   box-sizing: border-box;
   min-height: 65px;
 }
+/* CENTRAL MANAGEMENT POPUP WINDOWS */
+.panel.management-popup {
+  display: block !important;
+  position: fixed;
+  z-index: 9999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 24px);
+  max-width: 650px;
+  max-height: 85vh;
+  overflow-y: auto;
+  margin: 0;
+  padding: 18px;
+  background: #071b2e;
+  border: 2px solid #d6ad45;
+  border-radius: 16px;
+  box-shadow: 0 0 0 100vmax rgba(0,0,0,.78);
+}
 
+.management-popup-close {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  color: #071b2e;
+  background: linear-gradient(135deg,#d6ad45,#f3c64e);
+  border: 0;
+  border-radius: 10px;
+  font-weight: bold;
+}
 .panel {
   display: none;
   background: rgba(3, 16, 35, .94);
@@ -2423,46 +2453,28 @@ document.querySelectorAll(".panel").forEach(panel => {
   panel.style.display = "none";
 });
 
-/* OPEN SERVICE PANEL */
+/* OPEN SERVICE PANEL + CENTRAL MANAGEMENT POPUPS */
 function openPanel(id) {
   const publicPanels = [
-  "admin-login",
-  "md-login",
-  "member-login",
-  "register",
-  "forgot-pin"
-];
+    "admin-login",
+    "md-login",
+    "member-login",
+    "register",
+    "forgot-pin"
+  ];
 
   const memberAllowed = [
-    "send",
-    "receive",
-    "request-money",
-    "account-secure",
-    "financial-growth",
-    "airtime",
-    "bills",
-    "goods",
-    "withdraw",
-    "chama",
-    "personal",
-    "deposits",
-    "account-balances",
-    "global-transfer",
-    "international-banking",
-    "history",
-    "customer-care"
+    "send", "receive", "request-money", "account-secure",
+    "financial-growth", "airtime", "bills", "goods",
+    "withdraw", "chama", "personal", "deposits",
+    "account-balances", "global-transfer",
+    "international-banking", "history", "customer-care"
   ];
 
   const mdAllowed = [
-    "chama",
-    "history",
-    "international-banking",
-    "customer-care",
-    "personal",
-    "deposits",
-    "account-balances",
-    "global-transfer",
-    "withdraw"
+    "chama", "history", "international-banking",
+    "customer-care", "personal", "deposits",
+    "account-balances", "global-transfer", "withdraw"
   ];
 
   if (!currentRole && !publicPanels.includes(id)) {
@@ -2487,7 +2499,37 @@ function openPanel(id) {
     return;
   }
 
+  const popupPanels = [
+    "management-members",
+    "management-finance",
+    "management-admin"
+  ];
+
+  /* CLOSE ANY PREVIOUS POPUP */
+  const oldOverlay = document.getElementById("managementPopupOverlay");
+  if (oldOverlay) oldOverlay.remove();
+
+  document.querySelectorAll(".management-popup-close").forEach(button => {
+    button.remove();
+  });
+
   document.querySelectorAll(".panel").forEach(item => {
+    item.classList.remove("management-popup");
+    item.style.position = "";
+    item.style.zIndex = "";
+    item.style.top = "";
+    item.style.left = "";
+    item.style.transform = "";
+    item.style.width = "";
+    item.style.maxWidth = "";
+    item.style.maxHeight = "";
+    item.style.overflowY = "";
+    item.style.margin = "";
+    item.style.boxShadow = "";
+    item.style.border = "";
+    item.style.background = "";
+    item.style.borderRadius = "";
+    item.style.padding = "";
     item.style.display = "none";
   });
 
@@ -2495,7 +2537,9 @@ function openPanel(id) {
   document.getElementById("memberDashboardContent").style.display = "none";
 
   panel.style.display = "block";
-    if (id === "ceo-chama-controls") {
+
+  /* EXISTING MANAGEMENT FUNCTIONS */
+  if (id === "ceo-chama-controls") {
     renderAdminChamaOptions();
   }
 
@@ -2519,10 +2563,75 @@ function openPanel(id) {
     renderBalance();
   }
 
-  panel.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
+  /* OPEN CENTRAL MANAGEMENT SECTION AS POPUP */
+  if (popupPanels.includes(id)) {
+    const overlay = document.createElement("div");
+    overlay.id = "managementPopupOverlay";
+
+    Object.assign(overlay.style, {
+      position: "fixed",
+      inset: "0",
+      zIndex: "9998",
+      background: "rgba(0,0,0,0.78)"
+    });
+
+    overlay.addEventListener("click", function(event) {
+      if (event.target === overlay) {
+        openPanel("ceo-management");
+      }
+    });
+
+    document.body.appendChild(overlay);
+
+    Object.assign(panel.style, {
+      position: "fixed",
+      zIndex: "9999",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "calc(100% - 24px)",
+      maxWidth: "650px",
+      maxHeight: "85vh",
+      overflowY: "auto",
+      margin: "0",
+      background: "#071b2e",
+      border: "2px solid #d6ad45",
+      borderRadius: "16px",
+      padding: "18px",
+      boxShadow: "0 10px 40px rgba(0,0,0,0.6)"
+    });
+
+    panel.classList.add("management-popup");
+
+    const closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "management-popup-close";
+    closeButton.textContent = "✕ CLOSE — BACK TO MANAGEMENT";
+
+    Object.assign(closeButton.style, {
+      display: "block",
+      width: "100%",
+      padding: "12px",
+      marginBottom: "15px",
+      color: "#071b2e",
+      background: "linear-gradient(135deg,#d6ad45,#f3c64e)",
+      border: "0",
+      borderRadius: "10px",
+      fontWeight: "bold",
+      fontSize: "14px"
+    });
+
+    closeButton.addEventListener("click", function() {
+      openPanel("ceo-management");
+    });
+
+    panel.prepend(closeButton);
+  } else {
+    panel.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
 }
 
 /* NAVIGATION CONTROLS */
