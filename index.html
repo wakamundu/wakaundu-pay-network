@@ -1690,8 +1690,9 @@ function addTransaction(service, amount) {
     action.includes("bill") ||
     action.includes("merchant") ||
     action.includes("goods") ||
-    action.includes("airtime") ||
-    action.includes("credit");
+      action.includes("airtime") ||
+action.includes("credit") ||
+action.includes("chama contribution");
 
   if ((isOutgoing || isSavings || isLocked) &&
       wallet.available < value) {
