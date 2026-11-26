@@ -3741,6 +3741,32 @@ if ("serviceWorker" in navigator) {
   });
 }
 </script>
+<script>
+/* ONE-TIME WAKAUNduPAY MEMBER AND CHAMA TEST RESET */
 
+(function () {
+  const resetKeys = [
+    "wakaunduCustomers",
+    "wakaunduChamas",
+    "wakaunduChamaMembers",
+    "wakaunduChamaCertificates",
+    "wakaunduPINResetRequests"
+  ];
+
+  if (localStorage.getItem("wakaunduFreshResetDone") === "YES") {
+    return;
+  }
+
+  if (confirm(
+    "WARNING: Delete old WakaunduPay member and Chama test records and start fresh?"
+  )) {
+    resetKeys.forEach(key => localStorage.removeItem(key));
+
+    localStorage.setItem("wakaunduFreshResetDone", "YES");
+
+    alert("Old member and Chama test records cleared. Reload the page.");
+  }
+})();
+</script>
 </body>
 </html>
