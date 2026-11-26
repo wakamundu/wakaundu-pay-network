@@ -2232,6 +2232,17 @@ function openPanel(id) {
   document.getElementById("memberDashboardContent").style.display = "none";
 
   panel.style.display = "block";
+    if (id === "ceo-chama-controls") {
+    renderAdminChamaOptions();
+  }
+
+  if (id === "ceo-member-controls") {
+    renderAdminMemberOptions();
+  }
+
+  if (id === "ceo-pin-controls") {
+    renderCEOPINResetRequests();
+  }
 
   if (id === "chama") {
     showChamaView("chamaMainMenu");
