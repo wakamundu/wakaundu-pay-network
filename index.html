@@ -2573,6 +2573,112 @@ function openPanel(id) {
     renderBalance();
   }
 
+/* CEO ALL MEMBERS OVERSIGHT */
+function renderAllMembersOversight() {
+  const panel = document.getElementById("ceo-member-controls");
+  if (!panel) return;
+
+  let wrapper = document.getElementById("allMembersOversight");
+
+  if (!wrapper) {
+    wrapper = document.createElement("div");
+    wrapper.id = "allMembersOversight";
+    wrapper.className = "service-card";
+
+    const heading = document.createElement("h3");
+    heading.textContent = "ALL REGISTERED MEMBERS";
+
+    const count = document.createElement("p");
+    count.id = "allMembersCount";
+
+    const tableContainer = document.createElement("div");
+    tableContainer.id = "allMembersTable";
+    tableContainer.style.overflowX = "auto";
+
+    wrapper.append(heading, count, tableContainer);
+
+    const memberControls = panel.querySelector(".service-card");
+    panel.insertBefore(wrapper, memberControls);
+  }
+
+  const count = document.getElementById("allMembersCount");
+  const tableContainer = document.getElementById("allMembersTable");
+
+  count.textContent = "Total registered members: " + customers.length;
+
+  const table = document.createElement("table");
+  table.style.cssText =
+    "width:100%;border-collapse:collapse;font-size:12px;min-width:570px;";
+
+  const headers = [
+    "Member",
+    "Phone",
+    "Status",
+    "Available",
+    "Savings",
+    "Locked"
+  ];
+
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+
+  headers.forEach(label => {
+    const th = document.createElement("th");
+    th.textContent = label;
+    th.style.cssText =
+      "padding:8px;border-bottom:1px solid #d6ad45;text-align:left;";
+    headerRow.appendChild(th);
+  });
+
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+
+  const money = value =>
+    "KSh " + Number(value || 0).toLocaleString("en-KE", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+
+  customers.forEach(member => {
+    const wallet = wallets["MEMBER_" + member.id] || {};
+    const row = document.createElement("tr");
+
+    const values = [
+      member.name || "Member",
+      member.phone || "Not recorded",
+      member.status || "UNKNOWN",
+      money(wallet.available),
+      money(wallet.savings),
+      money(wallet.locked)
+    ];
+
+    values.forEach(value => {
+      const cell = document.createElement("td");
+      cell.textContent = value;
+      cell.style.cssText =
+        "padding:8px;border-bottom:1px solid #345;vertical-align:top;";
+      row.appendChild(cell);
+    });
+
+    tbody.appendChild(row);
+  });
+
+  if (!customers.length) {
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.colSpan = headers.length;
+    cell.textContent = "No registered members found.";
+    cell.style.padding = "10px";
+    row.appendChild(cell);
+    tbody.appendChild(row);
+  }
+
+  table.appendChild(tbody);
+  tableContainer.replaceChildren(table);
+}
+
   /* OPEN CENTRAL MANAGEMENT SECTION AS POPUP */
   if (popupPanels.includes(id)) {
     const overlay = document.createElement("div");
