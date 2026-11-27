@@ -13,6 +13,49 @@
 
 <title>Wakaûndū Pay Network Africa</title>
 
+/* MEMBER WHO'S LOGGED IN HEADER */
+#memberDashboardContent #loggedInDisplay {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* CEO PHOTO + LOGIN DETAILS */
+#ceo-dashboard #ceoProfilePhoto {
+  width: 70px;
+  height: 70px;
+  min-width: 70px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #d6ad45;
+}
+
+/* CEO HEADER */
+#ceo-dashboard #ceoLoggedInDisplay {
+  text-align: left;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* MEMBER + CEO MOBILE HEADER */
+@media (max-width: 480px) {
+  #memberDashboardContent #loggedInDisplay,
+  #ceo-dashboard #ceoLoggedInDisplay {
+    font-size: 12px;
+    padding: 7px;
+  }
+
+  #ceo-dashboard #ceoProfilePhoto {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+  }
+}
+
 <style>
 * {
   box-sizing: border-box;
@@ -570,26 +613,6 @@ footer {
   <p id="mdLoginMessage" class="result"></p>
   <button class="back" data-home>Back to Home</button>
 </section>
-
-
-<!-- CEO ADMIN DASHBOARD -->
-<section id="ceo-dashboard" class="panel">
-  <h2 style="color:#d6ad45;text-align:center;margin:4px 0 8px;">🛡️ CEO ADMIN DASHBOARD</h2>
-
-  <div id="ceoLoggedInDisplay"
-       style="background:#071b2e;color:#d6ad45;border:1px solid #d6ad45;
-       padding:9px 12px;border-radius:10px;margin:6px 0 10px;text-align:center;
-       font-weight:700;">
-    Not logged in
-  </div>
-
-  <div style="background:linear-gradient(135deg,#123f69,#071b2e);
-       border:1px solid #c69a36;border-radius:12px;padding:10px;
-       margin:0 0 10px;text-align:center;">
-    <h3 style="color:#d6ad45;margin:2px 0 4px;">CHIEF EXECUTIVE OFFICER</h3>
-    <p style="margin:2px 0;font-size:12px;">Full Platform Leadership & Oversight</p>
-    <p style="margin:2px 0;font-size:12px;">Role: CEO / ADMIN</p>
-  </div>
 
 <!-- CEO ADMIN DASHBOARD -->
 <section id="ceo-dashboard" class="panel">
