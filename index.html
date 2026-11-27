@@ -302,60 +302,6 @@ footer {
   display: none;
 }
 
-
-    /* COMPACT MEMBERS POPUP */
-    if (id === "management-members") {
-      panel.style.maxHeight = "82vh";
-      panel.style.overflowY = "auto";
-      panel.style.padding = "12px";
-
-      const heading = panel.querySelector("h2");
-      const description = panel.querySelector("p");
-      const grid = panel.querySelector(".grid");
-      const backButton = panel.querySelector(
-        'button.back[data-open="ceo-management"]'
-      );
-
-      if (heading) {
-        heading.style.fontSize = "18px";
-        heading.style.margin = "2px 0 6px";
-      }
-
-      if (description) {
-        description.style.fontSize = "11px";
-        description.style.margin = "3px 0 8px";
-      }
-
-      if (grid) {
-        grid.style.display = "grid";
-        grid.style.gridTemplateColumns =
-          "repeat(2,minmax(0,1fr))";
-        grid.style.gap = "7px";
-
-        Array.from(grid.querySelectorAll("button"))
-          .forEach((button, index) => {
-            button.style.minHeight = "52px";
-            button.style.padding = "8px 5px";
-            button.style.fontSize = "12px";
-
-            if (index === 2) {
-              button.style.gridColumn = "1 / -1";
-            }
-          });
-      }
-
-      if (backButton) {
-        backButton.style.position = "sticky";
-        backButton.style.bottom = "0";
-        backButton.style.zIndex = "6";
-        backButton.style.width = "100%";
-        backButton.style.marginTop = "8px";
-        backButton.style.background = "#123f69";
-        backButton.style.color = "#ffffff";
-        backButton.style.border = "1px solid #d6ad45";
-      }
-    }
-
 /* MEMBER DASHBOARD */
 #memberDashboardContent {
   display: none;
@@ -2906,6 +2852,59 @@ function renderAllMembersOversight() {
     });
 
     panel.classList.add("management-popup");
+
+    /* COMPACT MEMBERS POPUP */
+    if (id === "management-members") {
+      panel.style.maxHeight = "82vh";
+      panel.style.overflowY = "auto";
+      panel.style.padding = "12px";
+
+      const heading = panel.querySelector("h2");
+      const description = panel.querySelector("p");
+      const grid = panel.querySelector(".grid");
+      const backButton = panel.querySelector(
+        'button.back[data-open="ceo-management"]'
+      );
+
+      if (heading) {
+        heading.style.fontSize = "18px";
+        heading.style.margin = "2px 0 6px";
+      }
+
+      if (description) {
+        description.style.fontSize = "11px";
+        description.style.margin = "3px 0 8px";
+      }
+
+      if (grid) {
+        grid.style.display = "grid";
+        grid.style.gridTemplateColumns =
+          "repeat(2,minmax(0,1fr))";
+        grid.style.gap = "7px";
+
+        Array.from(grid.querySelectorAll("button"))
+          .forEach((button, index) => {
+            button.style.minHeight = "52px";
+            button.style.padding = "8px 5px";
+            button.style.fontSize = "12px";
+
+            if (index === 2) {
+              button.style.gridColumn = "1 / -1";
+            }
+          });
+      }
+
+      if (backButton) {
+        backButton.style.position = "sticky";
+        backButton.style.bottom = "0";
+        backButton.style.zIndex = "6";
+        backButton.style.width = "100%";
+        backButton.style.marginTop = "8px";
+        backButton.style.background = "#123f69";
+        backButton.style.color = "#ffffff";
+        backButton.style.border = "1px solid #d6ad45";
+      }
+    }
 
     const closeButton = document.createElement("button");
     closeButton.type = "button";
