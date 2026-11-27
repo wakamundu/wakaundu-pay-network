@@ -497,6 +497,39 @@ footer {
     min-width: 60px;
   }
 }
+/* RESTORE NORMAL PAGE SCROLL AND MEMBER BACK BUTTON */
+html,
+body {
+  height: auto !important;
+  min-height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+body {
+  min-height: 100vh !important;
+}
+
+main {
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+#memberDashboardContent {
+  height: auto !important;
+  min-height: 100vh !important;
+  max-height: none !important;
+  overflow: visible !important;
+  padding-bottom: 30px !important;
+}
+
+#memberDashboardContent .back {
+  position: static !important;
+  display: block !important;
+  margin: 15px 0 !important;
+}
+  
 </style>
 </head>
 
