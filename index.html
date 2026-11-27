@@ -4378,5 +4378,349 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
+<style>
+/* WAKAUnduPAY — WORKFLOW OVERSIGHT */
+#headerLoginStatus {
+  margin: 5px auto 0;
+  padding: 6px 10px;
+  max-width: 95%;
+  color: #f3c64e;
+  background: #071b2e;
+  border: 1px solid #c69a36;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+#management-workflows {
+  display: none;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 10000 !important;
+  width: 100% !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  margin: 0 !important;
+  padding: 10px !important;
+  overflow: hidden !important;
+  background: #071b2e !important;
+  border: 2px solid #d6ad45 !important;
+  border-radius: 0 !important;
+  color: white;
+}
+#management-workflows h2 {
+  color: #d6ad45;
+  font-size: 17px;
+  margin: 5px 0 8px;
+}
+#management-workflows .workflow-stats {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 6px;
+  margin: 8px 0;
+}
+#management-workflows .workflow-stat {
+  padding: 7px;
+  border: 1px solid #c69a36;
+  border-radius: 8px;
+  background: #123f69;
+  font-size: 11px;
+}
+#management-workflows .workflow-stat strong {
+  display: block;
+  color: #f3c64e;
+  font-size: 17px;
+}
+#management-workflows .workflow-list {
+  height: calc(100dvh - 255px);
+  overflow: hidden;
+}
+#management-workflows .workflow-record {
+  padding: 7px;
+  margin: 5px 0;
+  border: 1px solid #345;
+  border-left: 3px solid #d6ad45;
+  border-radius: 7px;
+  background: #102d47;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+#management-workflows button {
+  background: linear-gradient(135deg,#123f69,#071b2e);
+  color: #f3c64e;
+  border: 1px solid #d6ad45;
+  border-radius: 8px;
+  padding: 9px 6px;
+  font-size: 11px;
+  font-weight: bold;
+}
+#management-workflows .workflow-close {
+  width: 100%;
+  margin-bottom: 8px;
+  color: #071b2e;
+  background: linear-gradient(135deg,#d6ad45,#f3c64e);
+}
+#management-workflows .workflow-pages {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+#management-workflows .workflow-pages button {
+  flex: 1;
+}
+</style>
+
+<script>
+(function () {
+  const header = document.querySelector(".top-header");
+  if (header && !document.getElementById("headerLoginStatus")) {
+    const status = document.createElement("div");
+    status.id = "headerLoginStatus";
+    status.textContent = "Not logged in";
+    header.appendChild(status);
+  }
+
+  function updateHeaderLogin() {
+    const headerStatus = document.getElementById("headerLoginStatus");
+    if (!headerStatus) return;
+
+    const ids = [
+      "ceoLoggedInDisplay",
+      "mdLoggedInDisplay",
+      "loggedInDisplay"
+    ];
+
+    let identity = "Not logged in";
+
+    for (const id of ids) {
+      const element = document.getElementById(id);
+      if (!element) continue;
+
+      const value = element.textContent.trim();
+      if (value && value !== "Not logged in") {
+        identity = value.replace(/\s+/g, " ");
+        break;
+      }
+    }
+
+    headerStatus.textContent = identity;
+  }
+
+  idsObserve();
+
+  function idsObserve() {
+    [
+      "ceoLoggedInDisplay",
+      "mdLoggedInDisplay",
+      "loggedInDisplay"
+    ].forEach(id => {
+      const element = document.getElementById(id);
+      if (element) {
+        new MutationObserver(updateHeaderLogin).observe(element, {
+          childList: true,
+          subtree: true,
+          characterData: true
+        });
+      }
+    });
+    updateHeaderLogin();
+  }
+
+  const adminPanel = document.getElementById("management-admin");
+  if (!adminPanel) return;
+
+  const adminGrid = adminPanel.querySelector(".grid");
+  if (adminGrid && !document.getElementById("openWorkflowOversight")) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.id = "openWorkflowOversight";
+    button.className = "action";
+    button.dataset.open = "management-workflows";
+    button.textContent = "📊 WORKFLOW OVERSIGHT";
+    adminGrid.prepend(button);
+  }
+
+  const main = document.querySelector("main");
+  if (!main || document.getElementById("management-workflows")) return;
+
+  const panel = document.createElement("section");
+  panel.id = "management-workflows";
+  panel.className = "panel";
+
+  panel.innerHTML = `
+    <button type="button" class="workflow-close"
+      data-open="management-admin">✕ CLOSE — BACK TO MANAGEMENT</button>
+    <h2>WORKFLOW OVERSIGHT</h2>
+    <p style="font-size:11px;margin:4px 0">
+      Management activity and saved platform requests.
+    </p>
+    <div class="workflow-stats">
+      <div class="workflow-stat">PENDING<strong id="wfPending">0</strong></div>
+      <div class="workflow-stat">IN PROGRESS<strong id="wfProgress">0</strong></div>
+      <div class="workflow-stat">COMPLETED<strong id="wfCompleted">0</strong></div>
+      <div class="workflow-stat">FAILED / REJECTED<strong id="wfFailed">0</strong></div>
+    </div>
+    <div id="workflowRecordList" class="workflow-list"></div>
+    <div class="workflow-pages">
+      <button type="button" id="workflowPrevious">← PREVIOUS</button>
+      <button type="button" id="workflowNext">NEXT →</button>
+    </div>
+    <p id="workflowPageLabel" style="font-size:10px;text-align:center"></p>
+    <p style="font-size:10px;color:#d6ad45">
+      Records shown are saved in this browser. They are not yet a
+      shared, live central management feed across devices.
+    </p>
+  `;
+
+  main.appendChild(panel);
+
+  let workflowPage = 0;
+  const pageSize = 4;
+
+  function readRecords(key) {
+    try {
+      const value = JSON.parse(localStorage.getItem(key) || "[]");
+      return Array.isArray(value) ? value : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function classify(record, defaultStatus) {
+    const status = String(
+      record.status || record.state || defaultStatus || ""
+    ).toUpperCase();
+
+    if (/REJECT|FAIL|CANCEL|ERROR/.test(status)) return "failed";
+    if (/COMPLETE|SUCCESS|APPROVED|PAID|ACTIVE/.test(status)) return "completed";
+    if (/PROCESS|PROGRESS|REVIEW|HANDLING/.test(status)) return "progress";
+    if (/PENDING|WAIT|SUBMITTED|REQUEST/.test(status)) return "pending";
+    return "other";
+  }
+
+  function collectWorkflows() {
+    const sources = [
+      ["Transaction", "wakaunduTransactions", "Recorded"],
+      ["Chama registration", "wakaunduChamas", "Recorded"],
+      ["Chama member activity", "wakaunduChamaMembers", "Recorded"],
+      ["Chama contribution", "wakaunduChamaContributions", "Recorded"],
+      ["PIN reset request", "wakaunduPINResetRequests", "PENDING"],
+      ["Customer care request", "wakaunduCallbacks", "PENDING"]
+    ];
+
+    const records = [];
+
+    sources.forEach(([type, key, defaultStatus]) => {
+      readRecords(key).forEach(item => {
+        records.push({
+          type,
+          item,
+          category: classify(item, defaultStatus)
+        });
+      });
+    });
+
+    return records.reverse();
+  }
+
+  function renderWorkflows() {
+    const records = collectWorkflows();
+
+    const counts = {
+      pending: 0,
+      progress: 0,
+      completed: 0,
+      failed: 0
+    };
+
+    records.forEach(record => {
+      if (counts[record.category] !== undefined) {
+        counts[record.category]++;
+      }
+    });
+
+    document.getElementById("wfPending").textContent = counts.pending;
+    document.getElementById("wfProgress").textContent = counts.progress;
+    document.getElementById("wfCompleted").textContent = counts.completed;
+    document.getElementById("wfFailed").textContent = counts.failed;
+
+    const list = document.getElementById("workflowRecordList");
+    list.replaceChildren();
+
+    const pages = Math.max(1, Math.ceil(records.length / pageSize));
+    workflowPage = Math.min(workflowPage, pages - 1);
+
+    const visible = records.slice(
+      workflowPage * pageSize,
+      workflowPage * pageSize + pageSize
+    );
+
+    if (!visible.length) {
+      const empty = document.createElement("div");
+      empty.className = "workflow-record";
+      empty.textContent = "No saved workflow records found yet.";
+      list.appendChild(empty);
+    }
+
+    visible.forEach(record => {
+      const item = record.item;
+      const card = document.createElement("div");
+      card.className = "workflow-record";
+
+      const title = document.createElement("strong");
+      title.textContent = record.type;
+
+      const status = document.createElement("div");
+      status.textContent = "Status: " +
+        (item.status || item.state || "Recorded — status not set");
+
+      const person = document.createElement("div");
+      person.textContent = "Member / Reference: " +
+        (item.name || item.customerName || item.phone ||
+         item.reference || item.id || "Not recorded");
+
+      const date = document.createElement("div");
+      date.textContent = "Date: " +
+        (item.date || item.createdAt || item.timestamp ||
+         item.registrationDate || "Not recorded");
+
+      card.append(title, status, person, date);
+      list.appendChild(card);
+    });
+
+    document.getElementById("workflowPageLabel").textContent =
+      "Page " + (workflowPage + 1) + " of " + pages +
+      " • " + records.length + " saved records";
+
+    document.getElementById("workflowPrevious").disabled =
+      workflowPage === 0;
+    document.getElementById("workflowNext").disabled =
+      workflowPage >= pages - 1;
+  }
+
+  document.getElementById("workflowPrevious").addEventListener("click", () => {
+    if (workflowPage > 0) workflowPage--;
+    renderWorkflows();
+  });
+
+  document.getElementById("workflowNext").addEventListener("click", () => {
+    workflowPage++;
+    renderWorkflows();
+  });
+
+  const openButton = document.getElementById("openWorkflowOversight");
+  if (openButton) {
+    openButton.addEventListener("click", renderWorkflows);
+  }
+
+  document.addEventListener("click", event => {
+    if (event.target.closest('[data-open="management-workflows"]')) {
+      workflowPage = 0;
+      renderWorkflows();
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
