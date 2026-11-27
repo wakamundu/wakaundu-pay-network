@@ -2284,17 +2284,6 @@ mdDashboard.innerHTML = `
 
   <div class="balance">
     <h3>MANAGING DIRECTOR</h3>
-    <p>Opchamaonal Management</p>
-    <p>Reports to: CEO / Admin</p>
-  </div>
-
-  <h3>Operational Management</h3>
-
-  <div class="grid">
-    <button data-open="chama">👥 Chama Management</button>
-
-  <div class="balance">
-    <h3>MANAGING DIRECTOR</h3>
     <p>Operational Management</p>
     <p>Reports to: CEO / Admin</p>
   </div>
@@ -2302,10 +2291,10 @@ mdDashboard.innerHTML = `
   <h3>Operational Management</h3>
 
   <div class="grid">
-    <button data-open="chama">👥 Chama Management</button>
-    <button data-open="history">📋 Transaction Monitoring</button>
-    <button data-open="international-banking">🏦 Banking Operations</button>
-    <button data-open="customer-care">☎️ Customer Care</button>
+    <button type="button" data-open="chama">👥 Chama Management</button>
+    <button type="button" data-open="history">📋 Transaction Monitoring</button>
+    <button type="button" data-open="international-banking">🏦 Banking Operations</button>
+    <button type="button" data-open="customer-care">☎️ Customer Care</button>
   </div>
 
   <hr>
@@ -2323,7 +2312,7 @@ mdDashboard.innerHTML = `
 
 document.getElementById("ceo-dashboard")
 .insertAdjacentElement("afterend", mdDashboard);
-
+ 
 /* CEO LOGOUT BUTTON */
 const ceoLogout = document.createElement("button");
 ceoLogout.type = "button";
