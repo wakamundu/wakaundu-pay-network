@@ -1871,26 +1871,22 @@ function updateLoggedInDisplay() {
     }
   });
 }
-/* BALANCE DISPLAY */
+
+/* COMPACT BALANCE DISPLAY */
 function renderBalance() {
   const wallet = getWallet();
   if (!wallet) return;
 
   const formatMoney = amount =>
-    "KSh " + Number(amount).toLocaleString("en-KE", {
+    "KSh " + Number(amount || 0).toLocaleString("en-KE", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
 
   const balanceElement = document.getElementById("accountBalance");
   const savingsElement = document.getElementById("savingsBalance");
-
   const ceoAvailable = document.getElementById("ceoAvailableBalance");
   const ceoSavings = document.getElementById("ceoSavingsBalance");
-
-  const statementAvailable = document.getElementById("statementAvailableBalance");
-  const statementSavings = document.getElementById("statementSavingsBalance");
-  const statementLocked = document.getElementById("statementLockedBalance");
 
   if (balanceElement) {
     balanceElement.textContent = formatMoney(wallet.available);
@@ -1900,25 +1896,39 @@ function renderBalance() {
     savingsElement.textContent = formatMoney(wallet.locked);
   }
 
+  [ceoAvailable, ceoSavings].forEach(element => {
+    if (element) {
+      element.style.fontSize = "17px";
+      element.style.margin = "5px 0";
+      element.style.lineHeight = "1.3";
+      element.style.overflowWrap = "anywhere";
+    }
+  });
+
   if (ceoAvailable && currentRole === "ceo") {
     ceoAvailable.textContent = formatMoney(wallet.available);
   }
 
   if (ceoSavings && currentRole === "ceo") {
-    ceoSavings.textContent = formatMoney(wallet.savings + wallet.locked);
+    ceoSavings.textContent =
+      formatMoney(wallet.savings + wallet.locked);
   }
 
-  if (statementAvailable) {
+  const statementAvailable =
+    document.getElementById("statementAvailableBalance");
+  const statementSavings =
+    document.getElementById("statementSavingsBalance");
+  const statementLocked =
+    document.getElementById("statementLockedBalance");
+
+  if (statementAvailable)
     statementAvailable.textContent = formatMoney(wallet.available);
-  }
 
-  if (statementSavings) {
+  if (statementSavings)
     statementSavings.textContent = formatMoney(wallet.savings);
-  }
 
-  if (statementLocked) {
+  if (statementLocked)
     statementLocked.textContent = formatMoney(wallet.locked);
-  }
 
   save("wakaunduWallets", wallets);
 }
