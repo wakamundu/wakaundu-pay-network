@@ -640,54 +640,62 @@ footer {
   <button class="back" data-home>Back to Home</button>
 </section>
 
+
 <!-- CEO ADMIN DASHBOARD -->
 <section id="ceo-dashboard" class="panel">
-  <h2 style="color:#d6ad45;">🛡️ CEO ADMIN DASHBOARD</h2>
+  <h2 style="color:#d6ad45;text-align:center;margin:4px 0 8px;">🛡️ CEO ADMIN DASHBOARD</h2>
 
   <div id="ceoLoggedInDisplay"
-       style="background:#071b2e;color:#d6ad45;
-       padding:12px;border-radius:10px;margin:12px 0;">
+       style="background:#071b2e;color:#d6ad45;border:1px solid #d6ad45;
+       padding:9px 12px;border-radius:10px;margin:6px 0 10px;text-align:center;
+       font-weight:700;">
     Not logged in
   </div>
 
-  <p>Welcome to WakaunduPay Global Administration.</p>
-
-  <div class="balance">
-    <h3>CHIEF EXECUTIVE OFFICER</h3>
-    <p>Full Platform Leadership and Oversight</p>
-    <p>Role: CEO / ADMIN</p>
-    <hr>
-    <p>CEO AVAILABLE BALANCE</p>
-    <h2 id="ceoAvailableBalance">KSh 0.00</h2>
-    <p>CEO PERSONAL SAVINGS</p>
-    <h2 id="ceoSavingsBalance">KSh 0.00</h2>
-    <small>Separate CEO demo wallet</small>
+  <div style="background:linear-gradient(135deg,#123f69,#071b2e);
+       border:1px solid #c69a36;border-radius:12px;padding:10px;
+       margin:0 0 10px;text-align:center;">
+    <h3 style="color:#d6ad45;margin:2px 0 4px;">CHIEF EXECUTIVE OFFICER</h3>
+    <p style="margin:2px 0;font-size:12px;">Full Platform Leadership & Oversight</p>
+    <p style="margin:2px 0;font-size:12px;">Role: CEO / ADMIN</p>
   </div>
 
-  <h3>Platform Management</h3>
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+       gap:8px;width:100%;margin:8px 0 12px;">
+    <div style="min-width:0;background:#071b2e;border:1px solid #d6ad45;
+         border-radius:11px;padding:9px 5px;text-align:center;">
+      <p style="font-size:11px;font-weight:700;color:#d6ad45;margin:2px 0 5px;">
+        CEO AVAILABLE BALANCE
+      </p>
+      <h2 id="ceoAvailableBalance" style="font-size:17px;margin:3px 0;
+          overflow-wrap:anywhere;">KSh 0.00</h2>
+    </div>
+    <div style="min-width:0;background:#071b2e;border:1px solid #d6ad45;
+         border-radius:11px;padding:9px 5px;text-align:center;">
+      <p style="font-size:11px;font-weight:700;color:#d6ad45;margin:2px 0 5px;">
+        CEO PERSONAL SAVINGS
+      </p>
+      <h2 id="ceoSavingsBalance" style="font-size:17px;margin:3px 0;
+          overflow-wrap:anywhere;">KSh 0.00</h2>
+    </div>
+  </div>
 
- 
-<div class="grid">
+  <p style="font-size:10px;text-align:center;margin:0 0 8px;color:#d6ad45;">
+    Separate CEO demo wallet
+  </p>
+
   <button type="button" class="action"
-    data-open="ceo-management">
+    data-open="ceo-management"
+    style="width:100%;min-height:52px;font-size:14px;font-weight:700;
+    border:1px solid #d6ad45;border-radius:11px;">
     ⚙️ CENTRAL MANAGEMENT
   </button>
-</div>
 
-  <hr>
-
-  <h3>Executive Responsibilities</h3>
-  <ul>
-    <li>Full platform administration</li>
-    <li>Appointment and management of administrators</li>
-    <li>Managing Director oversight</li>
-    <li>Platform settings and policy control</li>
-    <li>Financial operations oversight</li>
-  </ul>
-
-  <p><strong>CEO authority:</strong> Full administrative control.</p>
-  <button class="back" data-home>Back to Home</button>
+  <button class="back" data-home style="width:100%;margin-top:9px;">
+    ← Back to Home
+  </button>
 </section>
+
 <!-- WAKAUṄDŪPAY CENTRAL MANAGEMENT -->
 <section id="ceo-management" class="panel">
   <h2 style="color:#d6ad45;">⚙️ CENTRAL MANAGEMENT</h2>
