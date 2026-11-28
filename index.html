@@ -1283,8 +1283,13 @@ function exportCentralReport(type) {
   <hr>
 
   <form data-demo-form data-service="Send Money">
+    <label>Recipient full name</label>
+    <input id="sendRecipientName" required
+           placeholder="Enter recipient's full name">
+
     <label>Recipient phone number</label>
-    <input required type="tel" placeholder="+254712345678">
+    <input id="sendRecipientPhone" required type="tel"
+           placeholder="+254712345678">
 
     <label>Amount (KSh)</label>
     <input required type="number" min="1" placeholder="Enter amount">
@@ -2235,7 +2240,7 @@ function addTransaction(service, amount, details = {}) {
     recipientName: String(details.recipientName || ""),
     recipientPhone: String(details.recipientPhone || ""),
     withdrawalDestination: String(details.withdrawalDestination || ""),
-
+depositSource: String(details.depositSource || ""),
     date: new Date().toISOString(),
     status: "DEMO RECORDED",
     balanceAfter: wallet.available,
@@ -3924,8 +3929,7 @@ function verifyTransactionPIN(service) {
   return true;
 }
 
-
-/* BANKING FORMS — VERIFY PIN BEFORE RECORDING */
+/* BANKING FORMS — VERIFY PIN AND RECORD MONEY FLOW */
 
 document.querySelectorAll("form[data-demo-form]").forEach(form => {
   form.addEventListener("submit", function(event) {
@@ -3951,7 +3955,45 @@ document.querySelectorAll("form[data-demo-form]").forEach(form => {
       return;
     }
 
-    if (!addTransaction(service, amount)) {
+    // Capture destination details before saving the transaction
+    const details = {};
+    const action = service.toLowerCase();
+
+    if (action.includes("send")) {
+      const nameField =
+        this.querySelector("#sendRecipientName");
+      const phoneField =
+        this.querySelector("#sendRecipientPhone");
+
+      if (!nameField || !phoneField) {
+        alert("Recipient name and phone fields are missing.");
+        return;
+      }
+
+      details.recipientName = nameField.value.trim();
+      details.recipientPhone = phoneField.value.trim();
+
+      if (!details.recipientName || !details.recipientPhone) {
+        alert("Enter the recipient's name and phone number.");
+        return;
+      }
+    }
+
+    if (action.includes("withdraw")) {
+      const destinationField =
+        this.querySelector("#withdrawDestination") ||
+        this.querySelector('input:not([type="number"])');
+
+      details.withdrawalDestination =
+        destinationField ? destinationField.value.trim() : "";
+
+      if (!details.withdrawalDestination) {
+        alert("Enter the withdrawal destination.");
+        return;
+      }
+    }
+
+    if (!addTransaction(service, amount, details)) {
       if (result) {
         result.textContent =
           "Transaction failed. Check your available demo balance.";
@@ -3967,7 +4009,6 @@ document.querySelectorAll("form[data-demo-form]").forEach(form => {
     this.reset();
   });
 });
-
 
 /* MEMBER PIN RECOVERY / RESET */
 
