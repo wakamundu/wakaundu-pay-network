@@ -2326,8 +2326,10 @@ function renderHistory() {
       flow.textContent =
         "TO: " + (item.withdrawalDestination ||
           "Withdrawal destination not recorded");
-    } else if (action.includes("deposit")) {
-      flow.textContent = "TO: Member account | Deposit source not recorded";
+       } else if (action.includes("deposit")) {
+      flow.textContent =
+        "FROM: " + (item.depositSource || "Deposit source not recorded") +
+        " | TO: Member account"; 
     } else if (action.includes("locked")) {
       flow.textContent = "FROM: Available balance | TO: Locked savings";
     } else if (action.includes("saving")) {
@@ -3992,7 +3994,17 @@ document.querySelectorAll("form[data-demo-form]").forEach(form => {
         return;
       }
     }
+    if (action.includes("deposit")) {
+      const channelField = this.querySelector("select");
 
+      details.depositSource =
+        channelField ? channelField.value.trim() : "";
+
+      if (!details.depositSource) {
+        alert("Select the deposit channel.");
+        return;
+      }
+    }
     if (!addTransaction(service, amount, details)) {
       if (result) {
         result.textContent =
