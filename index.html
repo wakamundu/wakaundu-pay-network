@@ -2004,36 +2004,24 @@ document.getElementById("registrationForm")
 
   this.reset();
 });
-
 /* DISPLAY WHO IS CURRENTLY LOGGED IN */
 function updateLoggedInDisplay() {
-  const displays = [
-    document.getElementById("ceoLoggedInDisplay"),
-    document.getElementById("mdLoggedInDisplay"),
-    document.getElementById("loggedInDisplay")
-  ];
+  const ceoDisplay = document.getElementById("ceoLoggedInDisplay");
+  const mdDisplay = document.getElementById("mdLoggedInDisplay");
 
-  let identity = "Not logged in";
-
-  if (currentRole === "ceo") {
-    identity = "Logged in as: CEO / Administrator";
-
-  } else if (currentRole === "md") {
-    identity = "Logged in as: Managing Director";
-
-  } else if (currentRole === "member" && currentCustomer) {
-    identity =
-      "Logged in as: " +
-      (currentCustomer.name || "Member") +
-      " | Phone: " +
-      (currentCustomer.phone || "Not available");
+  if (ceoDisplay) {
+    ceoDisplay.textContent =
+      currentRole === "ceo"
+        ? "Logged in as: CEO / Administrator"
+        : "Not logged in";
   }
 
-  displays.forEach(display => {
-    if (display) {
-      display.textContent = identity;
-    }
-  });
+  if (mdDisplay) {
+    mdDisplay.textContent =
+      currentRole === "md"
+        ? "Logged in as: Managing Director"
+        : "Not logged in";
+  }
 }
 
 /* COMPACT BALANCE DISPLAY */
