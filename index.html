@@ -2174,15 +2174,12 @@ function updateReceivingDetails(customer) {
     "Registered phone: " + customer.phone;
 }
 
-/* RECORD TRANSACTIONS */
-function addTransaction(service, amount) {
+/* RECORD TRANSACTIONS — SAVE MONEY FLOW DETAILS */
+function addTransaction(service, amount, details = {}) {
   const value = Number(amount);
 
   if (!Number.isFinite(value) || value <= 0) return false;
-
-  if (currentRole !== "ceo" && currentRole !== "member") {
-    return false;
-  }
+  if (currentRole !== "ceo" && currentRole !== "member") return false;
 
   const wallet = getWallet();
   if (!wallet) return false;
@@ -2200,14 +2197,12 @@ function addTransaction(service, amount) {
     action.includes("bill") ||
     action.includes("merchant") ||
     action.includes("goods") ||
-      action.includes("airtime") ||
-action.includes("credit") ||
-action.includes("chama contribution");
+    action.includes("airtime") ||
+    action.includes("credit") ||
+    action.includes("chama contribution");
 
   if ((isOutgoing || isSavings || isLocked) &&
-      wallet.available < value) {
-    return false;
-  }
+      wallet.available < value) return false;
 
   const oldAvailable = wallet.available;
   const oldSavings = wallet.savings;
@@ -2235,6 +2230,12 @@ action.includes("chama contribution");
     ownerId: currentRole === "ceo" ? "CEO" : currentCustomer.id,
     ownerPhone: currentRole === "member" ? currentCustomer.phone : "",
     ownerName: currentRole === "ceo" ? "CEO" : currentCustomer.name,
+
+    // Destination details captured when the transaction is submitted
+    recipientName: String(details.recipientName || ""),
+    recipientPhone: String(details.recipientPhone || ""),
+    withdrawalDestination: String(details.withdrawalDestination || ""),
+
     date: new Date().toISOString(),
     status: "DEMO RECORDED",
     balanceAfter: wallet.available,
@@ -2265,6 +2266,101 @@ action.includes("chama contribution");
   renderHistory();
   return true;
 }
+
+
+/* DISPLAY TRANSACTION HISTORY — SHOW MONEY FLOW */
+function renderHistory() {
+  const list = document.getElementById("transactionList");
+  if (!list) return;
+
+  list.replaceChildren();
+
+  let records = [];
+
+  if (currentRole === "member" && currentCustomer) {
+    records = transactions.filter(item =>
+      item.ownerPhone === currentCustomer.phone
+    );
+  } else if (currentRole === "ceo" || currentRole === "md") {
+    records = transactions;
+  } else {
+    list.textContent = "Please log in to view transaction history.";
+    return;
+  }
+
+  if (records.length === 0) {
+    list.textContent = "No transaction history available.";
+    return;
+  }
+
+  records.slice().reverse().forEach(item => {
+    const card = document.createElement("div");
+
+    card.style.cssText =
+      "background:#123f69;padding:14px;margin:10px 0;" +
+      "border:1px solid #c69a36;border-radius:10px;";
+
+    const action = String(item.service || "").toLowerCase();
+
+    const heading = document.createElement("strong");
+    heading.textContent = item.service || "Transaction";
+
+    const owner = document.createElement("p");
+    owner.textContent = item.ownerName
+      ? "FROM: " + item.ownerName +
+        (item.ownerPhone ? " (" + item.ownerPhone + ")" : "")
+      : "FROM: Management transaction";
+
+    const flow = document.createElement("p");
+
+    if (action.includes("send")) {
+      flow.textContent =
+        "TO: " + (item.recipientName || "Recipient name not recorded") +
+        " | Phone: " + (item.recipientPhone || "Recipient number not recorded");
+    } else if (action.includes("withdraw")) {
+      flow.textContent =
+        "TO: " + (item.withdrawalDestination ||
+          "Withdrawal destination not recorded");
+    } else if (action.includes("deposit")) {
+      flow.textContent = "TO: Member account | Deposit source not recorded";
+    } else if (action.includes("locked")) {
+      flow.textContent = "FROM: Available balance | TO: Locked savings";
+    } else if (action.includes("saving")) {
+      flow.textContent = "FROM: Available balance | TO: Savings balance";
+    } else {
+      flow.textContent =
+        "Destination: Not recorded for this transaction";
+    }
+
+    const amount = document.createElement("p");
+    amount.textContent =
+      "AMOUNT: KSh " +
+      Number(item.amount).toLocaleString("en-KE");
+
+    const reference = document.createElement("small");
+    reference.textContent = "Reference: " + (item.id || "Not available");
+
+    const date = document.createElement("small");
+    date.textContent =
+      "Date: " + new Date(item.date).toLocaleString("en-KE");
+
+    const status = document.createElement("p");
+    status.textContent = "Status: " + (item.status || "DEMO RECORDED");
+
+    card.append(
+      heading,
+      owner,
+      flow,
+      amount,
+      reference,
+      date,
+      status
+    );
+
+    list.appendChild(card);
+  });
+}
+
 
 /* DISPLAY TRANSACTION HISTORY */
 function renderHistory() {
