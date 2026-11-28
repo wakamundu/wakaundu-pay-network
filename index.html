@@ -2407,7 +2407,6 @@ function showRoleDashboard(dashboardId) {
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
 function updateLoggedInDisplay() {
   const ceoDisplay = document.getElementById("ceoLoggedInDisplay");
   const mdDisplay = document.getElementById("mdLoggedInDisplay");
@@ -2432,14 +2431,15 @@ function updateLoggedInDisplay() {
   memberDisplay.replaceChildren();
 
   if (currentRole !== "member" || !currentCustomer) {
-    memberDisplay.textContent = "Not logged in";
+    memberDisplay.style.display = "none";
     return;
   }
 
   memberDisplay.style.cssText =
-    "display:flex;align-items:center;gap:12px;" +
-    "background:#071b2e;color:#d6ad45;padding:12px;" +
-    "border-radius:10px;margin-bottom:12px;";
+    "display:flex;align-items:center;gap:8px;" +
+    "background:#071b2e;color:#d6ad45;padding:5px 8px;" +
+    "border-radius:8px;margin:6px auto 0;" +
+    "max-width:320px;box-sizing:border-box;";
 
   const photo = document.createElement("img");
   photo.alt = "Member profile photo";
@@ -2450,9 +2450,9 @@ function updateLoggedInDisplay() {
     );
 
   photo.style.cssText =
-  "width:38px;height:38px;min-width:38px;" +
-  "border-radius:50%;object-fit:cover;" +
-  "border:1px solid #c69a36;";
+    "width:38px;height:38px;min-width:38px;" +
+    "border-radius:50%;object-fit:cover;" +
+    "border:1px solid #c69a36;";
 
   const details = document.createElement("div");
   const name = document.createElement("strong");
