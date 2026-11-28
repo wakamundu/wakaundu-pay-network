@@ -2179,7 +2179,6 @@ function updateReceivingDetails(customer) {
     "Registered phone: " + customer.phone;
 }
 
-/* RECORD TRANSACTIONS — SAVE MONEY FLOW DETAILS */
 function addTransaction(service, amount, details = {}) {
   const value = Number(amount);
 
@@ -2194,9 +2193,10 @@ function addTransaction(service, amount, details = {}) {
   const isDeposit = action.includes("deposit");
   const isLocked = action.includes("locked");
   const isSavings = !isLocked && action.includes("saving");
+  const isMemberSend = action.includes("send");
 
   const isOutgoing =
-    action.includes("send") ||
+    isMemberSend ||
     action.includes("transfer") ||
     action.includes("withdraw") ||
     action.includes("bill") ||
@@ -2207,12 +2207,73 @@ function addTransaction(service, amount, details = {}) {
     action.includes("chama contribution");
 
   if ((isOutgoing || isSavings || isLocked) &&
-      wallet.available < value) return false;
+      wallet.available < value) {
+    return false;
+  }
 
+  // Find the registered recipient for Send Money
+  let recipient = null;
+  let recipientWallet = null;
+  let recipientWalletId = null;
+
+  if (isMemberSend) {
+    const enteredPhone = String(details.recipientPhone || "")
+      .replace(/\D/g, "");
+
+    if (!enteredPhone) return false;
+
+    recipient = customers.find(member =>
+      String(member.phone || "").replace(/\D/g, "") === enteredPhone &&
+      member.status === "ACTIVE"
+    );
+
+    if (!recipient) {
+      alert("Recipient is not registered or is not active.");
+      return false;
+    }
+
+    if (currentRole === "member" &&
+        recipient.id === currentCustomer.id) {
+      alert("You cannot send money to your own account.");
+      return false;
+    }
+
+    recipientWalletId = "MEMBER_" + recipient.id;
+
+    if (!wallets[recipientWalletId]) {
+      wallets[recipientWalletId] = {
+        available: 10000,
+        savings: 0,
+        locked: 0
+      };
+    }
+
+    recipientWallet = wallets[recipientWalletId];
+
+    if (typeof recipientWallet.available !== "number") {
+      recipientWallet.available = 0;
+    }
+    if (typeof recipientWallet.savings !== "number") {
+      recipientWallet.savings = 0;
+    }
+    if (typeof recipientWallet.locked !== "number") {
+      recipientWallet.locked = 0;
+    }
+  }
+
+  // Save original balances for rollback if saving fails
   const oldAvailable = wallet.available;
   const oldSavings = wallet.savings;
   const oldLocked = wallet.locked;
 
+  const oldRecipientAvailable = recipientWallet
+    ? recipientWallet.available
+    : null;
+
+  const recipientWalletPreviouslyExisted =
+    recipientWalletId ? wallets[recipientWalletId] !== undefined : false;
+
+  // Apply the money movement
   if (isDeposit) {
     wallet.available += value;
   } else if (isLocked) {
@@ -2223,45 +2284,85 @@ function addTransaction(service, amount, details = {}) {
     wallet.savings += value;
   } else if (isOutgoing) {
     wallet.available -= value;
+
+    if (isMemberSend && recipientWallet) {
+      recipientWallet.available += value;
+    }
   } else {
     return false;
   }
 
+  const reference = "TX" + Date.now();
+
   const transaction = {
-    id: "TX" + Date.now(),
-    service,
+    id: reference,
+    service: service,
     amount: value,
+
     ownerRole: currentRole,
     ownerId: currentRole === "ceo" ? "CEO" : currentCustomer.id,
     ownerPhone: currentRole === "member" ? currentCustomer.phone : "",
     ownerName: currentRole === "ceo" ? "CEO" : currentCustomer.name,
 
-    // Destination details captured when the transaction is submitted
-    recipientName: String(details.recipientName || ""),
-    recipientPhone: String(details.recipientPhone || ""),
-    withdrawalDestination: String(details.withdrawalDestination || ""),
-depositSource: String(details.depositSource || ""),
+    recipientName: recipient
+      ? recipient.name
+      : String(details.recipientName || ""),
+
+    recipientPhone: recipient
+      ? recipient.phone
+      : String(details.recipientPhone || ""),
+
+    recipientId: recipient ? recipient.id : "",
+
+    withdrawalDestination:
+      String(details.withdrawalDestination || ""),
+
+    depositSource:
+      String(details.depositSource || ""),
+
     date: new Date().toISOString(),
     status: "DEMO RECORDED",
+
     balanceAfter: wallet.available,
+
+    recipientBalanceAfter: recipientWallet
+      ? recipientWallet.available
+      : null,
+
     savingsAfter: wallet.savings,
     lockedAfter: wallet.locked
   };
 
   transactions.push(transaction);
 
+  // Save both wallets together
   if (!save("wakaunduWallets", wallets)) {
     wallet.available = oldAvailable;
     wallet.savings = oldSavings;
     wallet.locked = oldLocked;
+
+    if (recipientWallet) {
+      recipientWallet.available = oldRecipientAvailable;
+    }
+
     transactions.pop();
     return false;
   }
 
+  // Save transaction history
   if (!save("wakaunduTransactions", transactions)) {
     wallet.available = oldAvailable;
     wallet.savings = oldSavings;
     wallet.locked = oldLocked;
+
+    if (recipientWallet) {
+      recipientWallet.available = oldRecipientAvailable;
+    }
+
+    if (recipientWalletId && !recipientWalletPreviouslyExisted) {
+      delete wallets[recipientWalletId];
+    }
+
     transactions.pop();
     save("wakaunduWallets", wallets);
     return false;
@@ -2269,9 +2370,9 @@ depositSource: String(details.depositSource || ""),
 
   renderBalance();
   renderHistory();
+
   return true;
 }
-
 
 /* DISPLAY TRANSACTION HISTORY — SHOW MONEY FLOW */
 function renderHistory() {
