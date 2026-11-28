@@ -2374,7 +2374,6 @@ function addTransaction(service, amount, details = {}) {
   return true;
 }
 
-/* DISPLAY TRANSACTION HISTORY — SHOW MONEY FLOW */
 function renderHistory() {
   const list = document.getElementById("transactionList");
   if (!list) return;
@@ -2384,9 +2383,23 @@ function renderHistory() {
   let records = [];
 
   if (currentRole === "member" && currentCustomer) {
-    records = transactions.filter(item =>
-      item.ownerPhone === currentCustomer.phone
-    );
+    const myPhone = String(currentCustomer.phone || "")
+      .replace(/\D/g, "");
+
+    records = transactions.filter(item => {
+      const sentByMe =
+        item.ownerId === currentCustomer.id ||
+        item.ownerPhone === currentCustomer.phone;
+
+      const receivedByMe =
+        item.recipientId === currentCustomer.id ||
+        (
+          myPhone &&
+          String(item.recipientPhone || "").replace(/\D/g, "") === myPhone
+        );
+
+      return sentByMe || receivedByMe;
+    });
   } else if (currentRole === "ceo" || currentRole === "md") {
     records = transactions;
   } else {
@@ -2408,29 +2421,57 @@ function renderHistory() {
 
     const action = String(item.service || "").toLowerCase();
 
+    const isIncoming =
+      currentRole === "member" &&
+      (
+        item.recipientId === currentCustomer.id ||
+        (
+          String(item.recipientPhone || "").replace(/\D/g, "") ===
+          String(currentCustomer.phone || "").replace(/\D/g, "")
+          && item.ownerId !== currentCustomer.id
+        )
+      );
+
     const heading = document.createElement("strong");
-    heading.textContent = item.service || "Transaction";
+
+    if (isIncoming) {
+      heading.textContent = "RECEIVED MONEY";
+    } else if (action.includes("send")) {
+      heading.textContent = "SENT MONEY";
+    } else {
+      heading.textContent = item.service || "Transaction";
+    }
 
     const owner = document.createElement("p");
-    owner.textContent = item.ownerName
-      ? "FROM: " + item.ownerName +
-        (item.ownerPhone ? " (" + item.ownerPhone + ")" : "")
-      : "FROM: Management transaction";
+
+    if (isIncoming) {
+      owner.textContent =
+        "FROM: " + (item.ownerName || "Sender name not recorded") +
+        (item.ownerPhone ? " (" + item.ownerPhone + ")" : "");
+    } else {
+      owner.textContent =
+        "FROM: " + (item.ownerName || "Management transaction") +
+        (item.ownerPhone ? " (" + item.ownerPhone + ")" : "");
+    }
 
     const flow = document.createElement("p");
 
-    if (action.includes("send")) {
+    if (isIncoming) {
       flow.textContent =
-        "TO: " + (item.recipientName || "Recipient name not recorded") +
+        "RECEIVED BY: " + currentCustomer.name +
+        " | Phone: " + currentCustomer.phone;
+    } else if (action.includes("send")) {
+      flow.textContent =
+        "SENT TO: " + (item.recipientName || "Recipient name not recorded") +
         " | Phone: " + (item.recipientPhone || "Recipient number not recorded");
     } else if (action.includes("withdraw")) {
       flow.textContent =
         "TO: " + (item.withdrawalDestination ||
           "Withdrawal destination not recorded");
-       } else if (action.includes("deposit")) {
+    } else if (action.includes("deposit")) {
       flow.textContent =
         "FROM: " + (item.depositSource || "Deposit source not recorded") +
-        " | TO: Member account"; 
+        " | TO: Member account";
     } else if (action.includes("locked")) {
       flow.textContent = "FROM: Available balance | TO: Locked savings";
     } else if (action.includes("saving")) {
@@ -2442,18 +2483,20 @@ function renderHistory() {
 
     const amount = document.createElement("p");
     amount.textContent =
-      "AMOUNT: KSh " +
+      (isIncoming ? "CREDITED: KSh " : "AMOUNT: KSh ") +
       Number(item.amount).toLocaleString("en-KE");
 
     const reference = document.createElement("small");
-    reference.textContent = "Reference: " + (item.id || "Not available");
+    reference.textContent =
+      "Reference: " + (item.id || "Not available");
 
     const date = document.createElement("small");
     date.textContent =
       "Date: " + new Date(item.date).toLocaleString("en-KE");
 
     const status = document.createElement("p");
-    status.textContent = "Status: " + (item.status || "DEMO RECORDED");
+    status.textContent =
+      "Status: " + (item.status || "DEMO RECORDED");
 
     card.append(
       heading,
