@@ -4611,60 +4611,6 @@ if ("serviceWorker" in navigator) {
 
 <script>
 (function () {
-  const header = document.querySelector(".top-header");
-  if (header && !document.getElementById("headerLoginStatus")) {
-    const status = document.createElement("div");
-    status.id = "headerLoginStatus";
-    status.textContent = "Not logged in";
-    header.appendChild(status);
-  }
-
-  function updateHeaderLogin() {
-    const headerStatus = document.getElementById("headerLoginStatus");
-    if (!headerStatus) return;
-
-    const ids = [
-      "ceoLoggedInDisplay",
-      "mdLoggedInDisplay",
-      "loggedInDisplay"
-    ];
-
-    let identity = "Not logged in";
-
-    for (const id of ids) {
-      const element = document.getElementById(id);
-      if (!element) continue;
-
-      const value = element.textContent.trim();
-      if (value && value !== "Not logged in") {
-        identity = value.replace(/\s+/g, " ");
-        break;
-      }
-    }
-
-    headerStatus.textContent = identity;
-  }
-
-  idsObserve();
-
-  function idsObserve() {
-    [
-      "ceoLoggedInDisplay",
-      "mdLoggedInDisplay",
-      "loggedInDisplay"
-    ].forEach(id => {
-      const element = document.getElementById(id);
-      if (element) {
-        new MutationObserver(updateHeaderLogin).observe(element, {
-          childList: true,
-          subtree: true,
-          characterData: true
-        });
-      }
-    });
-    updateHeaderLogin();
-  }
-
   const adminPanel = document.getElementById("management-admin");
   if (!adminPanel) return;
 
