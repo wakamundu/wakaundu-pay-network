@@ -301,25 +301,23 @@ textarea {
 footer {
   display: none;
 }
-#memberDashboardContent {
-  display: none;
-  height: 100%;
-  min-height: 0;
-  max-height: 100%;
+.top-header #loggedInDisplay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 320px;
+  margin: 6px auto 0;
+  padding: 5px 8px;
+  font-size: 11px;
+  line-height: 1.2;
+  border: 1px solid #c69a36;
+  border-radius: 8px;
+  background: #071b2e;
+  color: #f3c64e;
+  text-align: left;
   box-sizing: border-box;
-  padding: 12px 10px 20px;
-  color: #fff;
-  background:
-    linear-gradient(145deg, rgba(3,12,30,.94), rgba(5,32,65,.88)),
-    url("https://raw.githubusercontent.com/wakamundu/wakaundu-pay-network/main/16c4eab2273b6dde5dbd6138a415a3463c69d15611956b1307589f30f14a2dd2.png");
-  background-size: cover;
-  background-position: center;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  -webkit-overflow-scrolling: touch;
-  border-radius: 15px;
 }
-
 /* CLICKABLE DASHBOARD ARTWORK */
 #dashboardArtwork {
   position: relative;
